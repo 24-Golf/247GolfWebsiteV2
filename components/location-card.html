@@ -1,0 +1,210 @@
+<!--
+  ============================================================
+  24/7 Golf — Location Card Component
+  ============================================================
+
+  TWO USES:
+
+  1. COMPACT ROW (used on landing page locations section)
+  2. FULL LOCATION PAGE TEMPLATE (for each location's own page)
+
+  ============================================================
+-->
+
+
+<!-- ──────────────────────────────────────────────────────────
+     1. COMPACT ROW (copy into index.html locations section)
+     Replace: LOCATION_NAME, CITY_MI, href, and tags as needed
+     ────────────────────────────────────────────────────────── -->
+
+<a href="./grand-rapids.html" class="location-row">
+  <div class="location-row-name">Grand Rapids</div>
+  <div class="location-row-city">Grand Rapids, MI</div>
+  <div class="location-row-tags">
+    <span class="tag tag-gold">Trackman iO</span>
+    <!-- Add if applicable: <span class="tag">Pickleball</span> -->
+  </div>
+  <div class="location-row-arrow">→</div>
+</a>
+
+
+<!-- ──────────────────────────────────────────────────────────
+     2. FULL LOCATION PAGE TEMPLATE
+     Duplicate this file, rename it (e.g. grand-rapids.html),
+     and fill in all the PLACEHOLDER values.
+     ────────────────────────────────────────────────────────── -->
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOCATION_NAME – 24/7 Golf</title>
+  <meta name="description" content="Indoor golf in CITY_MI powered by Trackman iO. Book a bay at 24/7 Golf LOCATION_NAME — open 24 hours, no tee time required.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+  [PASTE nav.html CONTENT HERE]
+
+  ════════════════════════════════════════
+  SECTION 1: LOCATION HERO
+  ════════════════════════════════════════
+  <section class="hero">
+    <div class="hero-bg" style="background-image: url('../assets/images/LOCATION-hero.jpg');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content reveal">
+      <div class="trackman-badge" style="margin-bottom: 20px;">⛳ Powered by Trackman iO</div>
+      <h1>LOCATION_NAME</h1>
+      <p style="font-size: 1.2rem; color: var(--muted); margin: 12px 0 0; font-family: var(--font-condensed); letter-spacing: 1px;">
+        CITY, MI — Indoor Golf · Open 24/7
+      </p>
+      <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <a href="#book" class="btn btn-primary">Book a Bay</a>
+        <a href="#amenities" class="btn btn-outline">Explore Amenities</a>
+      </div>
+    </div>
+  </section>
+
+  ════════════════════════════════════════
+  SECTION 2: QUICK STATS BAR
+  ════════════════════════════════════════
+  <section style="background: var(--dark); padding: 32px var(--side-pad); border-bottom: 1px solid var(--border);">
+    <div style="max-width: var(--max-width); margin: 0 auto; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px;">
+      <div class="stat-block">
+        <div class="stat-number">X</div>
+        <div class="stat-label">Simulator Bays</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Always Open</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">250+</div>
+        <div class="stat-label">Virtual Courses</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">FREE</div>
+        <div class="stat-label">To Join</div>
+      </div>
+    </div>
+  </section>
+
+  ════════════════════════════════════════
+  SECTION 3: BOOK A BAY (CourtReserve embed)
+  ════════════════════════════════════════
+  <section id="book" class="section section-dark">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="label">Reserve Your Bay</div>
+        <h2>Book at LOCATION_NAME</h2>
+        <div class="divider"></div>
+        <p>Select your bay and time below. Create a free account to get started — takes 60 seconds.</p>
+      </div>
+      <div class="embed-wrapper reveal">
+        <iframe
+          src="https://widgets.courtreserve.com/Online/Public/EmbedCode/10840/LOCATION_EMBED_ID"
+          style="margin:0; width:100%; border:none; overflow:hidden; min-height: 500px;"
+          scrolling="no">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  ════════════════════════════════════════
+  SECTION 4: AMENITIES
+  ════════════════════════════════════════
+  <section id="amenities" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="label">What's Here</div>
+        <h2>LOCATION_NAME Amenities</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 12px;">⛳</div>
+          <h3 style="font-family: var(--font-condensed); font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">X Simulator Bays</h3>
+          <p>Full Trackman iO simulators with shot data, course play, and practice modes.</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 12px;">🕐</div>
+          <h3 style="font-family: var(--font-condensed); font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Open 24/7</h3>
+          <p>Book any time — early mornings, late nights, weekends. Your schedule, not ours.</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 12px;">📱</div>
+          <h3 style="font-family: var(--font-condensed); font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Mobile App Access</h3>
+          <p>Book, check in, and manage your session from the 24/7 Golf app.</p>
+        </div>
+        [ADD PICKLEBALL CARD HERE IF APPLICABLE]
+      </div>
+    </div>
+  </section>
+
+  ════════════════════════════════════════
+  SECTION 5: TRACKMAN iO
+  ════════════════════════════════════════
+  <section class="section section-dark">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center;">
+        <div class="reveal">
+          <div class="trackman-badge" style="margin-bottom: 20px;">Trackman iO Technology</div>
+          <h2>The Most Accurate Golf Simulator Available</h2>
+          <div class="divider"></div>
+          <p>Every bay at LOCATION_NAME is powered by Trackman iO — the same technology used by PGA Tour professionals. Get real-time club and ball data with every swing.</p>
+          <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+              <span style="color: var(--green); font-size: 1.2rem; flex-shrink: 0;">✓</span>
+              <p style="margin: 0;">Ball speed, launch angle, spin rate, carry distance</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+              <span style="color: var(--green); font-size: 1.2rem; flex-shrink: 0;">✓</span>
+              <p style="margin: 0;">250+ world-famous courses in stunning detail</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+              <span style="color: var(--green); font-size: 1.2rem; flex-shrink: 0;">✓</span>
+              <p style="margin: 0;">Practice range with target analysis and improvement tracking</p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          [TRACKMAN IMAGE PLACEHOLDER]
+          <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; color: var(--muted); font-family: var(--font-condensed); letter-spacing: 1px;">
+            TRACKMAN iO BAY IMAGE
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ════════════════════════════════════════
+  SECTION 6: OTHER LOCATIONS
+  ════════════════════════════════════════
+  <section class="section">
+    <div class="container">
+      <div class="section-header center reveal">
+        <div class="label">More Locations</div>
+        <h2>Find a Bay Near You</h2>
+        <div class="divider divider-center"></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 700px; margin: 0 auto;" class="reveal">
+        [COPY location-row snippets for other 4 locations — exclude current page's location]
+      </div>
+    </div>
+  </section>
+
+  [PASTE footer.html CONTENT HERE]
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+-->
