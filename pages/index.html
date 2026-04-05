@@ -67,37 +67,6 @@
       .hero-stat { text-align: left; }
     }
 
-    /* Trackman Trust Bar */
-    .trackman-bar {
-      background: var(--dark);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 24px 5vw;
-      display: flex; align-items: center; justify-content: center;
-      gap: clamp(20px, 5vw, 80px); flex-wrap: wrap;
-    }
-    .tb-item {
-      display: flex; align-items: center; gap: 14px;
-    }
-    .tb-icon {
-      width: 44px; height: 44px; border-radius: 8px;
-      background: linear-gradient(135deg, #1a3a2a, #0d2018);
-      border: 1px solid rgba(46,204,113,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; flex-shrink: 0;
-    }
-    .tb-text span {
-      display: block; font-family: var(--font-condensed);
-      font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 1px;
-    }
-    .tb-text strong {
-      font-family: var(--font-condensed);
-      font-size: 1rem; font-weight: 700; letter-spacing: 1px; color: var(--white);
-    }
-    .tb-divider { width: 1px; height: 40px; background: var(--border); }
-    @media (max-width: 768px) { .tb-divider { display: none; } }
-
     /* Section label style */
     .section-label {
       display: inline-flex; align-items: center; gap: 10px;
@@ -346,7 +315,6 @@
     <ul class="nav-links">
       <li><a href="#locations">Locations</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#trackman">Trackman iO</a></li>
       <li><a href="#app">Get the App</a></li>
       <li><a href="faq.html">FAQ</a></li>
       <li><a href="#create-account" class="nav-cta">Book Now</a></li>
@@ -398,50 +366,6 @@
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       TRACKMAN TRUST BAR
-  ══════════════════════════════════════ -->
-  <div id="trackman" class="trackman-bar">
-    <div class="tb-item">
-      <div class="tb-icon">⛳</div>
-      <div class="tb-text">
-        <span>Powered By</span>
-        <strong>Trackman iO</strong>
-      </div>
-    </div>
-    <div class="tb-divider"></div>
-    <div class="tb-item">
-      <div class="tb-icon">📡</div>
-      <div class="tb-text">
-        <span>Ball & Club</span>
-        <strong>Real-Time Data</strong>
-      </div>
-    </div>
-    <div class="tb-divider"></div>
-    <div class="tb-item">
-      <div class="tb-icon">🌍</div>
-      <div class="tb-text">
-        <span>Access</span>
-        <strong>250+ Courses</strong>
-      </div>
-    </div>
-    <div class="tb-divider"></div>
-    <div class="tb-item">
-      <div class="tb-icon">🏌️</div>
-      <div class="tb-text">
-        <span>Used By</span>
-        <strong>PGA Tour Pros</strong>
-      </div>
-    </div>
-    <div class="tb-divider"></div>
-    <div class="tb-item">
-      <div class="tb-icon">🔓</div>
-      <div class="tb-text">
-        <span>Access</span>
-        <strong>Open 24/7</strong>
-      </div>
-    </div>
-  </div>
 
 
   <!-- ══════════════════════════════════════
