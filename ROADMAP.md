@@ -222,6 +222,39 @@ hours, promos) without risking the rest of the site.
 
 ---
 
+## 8. AI build tooling (Claude Code + WordPress)
+
+We use **Claude Code** to help build and manage the WordPress site. This works by
+installing an **MCP server** plugin on WordPress, which exposes the site's
+capabilities as tools Claude Code can call over natural language.
+
+**Two complementary approaches we're trialing on staging:**
+
+1. **Royal MCP** (vendor plugin) — free, ~67 core tools (posts, pages, media,
+   menus, users, settings) and auto-unlocks **Elementor / WooCommerce / ACF**
+   tools when active. The fastest way to start; Elementor-aware.
+2. **Abilities API + MCP Adapter** (official/WordPress.org) — the canonical,
+   future-proof path. The **Abilities API** shipped in WordPress **6.9** core;
+   the **MCP Adapter** plugin bridges those abilities to MCP. Fewer tools today,
+   but this is the standard plugin/theme makers (incl. Elementor) are adopting.
+
+**Division of labor:** Claude Code is best for **content and structure at scale** —
+bulk-managing the 20+ Locations records, ACF fields, SEO meta, menus. **Visual
+Elementor layout** is still done in the Elementor editor and with Elementor's own
+AI (**Angie**, included with Elementor One). Think: *Claude Code for the plumbing,
+Elementor for the look.*
+
+**Guardrails (important):**
+- Trial on **staging** ([mzhprabe.elementor.cloud](https://mzhprabe.elementor.cloud/)) only — never point an AI at the live site first.
+- Use a dedicated **Application Password / API token**; never commit it to this repo.
+- Enable the plugin's **activity logging** and keep backups.
+- Revoke tokens when not actively building.
+
+> Setup steps (Application Password, MCP Adapter install, and the `claude mcp add`
+> commands for both Royal MCP and the Abilities API) live in **[docs/claude-code-wordpress-setup.md](docs/claude-code-wordpress-setup.md)**.
+
+---
+
 ### Sources
 - [Elementor pricing](https://elementor.com/pricing/) ·
   [Elementor Pro plans](https://elementor.com/pro/) ·
@@ -230,3 +263,7 @@ hours, promos) without risking the rest of the site.
   [Elementor One review (WP Marmite)](https://wpmarmite.com/en/elementor-one/)
 - [Best WordPress store-locator plugins (Elfsight)](https://elfsight.com/blog/best-wordpress-store-locator-plugins/) ·
   [Store-locator roundup (Ultida)](https://ultida.com/wordpress-store-locator-plugins/)
+- [Royal MCP](https://royalplugins.com/royal-mcp/) ·
+  [WordPress MCP Adapter](https://github.com/wordpress/mcp-adapter) ·
+  [Abilities API in WP 6.9 & MCP](https://www.miniorange.com/blog/wordpress-api-abilities-and-mcp-ai-agents/) ·
+  [AI Engine — Claude Code + WordPress (Meow Apps)](https://meowapps.com/claude-code-wordpress-mcp/)
