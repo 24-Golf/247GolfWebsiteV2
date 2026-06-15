@@ -1,88 +1,87 @@
-# 24/7 Golf Website Redesign
+# 24/7 Golf — Website V2
 
-Michigan's premier indoor golf experience — website redesign project.
+Michigan's premier indoor golf experience. This repository holds the design system,
+static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesign.
 
-**Live site target:** [www.24-7golf.com](https://www.24-7golf.com)  
-**Tech stack:** HTML / CSS / JavaScript → WordPress (final deployment)  
-**Booking platform:** CourtReserve  
+**Live site:** [www.24-7golf.com](https://www.24-7golf.com) (current WordPress/Elementor site)
+**Booking platform:** CourtReserve
 **Simulator technology:** Trackman iO
+**Today:** 5 Michigan locations, scaling toward 20+
+
+---
+
+## 📚 Start Here
+
+| Doc | What it's for |
+|-----|---------------|
+| **[ROADMAP.md](ROADMAP.md)** | The plan for the new site: platform/tooling decisions, the location-finder, multi-location architecture, and per-location owner editing. **Read this first.** |
+| **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** | Colors, fonts, spacing, components. Read before building anything visual. |
+| **[CLAUDE_CONTEXT.md](CLAUDE_CONTEXT.md)** | Paste into Claude at the start of a session for instant project context. |
 
 ---
 
 ## Project Structure
 
 ```
-247golf-website/
-├── README.md                   ← You are here
-├── DESIGN_SYSTEM.md            ← Colors, fonts, spacing — read before building anything
-├── CLAUDE_CONTEXT.md           ← Paste into Claude at start of any session
+247GolfWebsiteV2/
+├── README.md              ← You are here
+├── ROADMAP.md             ← Forward plan & platform strategy
+├── DESIGN_SYSTEM.md       ← Colors, fonts, spacing, components
+├── CLAUDE_CONTEXT.md      ← Session primer for Claude
 ├── css/
-│   ├── variables.css           ← All CSS custom properties (single source of truth)
-│   ├── base.css                ← Reset, typography, utility classes
-│   └── components.css          ← Reusable components (cards, buttons, nav, footer)
+│   ├── variables.css      ← CSS custom properties (single source of truth)
+│   ├── base.css           ← Reset, typography, utilities
+│   └── components.css      ← Reusable components (cards, buttons, nav, footer)
 ├── js/
-│   └── main.js                 ← Shared JS (scroll reveal, nav behavior, mobile menu)
+│   └── main.js            ← Scroll reveal, nav behavior, mobile menu
 ├── pages/
-│   ├── index.html              ← Landing page (Eric)
-│   ├── faq.html                ← FAQ page (Eric)
-│   ├── dewitt.html             ← Dewitt location page (Colleague)
-│   ├── grand-rapids.html       ← Grand Rapids location page (Colleague)
-│   ├── haslett.html            ← Haslett location page (Colleague)
-│   ├── ludington.html          ← Ludington location page (Colleague)
-│   └── traverse-city.html      ← Traverse City location page (Colleague)
+│   └── index.html         ← Landing page prototype
 ├── components/
-│   ├── nav.html                ← Shared navigation snippet
-│   ├── footer.html             ← Shared footer snippet
-│   └── location-card.html      ← Location card template
+│   ├── nav.html           ← Shared navigation snippet
+│   ├── footer.html        ← Shared footer snippet
+│   └── location-card.html ← Location card template
+├── reference/
+│   └── 247golf-DOWNLOAD.html  ← Reference export from the current site
 └── assets/
-    └── images/
-        └── logo.png            ← 24/7 Golf logo
+    └── images/            ← Logos, photos
 ```
 
----
-
-## Page Ownership
-
-| Page | Owner | Status |
-|------|-------|--------|
-| `index.html` — Landing Page | Eric | 🟡 In Progress |
-| `faq.html` — FAQ | Eric | ⬜ Not Started |
-| `dewitt.html` — Dewitt | Colleague | ⬜ Not Started |
-| `grand-rapids.html` — Grand Rapids | Colleague | ⬜ Not Started |
-| `haslett.html` — Haslett | Colleague | ⬜ Not Started |
-| `ludington.html` — Ludington | Colleague | ⬜ Not Started |
-| `traverse-city.html` — Traverse City | Colleague | ⬜ Not Started |
-
-Update status to 🟡 In Progress / ✅ Done as you work.
+> **Status note:** The static prototype currently contains the landing page
+> (`pages/index.html`) and the shared component snippets. Location pages are
+> being moved to a data-driven WordPress model — see **[ROADMAP.md](ROADMAP.md)**
+> rather than hand-building one HTML file per location.
 
 ---
 
 ## Locations
 
-| Location | Address | Phone | CourtReserve Org ID |
-|----------|---------|-------|---------------------|
-| Dewitt | TBD | TBD | 10840 |
-| Grand Rapids | TBD | TBD | TBD |
-| Haslett | TBD | TBD | TBD |
-| Ludington | TBD | TBD | TBD |
-| Traverse City | TBD | TBD | TBD |
+| Location | CourtReserve Org ID | Pickleball | Status |
+|----------|---------------------|------------|--------|
+| Dewitt, MI (original) | `10840` | — | Live |
+| Grand Rapids, MI | TBD | — | Live |
+| Haslett, MI | TBD | — | Live |
+| Ludington, MI | TBD | — | Live |
+| Traverse City, MI | TBD | — | Live |
+
+Some locations also offer pickleball. Address/phone/hours are managed per
+location (see the location data model in ROADMAP.md).
 
 ---
 
-## Key Embed Codes
+## CourtReserve Embed Codes
 
-### CourtReserve — Create Free Account Widget
+### Create Free Account widget
+
 ```html
 <iframe id="form-iframe" class="form-iframe-47632"
   src="https://widgets.courtreserve.com/Online/Public/EmbedCode/10840/47632"
-  style="margin:0; width:100%; border:none; overflow:hidden;"
-  scrolling="no">
+  style="margin:0; width:100%; border:none; overflow:hidden;" scrolling="no">
 </iframe>
 <script type="text/javascript">
   var myEventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
   var myEventListener = window[myEventMethod];
   var myEventMessage = myEventMethod == "attachEvent" ? "onmessage" : "message";
-  myEventListener(myEventMessage, function(e) {
+  myEventListener(myEventMessage, function (e) {
     switch (e.data.action) {
       case "setHeight": {
         var embedCodeId = e.data.embedCodeId;
@@ -97,8 +96,7 @@ Update status to 🟡 In Progress / ✅ Done as you work.
         break;
       }
       case "redirectAfterLogin": {
-        var url = e.data.urlToRedirect;
-        setTimeout(() => { window.location.href = url; }, 100);
+        setTimeout(function () { window.location.href = e.data.urlToRedirect; }, 100);
         break;
       }
       case "scrollBottom": {
@@ -106,7 +104,7 @@ Update status to 🟡 In Progress / ✅ Done as you work.
         break;
       }
       case "scrollTop": {
-        if (1 == 1) window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
         break;
       }
     }
@@ -114,7 +112,10 @@ Update status to 🟡 In Progress / ✅ Done as you work.
 </script>
 ```
 
-### CourtReserve — Location Booking (replace EMBED_ID per location)
+### Per-location booking embed
+
+Replace `EMBED_ID` (and the org ID, if different) for each location:
+
 ```html
 <iframe src="https://widgets.courtreserve.com/Online/Public/EmbedCode/10840/EMBED_ID"
   style="margin:0; width:100%; border:none; overflow:hidden;" scrolling="no">
@@ -128,36 +129,33 @@ Update status to 🟡 In Progress / ✅ Done as you work.
 | Platform | Link |
 |----------|------|
 | Apple App Store | *(add link)* |
-| Google Play Store | *(add link)* |
+| Google Play | *(add link)* |
 
 ---
 
 ## Git Workflow
 
 ```bash
-# Before starting work each day
+# Start of day — get the latest
 git pull origin main
 
-# While working
-git add .
-git commit -m "feat: add Grand Rapids location page"
-git push origin main
+# Work on a feature branch
+git checkout -b your-name/feature
 
-# Suggested branch naming (optional)
-git checkout -b eric/landing-page
-git checkout -b colleague/location-pages
+# Commit and push
+git add .
+git commit -m "feat: short description of the change"
+git push -u origin your-name/feature
 ```
 
-**Merge rule:** Always `git pull` before pushing to avoid conflicts. Each person owns their pages — don't edit the other's files without a heads-up.
+Open a pull request into `main` for review. Always `git pull` before pushing to
+avoid conflicts.
 
 ---
 
 ## Working With Claude
 
-See `CLAUDE_CONTEXT.md` — paste the full contents at the start of every Claude session to give it instant context about the project. This eliminates the need to re-explain the design system, locations, and embed codes each time.
-
-Both collaborators have Claude Pro and work independently. Use Claude to:
-- Generate new page HTML using the design system
-- Iterate on layouts and copy
-- Debug CSS issues
-- Adapt the location card template for each location
+Paste **[CLAUDE_CONTEXT.md](CLAUDE_CONTEXT.md)** at the start of any Claude
+session so it has the design system, locations, and embed codes immediately.
+Use Claude to generate page HTML against the design system, iterate on layout and
+copy, debug CSS, and plan the WordPress build described in ROADMAP.md.
