@@ -4,6 +4,7 @@ Michigan's premier indoor golf experience. This repository holds the design syst
 static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesign.
 
 **Live site:** [www.24-7golf.com](https://www.24-7golf.com) (current WordPress/Elementor site)
+**🏗️ V2 staging build:** [mzhprabe.elementor.cloud](https://mzhprabe.elementor.cloud/) — the new site in progress (Elementor One)
 **Booking platform:** CourtReserve
 **Simulator technology:** Trackman iO
 **Today:** 5 Michigan locations, scaling toward 20+
@@ -135,21 +136,21 @@ Replace `EMBED_ID` (and the org ID, if different) for each location:
 
 ## Git Workflow
 
+Single maintainer, trunk-based — work directly on `main`:
+
 ```bash
-# Start of day — get the latest
+# Get the latest
 git pull origin main
 
-# Work on a feature branch
-git checkout -b your-name/feature
-
-# Commit and push
+# Make changes, then commit and push
 git add .
 git commit -m "feat: short description of the change"
-git push -u origin your-name/feature
+git push origin main
 ```
 
-Open a pull request into `main` for review. Always `git pull` before pushing to
-avoid conflicts.
+No feature branches or pull requests needed for this project. The site itself is
+built in Elementor on the staging URL above; this repo tracks the design system,
+prototypes, and planning docs.
 
 ---
 

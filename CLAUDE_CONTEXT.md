@@ -8,7 +8,8 @@ Paste this entire file at the start of any Claude session to give it full projec
 
 We are redesigning the website for **24/7 Golf** — Michigan's premier indoor golf business.
 
-- **Live site:** www.24-7golf.com
+- **Live site:** www.24-7golf.com (current WordPress/Elementor site)
+- **V2 staging build:** https://mzhprabe.elementor.cloud/ (new site in progress, Elementor One)
 - **Business:** Indoor golf simulator bays, powered by Trackman iO technology
 - **Booking platform:** CourtReserve (embed widgets for booking and account creation)
 - **Mobile app:** 24/7 Golf app available on Apple App Store and Google Play

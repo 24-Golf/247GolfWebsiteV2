@@ -4,6 +4,9 @@ A plan for rebuilding **24-7golf.com** into a professional, scalable WordPress s
 that grows cleanly to **20+ locations**, ships a best-in-class **"find a location
 near me"** experience, and lets **each location owner safely edit their own page**.
 
+> **🏗️ Build in progress:** The new site is being built on Elementor One at
+> **[mzhprabe.elementor.cloud](https://mzhprabe.elementor.cloud/)** — follow along there.
+
 > TL;DR recommendation:
 > 1. Build on **WordPress + Elementor**, and upgrade to **Elementor One** (one
 >    subscription that bundles the Pro editor + optimization/management tools).
@@ -180,8 +183,9 @@ hours, promos) without risking the rest of the site.
 
 ## 6. Phased rollout
 
-**Phase 0 — Decisions & accounts (week 1)**
-- Confirm **Elementor One** vs **Pro** and purchase.
+**Phase 0 — Decisions & accounts (week 1)** ✅ *in progress*
+- ✅ **Elementor One** purchased; staging site live at
+  [mzhprabe.elementor.cloud](https://mzhprabe.elementor.cloud/).
 - Choose theme (Hello/Astra), store-locator plugin, and get a **Google Maps API key**.
 - Lock the design system (already in `DESIGN_SYSTEM.md`).
 
@@ -209,8 +213,8 @@ hours, promos) without risking the rest of the site.
 
 ## 7. Open questions to resolve
 
-- [ ] Final call: **Elementor One** vs **Pro Advanced**? (recommend One)
-- [ ] Who hosts WordPress, and is there a staging environment?
+- [x] Final call: **Elementor One** vs **Pro Advanced**? → **Elementor One** ✅
+- [x] Who hosts WordPress, and is there a staging environment? → **Elementor Cloud**, staging at [mzhprabe.elementor.cloud](https://mzhprabe.elementor.cloud/) ✅
 - [ ] Confirm address / phone / hours / bay counts / CourtReserve embed IDs for all 5 locations.
 - [ ] Which store-locator plugin best matches the dark/premium look?
 - [ ] Should owner edits be **live** or **approval-gated**?
