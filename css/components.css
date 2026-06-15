@@ -14,10 +14,23 @@ nav.site-nav {
   justify-content: space-between;
   padding: 0 var(--side-pad);
   height: var(--nav-height);
-  background: rgba(10, 10, 10, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  transition:
+    height var(--transition-base),
+    background var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+/* Condensed, solid state once the user scrolls (toggled in main.js) */
+nav.site-nav.scrolled {
+  height: 64px;
+  background: rgba(10, 10, 10, 0.92);
+  border-bottom-color: var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .nav-logo {
@@ -25,30 +38,37 @@ nav.site-nav {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  transition: opacity var(--transition-base);
 }
+
+.nav-logo:hover { opacity: 0.82; }
 
 .nav-logo img {
-  height: 44px;
-  width: 44px;
+  height: 42px;
+  width: 42px;
   border-radius: 50%;
+  border: 1px solid var(--border);
 }
 
-.nav-logo span {
+.nav-logo-text {
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  letter-spacing: 2px;
+  font-size: 1.55rem;
+  letter-spacing: 3px;
   color: var(--white);
   line-height: 1;
 }
 
+.nav-logo-accent { color: var(--green); }
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
 }
 
-.nav-links a {
-  color: rgba(245, 247, 242, 0.7);
+.nav-links a:not(.nav-cta) {
+  position: relative;
+  color: rgba(245, 247, 242, 0.72);
   font-family: var(--font-condensed);
   font-size: 0.95rem;
   font-weight: 600;
@@ -57,19 +77,44 @@ nav.site-nav {
   transition: color var(--transition-base);
 }
 
-.nav-links a:hover { color: var(--green); }
+/* Animated underline indicator */
+.nav-links a:not(.nav-cta)::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: var(--green);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-base);
+}
+
+.nav-links a:not(.nav-cta):hover { color: var(--white); }
+.nav-links a:not(.nav-cta):hover::after { transform: scaleX(1); }
 
 .nav-links .nav-cta {
   background: var(--green);
   color: var(--black) !important;
-  padding: 10px 22px;
-  border-radius: var(--radius-sm);
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
   font-weight: 700 !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 11px 24px;
+  border-radius: var(--radius-sm);
+  transition:
+    background var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
 }
 
 .nav-links .nav-cta:hover {
   background: var(--green-dim);
   color: var(--black) !important;
+  box-shadow: var(--shadow-green);
+  transform: translateY(-1px);
 }
 
 /* Hamburger */
@@ -92,29 +137,49 @@ nav.site-nav {
   transition: all var(--transition-base);
 }
 
+/* Morph into an X when the menu is open */
+body.nav-open .nav-hamburger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+body.nav-open .nav-hamburger span:nth-child(2) {
+  opacity: 0;
+}
+body.nav-open .nav-hamburger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 /* Mobile nav */
 @media (max-width: 768px) {
   .nav-hamburger { display: flex; }
 
+  /* Keep nav height stable while the dropdown is anchored to it */
+  nav.site-nav.scrolled { height: var(--nav-height); }
+
   .nav-links {
     display: none;
     position: absolute;
-    top: var(--nav-height);
+    top: 100%;
     left: 0; right: 0;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    background: var(--dark);
+    background: rgba(17, 19, 23, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
     padding: var(--space-sm) var(--side-pad) var(--space-md);
   }
 
-  .nav-links a {
+  .nav-links a:not(.nav-cta) {
     width: 100%;
     padding: 14px 0;
     border-bottom: 1px solid var(--border);
     font-size: 1.1rem;
   }
+
+  /* Underline indicator is desktop-only */
+  .nav-links a:not(.nav-cta)::after { display: none; }
 
   .nav-links .nav-cta {
     margin-top: var(--space-sm);
