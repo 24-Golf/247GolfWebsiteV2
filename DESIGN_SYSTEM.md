@@ -213,7 +213,14 @@ Mobile nav: hamburger menu toggles `.nav-open` class on `<body>`.
 Logo | Locations | How It Works | Trackman iO | Get the App | [Book Now] CTA
 ```
 
-On mobile: hamburger → full-screen slide-down menu.
+- **Logo:** two-tone — `24/7` in `--green` (`.nav-logo-accent`), `GOLF` in `--white`.
+- **Links:** animated green underline on hover (desktop only).
+- **Scrolled state:** `main.js` adds `.scrolled` to the nav after 20px of scroll. The
+  header starts translucent and floating, then condenses (64px) to a solid background
+  with a drop shadow.
+- **CTA:** green button with a green glow + slight lift on hover.
+
+On mobile: hamburger (morphs into an X when open) → slide-down menu anchored to the nav.
 
 ---
 
