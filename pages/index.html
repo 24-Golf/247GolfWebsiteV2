@@ -49,10 +49,11 @@
     }
     .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
     .hero-stats {
-      position: absolute; bottom: 48px; right: 5vw; z-index: 2;
-      display: flex; gap: 36px;
+      display: flex; flex-wrap: wrap; gap: 28px 48px;
+      margin-top: var(--space-lg); padding-top: var(--space-md);
+      border-top: 1px solid var(--border); max-width: 600px;
     }
-    .hero-stat { text-align: right; }
+    .hero-stat { text-align: left; }
     .hero-stat-num {
       font-family: var(--font-display);
       font-size: 2.6rem; color: var(--green); line-height: 1;
@@ -63,8 +64,7 @@
       color: var(--muted); margin-top: 2px;
     }
     @media (max-width: 768px) {
-      .hero-stats { position: static; flex-wrap: wrap; gap: 24px; margin-top: 40px; justify-content: flex-start; }
-      .hero-stat { text-align: left; }
+      .hero-stats { gap: 20px 32px; }
     }
 
     /* Section label style */
