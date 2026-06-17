@@ -90,6 +90,14 @@ The competitor reference ([thebackninegolf.com/local](https://thebackninegolf.co
 is a dynamic, JavaScript-driven finder. Here's what a best-in-class version looks
 like and how to build it.
 
+> **Interim build shipped.** A working finder is already mocked up with Google
+> Maps **Quick Builder** + the Extended Component Library `<gmpx-store-locator>`,
+> with locations **hard-coded** in JS — see [`pages/locations.html`](pages/locations.html),
+> [`js/location-finder.js`](js/location-finder.js), and
+> [`docs/location-finder-wordpress.md`](docs/location-finder-wordpress.md) for how
+> to drop it onto the WordPress page. This is the bridge to the data-driven plugin
+> approach below; the hard-coded list gets swapped for the Locations CPT later.
+
 ### Target experience
 - **Auto-detect + manual search.** On load, ask for browser geolocation; also let
   users type a **ZIP / city / address** with a search radius.

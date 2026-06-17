@@ -65,6 +65,7 @@ Some locations also offer **pickleball**.
 
 ```
 pages/index.html          ← Landing page (Eric)
+pages/locations.html      ← Location finder (Google Maps Locator Plus)
 pages/faq.html            ← FAQ page (Eric)
 pages/dewitt.html         ← Dewitt location (Colleague)
 pages/grand-rapids.html   ← Grand Rapids location (Colleague)
@@ -75,9 +76,18 @@ css/variables.css         ← CSS custom properties
 css/base.css              ← Reset + typography
 css/components.css        ← Reusable components
 js/main.js                ← Scroll reveal, mobile nav
+js/location-finder.js     ← Hard-coded locations + map locator init
 components/nav.html       ← Shared nav snippet
 components/footer.html    ← Shared footer snippet
+LocationFinder/           ← Raw Google Maps Quick Builder export
+docs/location-finder-wordpress.md ← Put the finder on the WP page
 ```
+
+> **Location finder:** `pages/locations.html` embeds Google's
+> `<gmpx-store-locator>` (Quick Builder / Locator Plus); locations are
+> hard-coded in `js/location-finder.js`. See `docs/location-finder-wordpress.md`
+> to put it on WordPress. Before launch, swap the demo API key for a restricted
+> production key and replace `DEMO_MAP_ID` with a real Map ID.
 
 ---
 

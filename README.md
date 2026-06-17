@@ -18,6 +18,8 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 | **[ROADMAP.md](ROADMAP.md)** | The plan for the new site: platform/tooling decisions, the location-finder, multi-location architecture, and per-location owner editing. **Read this first.** |
 | **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** | Colors, fonts, spacing, components. Read before building anything visual. |
 | **[CLAUDE_CONTEXT.md](CLAUDE_CONTEXT.md)** | Paste into Claude at the start of a session for instant project context. |
+| **[docs/location-finder-wordpress.md](docs/location-finder-wordpress.md)** | How to put the Google Maps location finder on the WordPress page (interim, hard-coded). |
+| **[docs/claude-code-wordpress-setup.md](docs/claude-code-wordpress-setup.md)** | Connecting Claude Code to the WordPress site via MCP. |
 
 ---
 
@@ -34,13 +36,19 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 │   ├── base.css           ← Reset, typography, utilities
 │   └── components.css      ← Reusable components (cards, buttons, nav, footer)
 ├── js/
-│   └── main.js            ← Scroll reveal, nav behavior, mobile menu
+│   ├── main.js            ← Scroll reveal, nav behavior, mobile menu
+│   └── location-finder.js ← Hard-coded locations + Google Maps locator init
 ├── pages/
-│   └── index.html         ← Landing page prototype
+│   ├── index.html         ← Landing page prototype
+│   └── locations.html     ← Location finder (Google Maps Locator Plus)
 ├── components/
 │   ├── nav.html           ← Shared navigation snippet
 │   ├── footer.html        ← Shared footer snippet
 │   └── location-card.html ← Location card template
+├── LocationFinder/        ← Raw Google Maps Quick Builder export (source mockup)
+├── docs/
+│   ├── location-finder-wordpress.md  ← Put the finder on the WP page
+│   └── claude-code-wordpress-setup.md ← Connect Claude Code to WordPress
 ├── reference/
 │   └── 247golf-DOWNLOAD.html  ← Reference export from the current site
 └── assets/
@@ -48,13 +56,16 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 ```
 
 > **Status note:** The static prototype currently contains the landing page
-> (`pages/index.html`) and the shared component snippets. Location pages are
-> being moved to a data-driven WordPress model — see **[ROADMAP.md](ROADMAP.md)**
-> rather than hand-building one HTML file per location.
+> (`pages/index.html`), the location finder (`pages/locations.html`), and the
+> shared component snippets. Individual location pages are being moved to a
+> data-driven WordPress model — see **[ROADMAP.md](ROADMAP.md)** rather than
+> hand-building one HTML file per location.
 
 ---
 
 ## Locations
+
+Live locations (data from the location finder — see below):
 
 | Location | CourtReserve Org ID | Pickleball | Status |
 |----------|---------------------|------------|--------|
@@ -62,10 +73,35 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 | Grand Rapids, MI | TBD | — | Live |
 | Haslett, MI | TBD | — | Live |
 | Ludington, MI | TBD | — | Live |
-| Traverse City, MI | TBD | — | Live |
+| Williamsburg, MI | TBD | — | Live |
+
+**Coming soon:** Traverse City, Standale, Kentwood, Rockford, Grand Haven.
 
 Some locations also offer pickleball. Address/phone/hours are managed per
-location (see the location data model in ROADMAP.md).
+location (see the location data model in ROADMAP.md). The authoritative list of
+locations and their coordinates currently lives in
+[`js/location-finder.js`](js/location-finder.js).
+
+---
+
+## Location Finder
+
+The find-a-location page is built with Google Maps **Quick Builder** + the
+[Extended Component Library](https://github.com/googlemaps/extended-component-library)
+`<gmpx-store-locator>` ("Locator Plus") component, with the locations
+**hard-coded** in JavaScript for now.
+
+- **Static prototype:** [`pages/locations.html`](pages/locations.html) (styled to
+  the design system) — locations live in [`js/location-finder.js`](js/location-finder.js).
+- **Raw export:** [`LocationFinder/`](LocationFinder) (the original Quick Builder /
+  JSFiddle mockup).
+- **Putting it on WordPress:** [`docs/location-finder-wordpress.md`](docs/location-finder-wordpress.md).
+
+> ⚠️ Before going live, swap the Quick Builder **demo API key** for a
+> **restricted** production key, replace `DEMO_MAP_ID` with a real Map ID, and
+> point the "Book" actions at the right CourtReserve URLs. Details in the doc above.
+> Longer term this hard-coded list is replaced by a data-driven store-locator
+> plugin — see [ROADMAP.md §3](ROADMAP.md).
 
 ---
 

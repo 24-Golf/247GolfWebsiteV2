@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Location — 24/7 Golf</title>
+  <meta name="description" content="Find your nearest 24/7 Golf indoor simulator location. Search by city, address, or ZIP — get directions and book a Trackman iO bay across Michigan.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <!-- Google Maps Extended Component Library — provides <gmpx-store-locator>.
+       See https://github.com/googlemaps/extended-component-library -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
+
+  <style>
+    /* ── Page-specific styles ── */
+
+    /* Compact hero for an interior page */
+    .page-hero {
+      padding: calc(var(--nav-height) + var(--space-xl)) var(--side-pad) var(--space-lg);
+      background: linear-gradient(135deg, #0d200f 0%, #0a0a0a 60%);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; top: -120px; right: -120px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,204,113,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero-inner { position: relative; z-index: 2; max-width: var(--max-width); margin: 0 auto; }
+    .page-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 5.5rem); letter-spacing: 2px;
+      line-height: 1; margin-bottom: 14px;
+    }
+    .page-hero h1 em { font-style: normal; color: var(--green); }
+    .page-hero p {
+      font-size: 1.05rem; font-weight: 300; color: rgba(255,255,255,0.65);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-condensed);
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 14px;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 28px; height: 2px; background: var(--green);
+    }
+
+    /* Locator shell — frames the white Google component inside the dark theme */
+    .locator-shell {
+      margin-top: var(--space-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      background: #fff;
+      height: 78vh;
+      min-height: 560px;
+    }
+
+    gmpx-store-locator {
+      width: 100%;
+      height: 100%;
+
+      /* Locator Plus appearance — see the Extended Component Library docs:
+         https://github.com/googlemaps/extended-component-library/blob/main/src/store_locator/README.md */
+      --gmpx-color-surface: #fff;
+      --gmpx-color-on-surface: #212121;
+      --gmpx-color-on-surface-variant: #757575;
+      --gmpx-color-primary: #1a9e50;          /* 24/7 Golf green */
+      --gmpx-color-outline: #e0e0e0;
+      --gmpx-fixed-panel-width-row-layout: 28.5em;
+      --gmpx-fixed-panel-height-column-layout: 65%;
+      --gmpx-font-family-base: "Barlow", "Roboto", sans-serif;
+      --gmpx-font-family-headings: "Barlow Condensed", "Roboto", sans-serif;
+      --gmpx-font-size-base: 0.875rem;
+      --gmpx-hours-color-open: #188038;
+      --gmpx-hours-color-closed: #d50000;
+      --gmpx-rating-color: #ffb300;
+      --gmpx-rating-color-empty: #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+      .locator-shell { height: 80vh; min-height: 520px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════ -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="../assets/images/logo.png" alt="24/7 Golf Logo">
+      <span class="nav-logo-text"><span class="nav-logo-accent">24/7</span> GOLF</span>
+    </a>
+
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links">
+      <li><a href="locations.html">Locations</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#app">Get the App</a></li>
+      <li><a href="index.html#create-account" class="nav-cta">Book Now</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════ -->
+  <header class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-label">Michigan Locations</div>
+      <h1>Find a <em>Bay Near You</em></h1>
+      <p>
+        Search by city, address, or ZIP to find your nearest 24/7 Golf location.
+        Get directions, see what's open, and book a Trackman iO bay — open 24 hours.
+      </p>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════
+       LOCATION FINDER (Google Maps Locator Plus)
+  ══════════════════════════════════════ -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="locator-shell">
+        <!-- The API loader and store locator are driven by js/location-finder.js -->
+        <gmpx-api-loader
+          key="AIzaSyBlnmn-NqT_J77I1MQ_i7IuT9cDsrAQBps"
+          solution-channel="GMP_QB_locatorplus_v11_cABCDEF">
+        </gmpx-api-loader>
+        <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
+      </div>
+
+      <p class="muted" style="margin-top:var(--space-md);font-size:0.9rem;">
+        Don't see a location near you? We're expanding across Michigan —
+        <a href="index.html#create-account">create a free account</a> and we'll keep you posted.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+
+      <div>
+        <a href="index.html" class="footer-brand-logo">
+          <img src="../assets/images/logo.png" alt="24/7 Golf">
+          <span>24/7 GOLF</span>
+        </a>
+        <p class="footer-tagline">
+          Michigan's premier indoor golf experience — powered by Trackman iO technology.
+          Open 24 hours. No tee times required.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <div class="footer-links">
+          <a href="index.html#how-it-works">How It Works</a>
+          <a href="locations.html">Locations</a>
+          <a href="index.html#app">Get the App</a>
+          <a href="index.html#create-account">Create Account</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Locations</div>
+        <div class="footer-links">
+          <a href="locations.html">Dewitt</a>
+          <a href="locations.html">Grand Rapids</a>
+          <a href="locations.html">Haslett</a>
+          <a href="locations.html">Ludington</a>
+          <a href="locations.html">Williamsburg</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <a href="tel:6163509482">616.350.9482</a>
+          <a href="mailto:info@24-7golf.com">info@24-7golf.com</a>
+          <a href="index.html#create-account">Book a Bay</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 24/7 Golf. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" class="social-icon" title="Facebook" aria-label="Facebook">f</a>
+        <a href="#" class="social-icon" title="Instagram" aria-label="Instagram">in</a>
+        <a href="#" class="social-icon" title="TikTok" aria-label="TikTok">tt</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Location data + locator init (locations hard-coded here for now) -->
+  <script src="../js/location-finder.js"></script>
+  <!-- Shared site behavior (nav, reveal, smooth scroll) -->
+  <script src="../js/main.js"></script>
+</body>
+</html>
