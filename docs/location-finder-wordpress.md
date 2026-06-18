@@ -1,179 +1,100 @@
 # Putting the Location Finder on the WordPress site
 
-This is the **interim, hard-coded** location finder you built with Google Maps
-**Quick Builder** and refined in JSFiddle. It uses Google's
-[Extended Component Library](https://github.com/googlemaps/extended-component-library)
-`<gmpx-store-locator>` ("Locator Plus") component — three small pieces of code:
-an HTML snippet, a CSS block, and a JavaScript config that holds the locations.
+The location finder is a **custom, self-contained widget**: a list of locations +
+a Google map with markers, info windows, a text filter, and a "use my location"
+distance sort. Locations are **hard-coded** in the JavaScript for now.
+
+> **Why custom (not Google's Quick Builder `<gmpx-store-locator>`)?** That widget
+> renders its open/closed badge with the Maps JS `isOpen()` method, which
+> mis-handles "open 24 hours" places and labels every 24/7 location **"Closed"**
+> even though the Places API reports `open_now: true`. Upgrading the library did
+> not fix it, so we render the open status ourselves. **Do not** paste the old
+> store-locator embed — use the file below.
 
 > **How this fits the roadmap.** This gets a working finder live *now* with the
-> locations typed straight into the code. The longer-term plan (see
-> [ROADMAP.md §3–4](../ROADMAP.md)) replaces the hard-coded list with a
-> data-driven store-locator plugin that reads from the Locations CPT. Treat this
-> as the bridge to that — same page, swappable engine.
+> locations typed into the code. The longer-term plan
+> ([ROADMAP.md §3–4](../ROADMAP.md)) replaces the hard-coded list with a
+> data-driven store-locator that reads from a Locations custom post type.
 
-The source files live in [`/LocationFinder`](../LocationFinder) (raw Quick Builder
-export). **The static-site version is no longer the `<gmpx-store-locator>` widget**
-— see the note below.
-
-> ⚠️ **Known bug with `<gmpx-store-locator>` and 24-hour businesses.** The widget
-> renders its open/closed badge with the Maps JS `isOpen()` method, which
-> mis-handles "open 24 hours" places (an open period with no closing time) and
-> shows every 24/7 location as **"Closed"** — even though the Places API reports
-> `open_now: true`. Upgrading the library (0.6.11 → 0.6.15) did not fix it.
-> Because of this, the static prototype at
-> [`/pages/locations.html`](../pages/locations.html) +
-> [`/js/location-finder.js`](../js/location-finder.js) now uses a **custom finder**
-> (list + map + markers) that renders the open status directly ("Open 24 Hours").
-> If you embed the Quick Builder widget on WordPress you'll hit the same "Closed"
-> bug; to avoid it, port the custom finder instead (it's plain HTML/CSS/JS — drop
-> the markup in an HTML block and the JS via WPCode/Code Snippets).
+**What to paste:** the single ready-made file
+[`/LocationFinder/wordpress-embed.html`](../LocationFinder/wordpress-embed.html).
+It contains everything — the Google library loader, the styles (namespaced under
+`#tfgolf-finder` so they can't clash with your theme), the markup, and the
+locations + logic. No other files from this repo are needed.
 
 ---
 
-## What the three pieces do
+## Before you paste — set two values
 
-| Piece | File | Purpose |
-|-------|------|---------|
-| **HTML** | `LocationFinder.html` | Loads the component library and drops in the `<gmpx-api-loader>` + `<gmpx-store-locator>` tags. |
-| **CSS** | `LocationFinder.css` | Sizes the map and themes the Locator Plus colors/fonts. |
-| **JS** | `LocationFinder.js` | Holds the hard-coded `CONFIGURATION` (your locations) and calls `configureFromQuickBuilder()`. |
+Open `LocationFinder/wordpress-embed.html` and replace these placeholders:
 
-You need all three on the page, and they must load in this order: the module
-script (loads the components) → the markup → the JS that configures it.
+1. **`YOUR_GOOGLE_MAPS_API_KEY`** — in the `<gmpx-api-loader>` tag.
+2. **`YOUR_MAP_ID`** — in `CONFIGURATION.mapOptions.mapId` (near the bottom).
+
+Both come from the [Google Cloud Console](https://console.cloud.google.com/google/maps-apis):
+
+- **API key:** enable **Maps JavaScript API** and **Places API**, then **restrict
+  the key** by HTTP referrer to your domains (e.g. `https://www.24-7golf.com/*`
+  and `https://*.elementor.cloud/*` if you're testing on staging). An unrestricted
+  key on a public page can be abused and run up billing. A billing account is
+  required (usage here is small).
+- **Map ID:** create one under **Map Management**. A Map ID is **required** — the
+  map uses Advanced Markers, which won't render without it. (You can also use the
+  Map ID to apply a dark map style that matches the site.)
+
+> The booking buttons already point at each location's page
+> (`https://24-7golf.com/ludington`, `/grand-rapids`, `/lansing`, `/haslett`,
+> and Williamsburg → `/traverse-city`). Update them in the `actions` of the
+> `CONFIGURATION` list if any change.
 
 ---
 
-## Option A — Paste it into one Custom HTML / Code block (fastest)
+## Paste it into the page
 
-Best for getting it live quickly. Works in Elementor, Gutenberg, or any page
-builder that has a "Custom HTML" / "HTML" / "Code" widget.
+Works in Elementor, Gutenberg, or any builder with a "Custom HTML" / "HTML" /
+"Code" widget.
 
-1. In WP Admin, create/edit the page (e.g. **Pages → Add New → "Locations"**).
-2. Add a **Custom HTML** block (Gutenberg) or an **HTML widget** (Elementor:
-   search "HTML" in the widget panel and drag it onto the page).
-3. Paste the block below into it and **Publish**.
+1. In WP Admin, edit your Locations page.
+2. Add a **Custom HTML** block (Gutenberg) or an **HTML** widget (Elementor —
+   search "HTML" and drag it in). Give it the full page width for the best layout.
+3. Paste the **entire** contents of `wordpress-embed.html` and **Publish**.
 
-```html
-<!-- 1) Load the Google Maps Extended Component Library -->
-<script type="module"
-  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
+That's it — the finder fills its container (it's `78vh` tall on desktop, and
+stacks list-over-map under 900px wide).
 
-<!-- 2) Styles for the locator -->
-<style>
-  #locator-shell { width: 100%; height: 78vh; min-height: 560px; }
-  #locator-shell gmpx-store-locator {
-    width: 100%; height: 100%;
-    --gmpx-color-surface: #fff;
-    --gmpx-color-on-surface: #212121;
-    --gmpx-color-on-surface-variant: #757575;
-    --gmpx-color-primary: #1a9e50;            /* 24/7 Golf green */
-    --gmpx-color-outline: #e0e0e0;
-    --gmpx-fixed-panel-width-row-layout: 28.5em;
-    --gmpx-fixed-panel-height-column-layout: 65%;
-    --gmpx-font-family-base: "Barlow", "Roboto", sans-serif;
-    --gmpx-font-family-headings: "Barlow Condensed", "Roboto", sans-serif;
-    --gmpx-font-size-base: 0.875rem;
-    --gmpx-hours-color-open: #188038;
-    --gmpx-hours-color-closed: #d50000;
-    --gmpx-rating-color: #ffb300;
-    --gmpx-rating-color-empty: #e0e0e0;
-  }
-</style>
+> **Elementor note:** some setups strip `<script>` tags from the HTML widget. If
+> the map doesn't appear, install **WPCode** (or **Code Snippets**), paste the
+> two `<script>` blocks there set to run in the page **footer**, and keep only the
+> `<style>` + `<div id="tfgolf-finder">…</div>` markup in the HTML widget. A
+> header/footer-scripts plugin works too.
 
-<!-- 3) The locator markup -->
-<div id="locator-shell">
-  <gmpx-api-loader
-    key="YOUR_GOOGLE_MAPS_API_KEY"
-    solution-channel="GMP_QB_locatorplus_v11_cABCDEF"></gmpx-api-loader>
-  <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
-</div>
+---
 
-<!-- 4) Locations + init (this is your LocationFinder.js content) -->
-<script>
-  const CONFIGURATION = {
-    /* paste the CONFIGURATION object from js/location-finder.js here */
-  };
-  document.addEventListener('DOMContentLoaded', async () => {
-    await customElements.whenDefined('gmpx-store-locator');
-    const locator = document.querySelector('gmpx-store-locator');
-    if (locator) locator.configureFromQuickBuilder(CONFIGURATION);
-  });
-</script>
+## Adding or changing a location
+
+Edit the `CONFIGURATION.locations` array in the pasted block. Each entry needs:
+
+```js
+{
+  "title": "24/7 Golf - City",          // "(COMING SOON)" in the title = no Book button
+  "address1": "123 Main St",
+  "address2": "City, MI 49000, USA",
+  "coords": { "lat": 43.0, "lng": -85.0 },
+  "placeId": "ChIJ...",                  // optional; used for the Directions link
+  "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/city" }]
+}
 ```
 
-Copy the `CONFIGURATION = { ... }` object straight out of
-[`js/location-finder.js`](../js/location-finder.js) — that's the maintained,
-de-duplicated copy of your locations (and it has the "Grand Haven" typo fixed).
-
-> **To add or change a location later:** edit the `locations` array in that one
-> `CONFIGURATION` block. Each entry needs `title`, `address1`, `address2`,
-> `coords` (lat/lng), and `placeId`; add an `actions` array for a "Book"
-> button. Quick Builder generates these for you if you'd rather not hand-edit.
+Locations with no `actions` (or `(COMING SOON)` in the title) show a gold
+"Coming Soon" pill and no Book button. Keep this list in sync with the static
+prototype's [`/js/location-finder.js`](../js/location-finder.js).
 
 ---
 
-## Option B — Keep the files separate (cleaner, recommended)
+## Preview locally (in this repo)
 
-Instead of one giant block, host the CSS/JS as files and reference them. This
-keeps the page light and lets you update locations without touching the page.
-
-1. Upload `location-finder.js` (and optionally a CSS file) to the site — via the
-   Media Library, an FTP/host file manager into the theme/uploads, or a
-   "custom code" plugin like **WPCode** or **Code Snippets**.
-2. On the page, add a small Custom HTML block with just the loader, markup, and
-   `<script src="...">` references:
-
-```html
-<script type="module"
-  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
-<div id="locator-shell">
-  <gmpx-api-loader key="YOUR_GOOGLE_MAPS_API_KEY"
-    solution-channel="GMP_QB_locatorplus_v11_cABCDEF"></gmpx-api-loader>
-  <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
-</div>
-<script src="/wp-content/uploads/location-finder.js"></script>
-```
-
-(Adjust the `src` path to wherever you uploaded the file. Put the CSS in
-**Appearance → Customize → Additional CSS**, or in your theme/child-theme
-stylesheet.)
-
-> **Elementor note:** some setups strip `<script>` tags from the HTML widget.
-> If the map doesn't render, use the **WPCode**/**Code Snippets** plugin (set the
-> snippet to run in the page **footer**) for the script parts, and keep only the
-> `<div>` markup in the HTML widget. Or add a header/footer-scripts plugin.
-
----
-
-## Before it goes live — three things to fix
-
-These are placeholders in the Quick Builder export and **must** be set for a
-clean production page:
-
-1. **Use your own Google Maps API key.** The key currently in the code
-   (`AIzaSy…`) is the Quick Builder demo key. Create a key in the
-   [Google Cloud Console](https://console.cloud.google.com/google/maps-apis),
-   enable **Maps JavaScript API**, **Places API**, and (for ZIP/address search)
-   **Geocoding API**, then **restrict the key** to your domain (HTTP referrer
-   restriction, e.g. `https://www.24-7golf.com/*`). An unrestricted key on a
-   public page can be abused and run up billing. Set up a billing account —
-   usage is small but Maps requires one.
-2. **Create a real Map ID.** `DEMO_MAP_ID` is a sample. Make a Map ID under
-   **Map Management** in the Cloud Console and use it in
-   `<gmpx-store-locator map-id="...">`. This also lets you style the map
-   (e.g. a dark theme to match the site) via cloud-based map styling.
-3. **Confirm the "Book" links.** The Quick Builder `actions` point at
-   `http://24-7golf.com/booking`. Point these at the right CourtReserve booking
-   URL per location (or the site's booking page) and use `https`.
-
----
-
-## How to preview locally / in this repo
-
-The integrated static version is at [`pages/locations.html`](../pages/locations.html).
-Because it loads the Google library from a CDN, open it through a local web
-server (not a `file://` path) so the module script and the API can load:
+The same finder runs at [`pages/locations.html`](../pages/locations.html). Because
+it loads the Google library from a CDN, serve it over HTTP (not `file://`):
 
 ```bash
 # from the repo root
@@ -185,7 +106,7 @@ python3 -m http.server 8000
 
 ## References
 
-- [Extended Component Library — Store Locator](https://github.com/googlemaps/extended-component-library/blob/main/src/store_locator/README.md)
-- [Google Maps Platform — Locator Plus / Quick Builder](https://developers.google.com/maps/architecture/store-locator)
+- [Maps JS — Advanced Markers (needs a Map ID)](https://developers.google.com/maps/documentation/javascript/advanced-markers/overview)
+- [Extended Component Library — API loader](https://github.com/googlemaps/extended-component-library/blob/main/src/api_loader/README.md)
 - [API key best practices (restrictions)](https://developers.google.com/maps/api-security-best-practices)
 - [ROADMAP.md §3 — the data-driven finder this evolves into](../ROADMAP.md)

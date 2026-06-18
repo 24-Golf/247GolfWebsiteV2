@@ -1,0 +1,296 @@
+<!-- ============================================================
+     24/7 Golf — Location Finder (self-contained WordPress embed)
+     ============================================================
+     Paste this ENTIRE block into a WordPress "Custom HTML" block
+     (Gutenberg) or "HTML" widget (Elementor) on your Locations page.
+
+     Before it works you MUST set two values below:
+       1. YOUR_GOOGLE_MAPS_API_KEY  (in the <gmpx-api-loader> tag)
+       2. YOUR_MAP_ID               (in the CONFIGURATION.mapOptions.mapId)
+     See docs/location-finder-wordpress.md for how to create both.
+
+     Everything is namespaced under #tfgolf-finder so it won't clash
+     with your theme's CSS. No external CSS/JS from this repo is needed.
+     ============================================================ -->
+
+<!-- 1) Google Maps Extended Component Library (provides <gmpx-api-loader>) -->
+<script type="module"
+  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
+
+<!-- 2) Styles (scoped to #tfgolf-finder) -->
+<style>
+  #tfgolf-finder {
+    --tf-black:#0a0a0a; --tf-green:#2ecc71; --tf-green-dim:#1a9e50;
+    --tf-green-glow:rgba(46,204,113,0.18); --tf-white:#f5f7f2; --tf-muted:#8a9080;
+    --tf-gold:#c9a84c; --tf-gold-dim:rgba(201,168,76,0.15); --tf-card:#161a20;
+    --tf-dark:#111317; --tf-border:rgba(255,255,255,0.07); --tf-border-hover:rgba(46,204,113,0.3);
+    --tf-cond:"Barlow Condensed","Oswald",system-ui,sans-serif;
+    --tf-body:"Barlow",system-ui,sans-serif;
+  }
+  #tfgolf-finder * { box-sizing: border-box; }
+
+  #tfgolf-finder .finder {
+    display: grid; grid-template-columns: 380px 1fr;
+    border: 1px solid var(--tf-border); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4); background: var(--tf-card);
+    height: 78vh; min-height: 560px; color: var(--tf-white); font-family: var(--tf-body);
+  }
+  #tfgolf-finder .finder-panel { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--tf-border); }
+  #tfgolf-finder .finder-controls { display: flex; gap: 8px; padding: 16px; border-bottom: 1px solid var(--tf-border); }
+  #tfgolf-finder .finder-search {
+    flex: 1; padding: 10px 12px; background: var(--tf-black); color: var(--tf-white);
+    border: 1px solid var(--tf-border); border-radius: 4px; font-family: var(--tf-body); font-size: 0.9rem;
+  }
+  #tfgolf-finder .finder-search::placeholder { color: var(--tf-muted); }
+  #tfgolf-finder .finder-search:focus { outline: none; border-color: var(--tf-border-hover); }
+  #tfgolf-finder #finder-near {
+    white-space: nowrap; cursor: pointer; padding: 10px 12px; font-size: 0.85rem;
+    background: var(--tf-green-glow); color: var(--tf-green);
+    border: 1px solid rgba(46,204,113,0.25); border-radius: 4px;
+    font-family: var(--tf-cond); font-weight: 600; letter-spacing: 0.5px;
+  }
+  #tfgolf-finder #finder-near:hover { background: rgba(46,204,113,0.28); }
+  #tfgolf-finder #finder-near:disabled { opacity: 0.6; cursor: default; }
+
+  #tfgolf-finder .finder-list { overflow-y: auto; min-height: 0; }
+  #tfgolf-finder .finder-empty { padding: 24px; color: var(--tf-muted); font-size: 0.9rem; }
+
+  #tfgolf-finder .loc-card {
+    padding: 16px; border-bottom: 1px solid var(--tf-border);
+    cursor: pointer; transition: background 0.15s ease; border-left: 3px solid transparent;
+  }
+  #tfgolf-finder .loc-card:hover { background: rgba(255,255,255,0.03); }
+  #tfgolf-finder .loc-card.active { background: var(--tf-green-glow); border-left-color: var(--tf-green); }
+  #tfgolf-finder .loc-card:focus-visible { outline: 2px solid var(--tf-green); outline-offset: -2px; }
+  #tfgolf-finder .loc-card-head { display: flex; align-items: center; gap: 10px; justify-content: space-between; margin-bottom: 6px; }
+  #tfgolf-finder .loc-card-name { font-family: var(--tf-cond); font-size: 1.15rem; font-weight: 700; letter-spacing: 0.5px; color: var(--tf-white); margin: 0; }
+  #tfgolf-finder .loc-card-addr { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+  #tfgolf-finder .loc-card-dist { margin-top: 4px; font-family: var(--tf-cond); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--tf-muted); }
+  #tfgolf-finder .loc-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+  #tfgolf-finder .loc-pill {
+    flex-shrink: 0; display: inline-block; padding: 3px 9px; border-radius: 20px;
+    font-family: var(--tf-cond); font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  }
+  #tfgolf-finder .loc-pill-open { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: var(--tf-green); }
+  #tfgolf-finder .loc-pill-soon { background: var(--tf-gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--tf-gold); }
+
+  #tfgolf-finder .loc-btn {
+    display: inline-block; padding: 8px 16px; border-radius: 4px; text-decoration: none;
+    font-family: var(--tf-cond); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; cursor: pointer; transition: background 0.25s ease, color 0.25s ease;
+  }
+  #tfgolf-finder .loc-btn-primary { background: var(--tf-green); color: var(--tf-black); border: 1px solid var(--tf-green); }
+  #tfgolf-finder .loc-btn-primary:hover { background: var(--tf-green-dim); border-color: var(--tf-green-dim); color: var(--tf-black); }
+  #tfgolf-finder .loc-btn-outline { background: transparent; color: var(--tf-green); border: 1px solid var(--tf-green); }
+  #tfgolf-finder .loc-btn-outline:hover { background: var(--tf-green-glow); }
+
+  #tfgolf-finder #finder-map { width: 100%; height: 100%; background: var(--tf-dark); }
+  #tfgolf-finder .finder-error { display: flex; align-items: center; justify-content: center; height: 100%; padding: 24px; color: var(--tf-muted); text-align: center; }
+
+  @media (max-width: 900px) {
+    #tfgolf-finder .finder { grid-template-columns: 1fr; height: auto; }
+    #tfgolf-finder .finder-panel { border-right: none; border-bottom: 1px solid var(--tf-border); }
+    #tfgolf-finder .finder-list { max-height: 42vh; }
+    #tfgolf-finder #finder-map { height: 50vh; }
+  }
+</style>
+
+<!-- 3) Markup -->
+<div id="tfgolf-finder">
+  <gmpx-api-loader
+    key="YOUR_GOOGLE_MAPS_API_KEY"
+    solution-channel="GMP_QB_locatorplus_v11_cABCDEF"></gmpx-api-loader>
+
+  <div class="finder">
+    <div class="finder-panel">
+      <div class="finder-controls">
+        <input id="finder-search" class="finder-search" type="search"
+               placeholder="Filter by city or name…" aria-label="Filter locations">
+        <button id="finder-near" type="button">📍 Use my location</button>
+      </div>
+      <div id="finder-list" class="finder-list" aria-label="Location list"></div>
+    </div>
+    <div id="finder-map" role="application" aria-label="Map of 24/7 Golf locations"></div>
+  </div>
+</div>
+
+<!-- 4) Locations data + finder logic -->
+<script>
+(function () {
+  // ── Locations (edit this list to add/change a location) ──────────────
+  // Each entry needs: title, address1, address2, coords {lat,lng}, placeId.
+  // Add an "actions" array (label + defaultUrl) to show a "Book" button.
+  // Locations with no "actions" (or "(COMING SOON)" in the title) render as
+  // "Coming Soon" with no Book button.
+  var CONFIGURATION = {
+    "locations": [
+      { "title": "24/7 Golf - Ludington", "address1": "5756 US-10", "address2": "Ludington, MI 49431, USA", "coords": { "lat": 43.957528203572636, "lng": -86.42327952209014 }, "placeId": "ChIJ6Wm_J1oRHIgRGa5HyEVqipo", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/ludington" }] },
+      { "title": "24/7 Golf - Grand Rapids", "address1": "4255 Alpine Ave NW Ste A", "address2": "Comstock Park, MI 49321, USA", "coords": { "lat": 43.041798348646026, "lng": -85.69027300674593 }, "placeId": "ChIJ-Qj6VGepGYgRHRaYm_eISdc", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/grand-rapids" }] },
+      { "title": "24/7 Golf - Williamsburg", "address1": "6463 US-31", "address2": "Williamsburg, MI 49690, USA", "coords": { "lat": 44.77974381100765, "lng": -85.4969684932541 }, "placeId": "ChIJi2EQLwDRH4gRs54otsYyZhQ", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/traverse-city" }] },
+      { "title": "24/7 Golf - Dewitt", "address1": "1161 E Clark Rd Ste 136", "address2": "DeWitt, MI 48820, USA", "coords": { "lat": 42.81466649356487, "lng": -84.54158496441804 }, "placeId": "ChIJm2XuCM_tIogRvBZqL_HR0y4", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/lansing" }] },
+      { "title": "24/7 Golf - Haslett", "address1": "2121 Haslett Rd", "address2": "Haslett, MI 48840, USA", "coords": { "lat": 42.74670035597035, "lng": -84.4270352490738 }, "placeId": "ChIJRWHEm1TnIogR8gS666bcjb8", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/haslett" }] },
+      { "title": "24/7 Golf - Traverse City (COMING SOON)", "address1": "972 W South Airport Rd", "address2": "Traverse City, MI 49686, USA", "coords": { "lat": 44.73375354579127, "lng": -85.59453066441803 }, "placeId": "ChIJy7XQJy_NH4gRNPIsaWZcppU" },
+      { "title": "24/7 Golf - Standale (COMING SOON)", "address1": "4030 Lake Michigan Dr NW suite b", "address2": "Grand Rapids, MI 49534, USA", "coords": { "lat": 42.971868303512856, "lng": -85.76721983558198 }, "placeId": "Ej00MDMwIExha2UgTWljaGlnYW4gRHIgTlcgc3VpdGUgYiwgR3JhbmQgUmFwaWRzLCBNSSA0OTUzNCwgVVNBIiMaIQoWChQKEgkjC25dfaUZiBEj-PvsHu_dZBIHc3VpdGUgYg" },
+      { "title": "24/7 Golf - Kentwood (COMING SOON)", "address1": "6070 Kalamazoo Ave SE", "address2": "Grand Rapids, MI 49508, USA", "coords": { "lat": 42.853196463356284, "lng": -85.62399916441802 }, "placeId": "ChIJkbbgtpi0GYgRwOhdwIVC-pI" },
+      { "title": "24/7 Golf - Rockford (COMING SOON)", "address1": "515 E Division St NE", "address2": "Rockford, MI 49341, USA", "coords": { "lat": 43.11932952057435, "lng": -85.54644584907379 }, "placeId": "ChIJgXcLMBr_GIgRlVdml3F5rcc" },
+      { "title": "24/7 Golf - Grand Haven (COMING SOON)", "address1": "1830 172nd Ave ste a", "address2": "Grand Haven, MI 49417, USA", "coords": { "lat": 43.04240748803507, "lng": -86.21402856441803 }, "placeId": "EjAxODMwIDE3Mm5kIEF2ZSBzdGUgYSwgR3JhbmQgSGF2ZW4sIE1JIDQ5NDE3LCBVU0EiIRofChYKFAoSCWNRVEoogRmIET80wZOg0ad3EgVzdGUgYQ" }
+    ],
+    // Replace "YOUR_MAP_ID" with a real Map ID (required for the markers).
+    "mapOptions": { "center": { "lat": 44.3, "lng": -85.6 }, "zoom": 7, "mapId": "YOUR_MAP_ID" }
+  };
+
+  var COLOR_OPEN = '#2ecc71';
+  var COLOR_SOON = '#c9a84c';
+
+  function isComingSoon(loc) { return /coming soon/i.test(loc.title) || !(loc.actions && loc.actions.length); }
+  function shortName(loc) { return loc.title.replace(/^24\/7 Golf\s*-\s*/i, '').replace(/\s*\(coming soon\)\s*/i, '').trim(); }
+  function bookingUrl(loc) { return loc.actions && loc.actions[0] ? loc.actions[0].defaultUrl : null; }
+  function directionsUrl(loc) {
+    var dest = encodeURIComponent(loc.address1 + ', ' + loc.address2);
+    var url = 'https://www.google.com/maps/dir/?api=1&destination=' + dest;
+    if (loc.placeId) url += '&destination_place_id=' + encodeURIComponent(loc.placeId);
+    return url;
+  }
+  function distanceMiles(a, b) {
+    var toRad = function (d) { return d * Math.PI / 180; }, R = 3958.8;
+    var dLat = toRad(b.lat - a.lat), dLng = toRad(b.lng - a.lng);
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  async function waitForMapsApi() {
+    await customElements.whenDefined('gmpx-api-loader');
+    var start = Date.now();
+    while (!(window.google && google.maps && google.maps.importLibrary)) {
+      if (Date.now() - start > 10000) throw new Error('Google Maps API failed to load.');
+      await new Promise(function (r) { setTimeout(r, 50); });
+    }
+  }
+
+  async function initLocationFinder() {
+    var listEl = document.getElementById('finder-list');
+    var mapEl = document.getElementById('finder-map');
+    var searchEl = document.getElementById('finder-search');
+    var nearEl = document.getElementById('finder-near');
+    if (!listEl || !mapEl) return;
+
+    var locations = CONFIGURATION.locations.map(function (loc, i) {
+      var o = {}; for (var k in loc) o[k] = loc[k]; o.index = i; return o;
+    });
+
+    await waitForMapsApi();
+    var mapsLib = await google.maps.importLibrary('maps');
+    var markerLib = await google.maps.importLibrary('marker');
+    var Map = mapsLib.Map, InfoWindow = mapsLib.InfoWindow;
+    var AdvancedMarkerElement = markerLib.AdvancedMarkerElement, PinElement = markerLib.PinElement;
+
+    var map = new Map(mapEl, {
+      center: CONFIGURATION.mapOptions.center,
+      zoom: CONFIGURATION.mapOptions.zoom,
+      mapId: CONFIGURATION.mapOptions.mapId,
+      mapTypeControl: false, streetViewControl: false, fullscreenControl: true
+    });
+
+    var infoWindow = new InfoWindow();
+    var markers = {}, cards = {};
+
+    function infoContent(loc) {
+      var soon = isComingSoon(loc), book = bookingUrl(loc);
+      return '<div style="font-family:Arial,sans-serif;max-width:240px;color:#212121;">' +
+        '<div style="font-weight:700;font-size:15px;margin-bottom:2px;">' + esc(shortName(loc)) + '</div>' +
+        '<div style="color:' + (soon ? COLOR_SOON : COLOR_OPEN) + ';font-size:12px;font-weight:700;margin-bottom:6px;">' + (soon ? 'Coming Soon' : 'Open 24 Hours') + '</div>' +
+        '<div style="font-size:13px;line-height:1.4;">' + esc(loc.address1) + '<br>' + esc(loc.address2) + '</div>' +
+        '<div style="margin-top:8px;display:flex;gap:8px;font-size:13px;">' +
+        '<a href="' + directionsUrl(loc) + '" target="_blank" rel="noopener">Directions</a>' +
+        (book ? '<a href="' + esc(book) + '" target="_blank" rel="noopener">Book</a>' : '') +
+        '</div></div>';
+    }
+
+    function select(loc, opts) {
+      opts = opts || {};
+      Object.keys(cards).forEach(function (k) { cards[k].classList.remove('active'); });
+      var card = cards[loc.index];
+      if (card) { card.classList.add('active'); card.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+      var marker = markers[loc.index];
+      if (marker) {
+        infoWindow.setContent(infoContent(loc));
+        infoWindow.open({ map: map, anchor: marker });
+        if (opts.pan !== false) { map.panTo(loc.coords); if (map.getZoom() < 10) map.setZoom(11); }
+      }
+    }
+
+    locations.forEach(function (loc) {
+      var soon = isComingSoon(loc);
+      var pin = new PinElement({ background: soon ? COLOR_SOON : COLOR_OPEN, borderColor: '#0a0a0a', glyphColor: '#0a0a0a' });
+      var marker = new AdvancedMarkerElement({ map: map, position: loc.coords, title: shortName(loc), content: pin.element, gmpClickable: true });
+      marker.addListener('gmp-click', function () { select(loc, { pan: true }); });
+      markers[loc.index] = marker;
+    });
+
+    function render(list) {
+      listEl.innerHTML = '';
+      if (!list.length) { listEl.innerHTML = '<div class="finder-empty">No locations match “' + esc(searchEl ? searchEl.value : '') + '”.</div>'; return; }
+      list.forEach(function (loc) {
+        var soon = isComingSoon(loc), book = bookingUrl(loc);
+        var card = document.createElement('div');
+        card.className = 'loc-card'; card.tabIndex = 0;
+        card.innerHTML =
+          '<div class="loc-card-head">' +
+            '<h3 class="loc-card-name">' + esc(shortName(loc)) + '</h3>' +
+            '<span class="loc-pill ' + (soon ? 'loc-pill-soon' : 'loc-pill-open') + '">' + (soon ? 'Coming Soon' : 'Open 24 Hours') + '</span>' +
+          '</div>' +
+          '<div class="loc-card-addr">' + esc(loc.address1) + '<br>' + esc(loc.address2) + '</div>' +
+          (loc.distance != null ? '<div class="loc-card-dist">' + loc.distance.toFixed(1) + ' mi away</div>' : '') +
+          '<div class="loc-card-actions">' +
+            '<a class="loc-btn loc-btn-outline" href="' + directionsUrl(loc) + '" target="_blank" rel="noopener">Directions</a>' +
+            (book ? '<a class="loc-btn loc-btn-primary" href="' + esc(book) + '" target="_blank" rel="noopener">Book</a>' : '') +
+          '</div>';
+        card.addEventListener('click', function (e) { if (e.target.tagName !== 'A') select(loc); });
+        card.addEventListener('keydown', function (e) { if (e.key === 'Enter') select(loc); });
+        listEl.appendChild(card);
+        cards[loc.index] = card;
+      });
+    }
+
+    render(locations);
+
+    if (searchEl) {
+      searchEl.addEventListener('input', function () {
+        var q = searchEl.value.trim().toLowerCase();
+        render(locations.filter(function (loc) {
+          return !q || (shortName(loc) + ' ' + loc.address1 + ' ' + loc.address2).toLowerCase().indexOf(q) !== -1;
+        }));
+      });
+    }
+
+    if (nearEl) {
+      nearEl.addEventListener('click', function () {
+        if (!navigator.geolocation) return;
+        nearEl.disabled = true; nearEl.textContent = 'Locating…';
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          var me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          locations.forEach(function (loc) { loc.distance = distanceMiles(me, loc.coords); });
+          var sorted = locations.slice().sort(function (a, b) { return a.distance - b.distance; });
+          render(sorted); map.panTo(sorted[0].coords); map.setZoom(9); select(sorted[0], { pan: false });
+          nearEl.disabled = false; nearEl.textContent = '📍 Use my location';
+        }, function () { nearEl.disabled = false; nearEl.textContent = '📍 Use my location'; });
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initLocationFinder().catch(function (err) {
+      console.error('[location-finder]', err);
+      var mapEl = document.getElementById('finder-map');
+      if (mapEl) mapEl.innerHTML = '<div class="finder-error">Sorry, the map could not be loaded. Please refresh.</div>';
+    });
+  });
+})();
+</script>

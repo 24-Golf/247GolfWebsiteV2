@@ -95,8 +95,11 @@ the locations **hard-coded** in JavaScript for now.
   the design system) — markup + styles for the finder.
 - **Logic + data:** [`js/location-finder.js`](js/location-finder.js) — the
   hard-coded locations and all finder behavior.
+- **WordPress (ready to paste):** [`LocationFinder/wordpress-embed.html`](LocationFinder/wordpress-embed.html)
+  — a self-contained copy (loader + scoped CSS + markup + logic) for a Custom HTML
+  block. Set the API key and Map ID, then paste.
 - **Raw export:** [`LocationFinder/`](LocationFinder) (the original Google Maps
-  Quick Builder / JSFiddle `<gmpx-store-locator>` mockup).
+  Quick Builder / JSFiddle `<gmpx-store-locator>` mockup — superseded; do not deploy).
 - **Putting it on WordPress:** [`docs/location-finder-wordpress.md`](docs/location-finder-wordpress.md).
 
 > **Why custom (not Quick Builder's `<gmpx-store-locator>`)?** That widget renders

@@ -116,6 +116,18 @@
     .loc-card-dist { margin-top: 4px; font-family: var(--font-condensed); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
     .loc-card-actions { display: flex; gap: 8px; margin-top: 12px; }
 
+    /* Finder-owned buttons (no dependency on the site's .btn styles) */
+    .loc-btn {
+      display: inline-block; padding: 8px 16px; border-radius: var(--radius-sm);
+      font-family: var(--font-condensed); font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base);
+    }
+    .loc-btn-primary { background: var(--green); color: var(--black); border: 1px solid var(--green); }
+    .loc-btn-primary:hover { background: var(--green-dim); border-color: var(--green-dim); color: var(--black); }
+    .loc-btn-outline { background: transparent; color: var(--green); border: 1px solid var(--green); }
+    .loc-btn-outline:hover { background: var(--green-glow); }
+
     .loc-pill {
       flex-shrink: 0; display: inline-block; padding: 3px 9px; border-radius: 20px;
       font-family: var(--font-condensed); font-size: 0.7rem; font-weight: 700;

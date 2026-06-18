@@ -1,22 +1,38 @@
-# LocationFinder — raw Quick Builder export
+# LocationFinder
 
-These three files are the original location finder built with Google Maps
-**Quick Builder** and refined in JSFiddle:
+## Deploy to WordPress → use `wordpress-embed.html`
 
-- `LocationFinder.html` — loads the Extended Component Library and the
-  `<gmpx-api-loader>` + `<gmpx-store-locator>` tags.
-- `LocationFinder.css` — sizes and themes the Locator Plus component.
-- `LocationFinder.js` — the hard-coded `CONFIGURATION` (locations) + init call.
+**[`wordpress-embed.html`](wordpress-embed.html)** is the ready-to-paste,
+self-contained location finder for WordPress: a location list + Google map with
+markers, info windows, a text filter, and a "use my location" distance sort.
+Everything (loader, scoped CSS, markup, locations, logic) is in that one file.
 
-This folder is kept as the **source of truth from the design tool**. The version
-wired into the static site (design system, nav, footer) lives at:
+**Steps:** set `YOUR_GOOGLE_MAPS_API_KEY` and `YOUR_MAP_ID` in the file, then
+paste the whole thing into a WordPress "Custom HTML" block / Elementor "HTML"
+widget. Full walkthrough: **[`/docs/location-finder-wordpress.md`](../docs/location-finder-wordpress.md)**.
 
-- [`/pages/locations.html`](../pages/locations.html) — the page
-- [`/js/location-finder.js`](../js/location-finder.js) — the maintained locations list
+This matches what runs on the static prototype at
+[`/pages/locations.html`](../pages/locations.html) +
+[`/js/location-finder.js`](../js/location-finder.js) — keep the location lists in
+those two places in sync.
 
-**To put this on the WordPress site,** follow
-[`/docs/location-finder-wordpress.md`](../docs/location-finder-wordpress.md).
+## Why it's custom (not the Quick Builder widget)
 
-> Note: this export uses the Quick Builder **demo API key** and `DEMO_MAP_ID`.
-> Swap in a restricted production key and a real Map ID before going live — see
-> the WordPress doc for details.
+The original mockup used Google's Quick Builder `<gmpx-store-locator>` ("Locator
+Plus") component — that's the raw export still kept here for reference:
+
+- `LocationFinder.html` — loads the Extended Component Library + `<gmpx-*>` tags.
+- `LocationFinder.css` — sizes/themes the Locator Plus component.
+- `LocationFinder.js` — the `CONFIGURATION` (locations) + `configureFromQuickBuilder()`.
+
+**That widget shows every 24/7 location as "Closed"** because its `isOpen()` logic
+mis-handles "open 24 hours" hours (an open period with no closing time), even
+though the Places API reports `open_now: true`. Upgrading the library didn't fix
+it, so the finder was rebuilt to render the open status directly. Use
+`wordpress-embed.html`, **not** these three raw files, for the live site.
+
+## Before going live
+
+- Swap the demo API key for a **restricted** production key.
+- Set a real **Map ID** (Advanced Markers require one).
+- Confirm the per-location **Book** URLs in the `CONFIGURATION` list.
