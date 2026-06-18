@@ -12,8 +12,11 @@
 [build]
   # Publish the repo root (default, but explicit so the UI can't override it).
   publish = "."
-  # Static site — there is nothing to build.
-  command = ""
+  # No real build step. We only strip the high-res image masters in
+  # assets/_source/ from the publish output so they aren't uploaded to the CDN.
+  # They stay in git as source; the site serves the optimized copies in
+  # assets/images/web/. This runs on Netlify's build box and does NOT touch git.
+  command = "rm -rf assets/_source"
 
 # Send the bare domain to the landing page.
 # 302 (temporary) so browsers don't cache it while the site is in review/testing.

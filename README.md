@@ -52,7 +52,8 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 ├── reference/
 │   └── 247golf-DOWNLOAD.html  ← Reference export from the current site
 └── assets/
-    └── images/            ← Logos, photos
+    ├── images/web/        ← Web-optimized WebP images the site serves
+    └── _source/           ← High-res masters (in git, excluded from deploy)
 ```
 
 > **Status note:** The static prototype currently contains the landing page
@@ -190,12 +191,17 @@ is `pages/index.html` — there's no `index.html` at the root, so `/` returns 40
 `/pages/index.html` (which keeps the browser under `/pages/` so the relative
 `../css`, `../js`, `../assets` paths and page-to-page links all resolve).
 
+**Images:** the site serves web-optimized WebP from `assets/images/web/`. The
+high-res masters live in `assets/_source/` and are stripped from the deploy by
+the `netlify.toml` build command (`rm -rf assets/_source`) — they stay in git
+but are never uploaded to the CDN.
+
 **Set it up:**
 
 1. In Netlify: **Add new site → Import an existing project → GitHub**, and pick
    `24-Golf/247GolfWebsiteV2`.
 2. When asked for build settings, leave them empty — `netlify.toml` supplies them:
-   - **Build command:** *(none)*
+   - **Build command:** `rm -rf assets/_source` (strips image masters from the deploy)
    - **Publish directory:** `.` (repo root)
 3. **Deploy.** Visiting the site root now loads the landing page; the location
    finder is at `/locations` (or `/pages/locations.html`).
