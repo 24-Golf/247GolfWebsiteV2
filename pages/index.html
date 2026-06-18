@@ -222,13 +222,15 @@
     }
     @media (max-width: 768px) { .app-layout { grid-template-columns: 1fr; } .phone-mockup { display: none; } }
 
-    /* App download — QR codes */
+    /* App download — clickable QR codes */
     .app-qr { display: flex; gap: 16px; margin-top: var(--space-md); flex-wrap: wrap; }
     .qr-card {
       background: #fff; border-radius: var(--radius-md); padding: 12px;
       display: flex; flex-direction: column; align-items: center; gap: 8px; width: 150px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      text-decoration: none; transition: transform var(--transition-base), box-shadow var(--transition-base);
     }
+    .qr-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.45); }
     .qr-card img { width: 126px; height: 126px; display: block; }
     .qr-card span {
       font-family: var(--font-condensed); font-size: 0.72rem; font-weight: 700;
@@ -236,12 +238,18 @@
     }
     .qr-hint { margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
 
-    /* App showcase — two staggered phones */
-    .phone-duo { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; }
-    .phone-duo .phone-outer { width: 200px; padding: 12px; }
-    .phone-back  { transform: translateY(-20px) rotate(-5deg); margin-right: -64px; z-index: 1; opacity: 0.95; }
-    .phone-front { transform: translateY(16px) rotate(4deg); z-index: 2; }
-    @media (max-width: 1024px) { .phone-duo .phone-outer { width: 168px; } .phone-back { margin-right: -54px; } }
+    /* App showcase — captioned screenshots */
+    .app-shots {
+      position: relative; z-index: 2;
+      display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap;
+    }
+    .app-shots img {
+      width: clamp(180px, 44%, 230px); height: auto; border-radius: var(--radius-lg);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .app-shots img:first-of-type { transform: translateY(-12px) rotate(-3deg); }
+    .app-shots img:last-of-type  { transform: translateY(12px) rotate(3deg); }
+    @media (max-width: 768px) { .app-shots img { transform: none !important; } }
 
     /* Account Section */
     .account-layout {
@@ -538,36 +546,28 @@
           </div>
 
           <div class="app-qr reveal reveal-delay-2">
-            <div class="qr-card">
+            <a class="qr-card" href="https://apps.apple.com/us/app/24-7-golf/id6753621534"
+               target="_blank" rel="noopener" aria-label="Download the 24/7 Golf app on the Apple App Store">
               <img src="../assets/images/web/qr-app-store.png"
-                   alt="Scan to download the 24/7 Golf app from the Apple App Store" loading="lazy">
+                   alt="Scan or tap to download the 24/7 Golf app from the Apple App Store" loading="lazy">
               <span>iPhone · App Store</span>
-            </div>
-            <div class="qr-card">
+            </a>
+            <a class="qr-card" href="https://play.google.com/store/apps/details?id=com.courtreserve.unlimitedgolf"
+               target="_blank" rel="noopener" aria-label="Download the 24/7 Golf app on Google Play">
               <img src="../assets/images/web/qr-google-play.png"
-                   alt="Scan to download the 24/7 Golf app from Google Play" loading="lazy">
+                   alt="Scan or tap to download the 24/7 Golf app from Google Play" loading="lazy">
               <span>Android · Google Play</span>
-            </div>
+            </a>
           </div>
-          <p class="qr-hint reveal reveal-delay-2">Point your phone camera at a code to download the app.</p>
+          <p class="qr-hint reveal reveal-delay-2">Scan a code with your phone — or tap it — to download the app.</p>
         </div>
 
-        <div class="phone-mockup reveal reveal-delay-2">
+        <div class="app-shots reveal reveal-delay-2">
           <div class="phone-glow"></div>
-          <div class="phone-duo">
-            <div class="phone-outer phone-back">
-              <div class="phone-screen">
-                <img src="../assets/images/web/app-calendar.webp"
-                     alt="24/7 Golf app booking calendar" loading="lazy">
-              </div>
-            </div>
-            <div class="phone-outer phone-front">
-              <div class="phone-screen">
-                <img src="../assets/images/web/app-home.webp"
-                     alt="24/7 Golf app home screen" loading="lazy">
-              </div>
-            </div>
-          </div>
+          <img src="../assets/images/web/app-promo-home.webp"
+               alt="24/7 Golf app home screen — easy booking for players, anywhere" loading="lazy">
+          <img src="../assets/images/web/app-promo-calendar.webp"
+               alt="24/7 Golf app calendar — find, book and pay for court time in seconds" loading="lazy">
         </div>
       </div>
     </div>
