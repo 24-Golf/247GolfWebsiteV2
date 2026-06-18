@@ -134,7 +134,7 @@ async function initLocationFinder() {
         <div style="font-size:13px;line-height:1.4;">${esc(loc.address1)}<br>${esc(loc.address2)}</div>
         <div style="margin-top:8px;display:flex;gap:8px;font-size:13px;">
           <a href="${directionsUrl(loc)}" target="_blank" rel="noopener">Directions</a>
-          ${book ? `<a href="${esc(book)}" target="_blank" rel="noopener">Book</a>` : ''}
+          ${book ? `<a href="${esc(book)}">Book</a>` : ''}
         </div>
       </div>`;
   }
@@ -200,7 +200,7 @@ async function initLocationFinder() {
         ${loc.distance != null ? `<div class="loc-card-dist">${loc.distance.toFixed(1)} mi away</div>` : ''}
         <div class="loc-card-actions">
           <a class="loc-btn loc-btn-outline" href="${directionsUrl(loc)}" target="_blank" rel="noopener">Directions</a>
-          ${book ? `<a class="loc-btn loc-btn-primary" href="${esc(book)}" target="_blank" rel="noopener">Book</a>` : ''}
+          ${book ? `<a class="loc-btn loc-btn-primary" href="${esc(book)}">Book</a>` : ''}
         </div>`;
       const open = () => select(loc);
       card.addEventListener('click', (e) => { if (e.target.tagName !== 'A') open(); });
