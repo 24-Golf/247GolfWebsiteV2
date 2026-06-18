@@ -1,0 +1,29 @@
+# Netlify deployment configuration for the 24/7 Golf static prototype
+# ---------------------------------------------------------------------------
+# This is a plain static HTML/CSS/JS site (no build step). The pages live in
+# /pages and reference shared assets via relative paths (../css, ../js,
+# ../assets), so the whole repo root must be published — NOT just /pages.
+#
+# Because the landing page is /pages/index.html (there is no index.html at the
+# repo root), visiting "/" 404s by default. The redirect below sends "/" to the
+# landing page so the site loads, and keeps the browser under /pages/ so every
+# relative link and asset path resolves correctly.
+
+[build]
+  # Publish the repo root (default, but explicit so the UI can't override it).
+  publish = "."
+  # Static site — there is nothing to build.
+  command = ""
+
+# Send the bare domain to the landing page.
+# 302 (temporary) so browsers don't cache it while the site is in review/testing.
+[[redirects]]
+  from = "/"
+  to = "/pages/index.html"
+  status = 302
+
+# Optional friendly URL so /locations works without the /pages/ prefix.
+[[redirects]]
+  from = "/locations"
+  to = "/pages/locations.html"
+  status = 302

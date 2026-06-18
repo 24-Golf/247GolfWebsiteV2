@@ -170,6 +170,34 @@ Replace `EMBED_ID` (and the org ID, if different) for each location:
 
 ---
 
+## Deploying the prototype to Netlify (review / testing)
+
+The static prototype can be deployed to Netlify straight from this GitHub repo —
+**no build step**. The repo includes a [`netlify.toml`](netlify.toml) that
+configures everything, so the deploy is zero-config.
+
+**Why the defaults 404:** Netlify serves the repo **root**, but the landing page
+is `pages/index.html` — there's no `index.html` at the root, so `/` returns 404.
+`netlify.toml` fixes this by publishing the root and redirecting `/` →
+`/pages/index.html` (which keeps the browser under `/pages/` so the relative
+`../css`, `../js`, `../assets` paths and page-to-page links all resolve).
+
+**Set it up:**
+
+1. In Netlify: **Add new site → Import an existing project → GitHub**, and pick
+   `24-Golf/247GolfWebsiteV2`.
+2. When asked for build settings, leave them empty — `netlify.toml` supplies them:
+   - **Build command:** *(none)*
+   - **Publish directory:** `.` (repo root)
+3. **Deploy.** Visiting the site root now loads the landing page; the location
+   finder is at `/locations` (or `/pages/locations.html`).
+
+> If you'd rather not deploy from `main`, point the Netlify site at a different
+> branch under **Site configuration → Build & deploy → Branch to deploy**, and
+> use **deploy previews** for pull requests.
+
+---
+
 ## Git Workflow
 
 Single maintainer, trunk-based — work directly on `main`:
