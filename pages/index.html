@@ -222,6 +222,27 @@
     }
     @media (max-width: 768px) { .app-layout { grid-template-columns: 1fr; } .phone-mockup { display: none; } }
 
+    /* App download — QR codes */
+    .app-qr { display: flex; gap: 16px; margin-top: var(--space-md); flex-wrap: wrap; }
+    .qr-card {
+      background: #fff; border-radius: var(--radius-md); padding: 12px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px; width: 150px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+    .qr-card img { width: 126px; height: 126px; display: block; }
+    .qr-card span {
+      font-family: var(--font-condensed); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: #0a0a0a; text-align: center;
+    }
+    .qr-hint { margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+
+    /* App showcase — two staggered phones */
+    .phone-duo { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; }
+    .phone-duo .phone-outer { width: 200px; padding: 12px; }
+    .phone-back  { transform: translateY(-20px) rotate(-5deg); margin-right: -64px; z-index: 1; opacity: 0.95; }
+    .phone-front { transform: translateY(16px) rotate(4deg); z-index: 2; }
+    @media (max-width: 1024px) { .phone-duo .phone-outer { width: 168px; } .phone-back { margin-right: -54px; } }
+
     /* Account Section */
     .account-layout {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -516,30 +537,35 @@
             </div>
           </div>
 
-          <div class="app-download reveal reveal-delay-2">
-            <a href="#" class="store-btn">
-              <span class="store-btn-icon">🍎</span>
-              <div>
-                <div class="store-btn-text-small">Download on the</div>
-                <div class="store-btn-text-big">App Store</div>
-              </div>
-            </a>
-            <a href="#" class="store-btn">
-              <span class="store-btn-icon">▶</span>
-              <div>
-                <div class="store-btn-text-small">Get it on</div>
-                <div class="store-btn-text-big">Google Play</div>
-              </div>
-            </a>
+          <div class="app-qr reveal reveal-delay-2">
+            <div class="qr-card">
+              <img src="../assets/images/web/qr-app-store.png"
+                   alt="Scan to download the 24/7 Golf app from the Apple App Store" loading="lazy">
+              <span>iPhone · App Store</span>
+            </div>
+            <div class="qr-card">
+              <img src="../assets/images/web/qr-google-play.png"
+                   alt="Scan to download the 24/7 Golf app from Google Play" loading="lazy">
+              <span>Android · Google Play</span>
+            </div>
           </div>
+          <p class="qr-hint reveal reveal-delay-2">Point your phone camera at a code to download the app.</p>
         </div>
 
         <div class="phone-mockup reveal reveal-delay-2">
           <div class="phone-glow"></div>
-          <div class="phone-outer">
-            <div class="phone-screen">
-              <img src="../assets/images/web/app-home.webp"
-                   alt="24/7 Golf mobile app home screen" loading="lazy">
+          <div class="phone-duo">
+            <div class="phone-outer phone-back">
+              <div class="phone-screen">
+                <img src="../assets/images/web/app-calendar.webp"
+                     alt="24/7 Golf app booking calendar" loading="lazy">
+              </div>
+            </div>
+            <div class="phone-outer phone-front">
+              <div class="phone-screen">
+                <img src="../assets/images/web/app-home.webp"
+                     alt="24/7 Golf app home screen" loading="lazy">
+              </div>
             </div>
           </div>
         </div>
