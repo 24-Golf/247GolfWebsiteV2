@@ -45,7 +45,7 @@ builder that has a "Custom HTML" / "HTML" / "Code" widget.
 ```html
 <!-- 1) Load the Google Maps Extended Component Library -->
 <script type="module"
-  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
 
 <!-- 2) Styles for the locator -->
 <style>
@@ -114,7 +114,7 @@ keeps the page light and lets you update locations without touching the page.
 
 ```html
 <script type="module"
-  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
+  src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
 <div id="locator-shell">
   <gmpx-api-loader key="YOUR_GOOGLE_MAPS_API_KEY"
     solution-channel="GMP_QB_locatorplus_v11_cABCDEF"></gmpx-api-loader>
