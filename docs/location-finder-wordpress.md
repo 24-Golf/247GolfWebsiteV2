@@ -13,9 +13,21 @@ an HTML snippet, a CSS block, and a JavaScript config that holds the locations.
 > as the bridge to that — same page, swappable engine.
 
 The source files live in [`/LocationFinder`](../LocationFinder) (raw Quick Builder
-export) and the design-system-integrated version is at
-[`/pages/locations.html`](../pages/locations.html) +
-[`/js/location-finder.js`](../js/location-finder.js).
+export). **The static-site version is no longer the `<gmpx-store-locator>` widget**
+— see the note below.
+
+> ⚠️ **Known bug with `<gmpx-store-locator>` and 24-hour businesses.** The widget
+> renders its open/closed badge with the Maps JS `isOpen()` method, which
+> mis-handles "open 24 hours" places (an open period with no closing time) and
+> shows every 24/7 location as **"Closed"** — even though the Places API reports
+> `open_now: true`. Upgrading the library (0.6.11 → 0.6.15) did not fix it.
+> Because of this, the static prototype at
+> [`/pages/locations.html`](../pages/locations.html) +
+> [`/js/location-finder.js`](../js/location-finder.js) now uses a **custom finder**
+> (list + map + markers) that renders the open status directly ("Open 24 Hours").
+> If you embed the Quick Builder widget on WordPress you'll hit the same "Closed"
+> bug; to avoid it, port the custom finder instead (it's plain HTML/CSS/JS — drop
+> the markup in an HTML block and the JS via WPCode/Code Snippets).
 
 ---
 

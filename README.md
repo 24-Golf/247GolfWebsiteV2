@@ -86,22 +86,30 @@ locations and their coordinates currently lives in
 
 ## Location Finder
 
-The find-a-location page is built with Google Maps **Quick Builder** + the
-[Extended Component Library](https://github.com/googlemaps/extended-component-library)
-`<gmpx-store-locator>` ("Locator Plus") component, with the locations
-**hard-coded** in JavaScript for now.
+The find-a-location page is a **custom finder** (location list + Google map with
+markers, info windows, text filter, and "use my location" distance sort), with
+the locations **hard-coded** in JavaScript for now.
 
 - **Static prototype:** [`pages/locations.html`](pages/locations.html) (styled to
-  the design system) — locations live in [`js/location-finder.js`](js/location-finder.js).
-- **Raw export:** [`LocationFinder/`](LocationFinder) (the original Quick Builder /
-  JSFiddle mockup).
+  the design system) — markup + styles for the finder.
+- **Logic + data:** [`js/location-finder.js`](js/location-finder.js) — the
+  hard-coded locations and all finder behavior.
+- **Raw export:** [`LocationFinder/`](LocationFinder) (the original Google Maps
+  Quick Builder / JSFiddle `<gmpx-store-locator>` mockup).
 - **Putting it on WordPress:** [`docs/location-finder-wordpress.md`](docs/location-finder-wordpress.md).
 
+> **Why custom (not Quick Builder's `<gmpx-store-locator>`)?** That widget renders
+> its open/closed badge with the Maps JS `isOpen()` method, which mis-handles
+> "open 24 hours" places (an open period with no closing time) and labels every
+> 24/7 location **"Closed"** — even though the Places API reports `open_now: true`.
+> Upgrading the library (0.6.11 → 0.6.15) didn't fix it, so the static prototype
+> builds the finder itself and renders the open status directly ("Open 24 Hours").
+
 > ⚠️ Before going live, swap the Quick Builder **demo API key** for a
-> **restricted** production key, replace `DEMO_MAP_ID` with a real Map ID, and
-> point the "Book" actions at the right CourtReserve URLs. Details in the doc above.
-> Longer term this hard-coded list is replaced by a data-driven store-locator
-> plugin — see [ROADMAP.md §3](ROADMAP.md).
+> **restricted** production key and replace `DEMO_MAP_ID` with a real Map ID
+> (`AdvancedMarkerElement` requires a Map ID). Point the "Book" actions at the
+> right CourtReserve URLs. Details in the doc above. Longer term this hard-coded
+> list is replaced by a data-driven store-locator — see [ROADMAP.md §3](ROADMAP.md).
 
 ---
 

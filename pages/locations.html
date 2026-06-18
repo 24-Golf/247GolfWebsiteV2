@@ -14,7 +14,8 @@
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
 
-  <!-- Google Maps Extended Component Library — provides <gmpx-store-locator>.
+  <!-- Google Maps Extended Component Library — provides <gmpx-api-loader>, which
+       bootstraps google.maps.importLibrary used by js/location-finder.js.
        See https://github.com/googlemaps/extended-component-library -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"></script>
 
@@ -56,42 +57,82 @@
       content: ''; display: block; width: 28px; height: 2px; background: var(--green);
     }
 
-    /* Locator shell — frames the white Google component inside the dark theme */
-    .locator-shell {
+    /* ── Custom location finder (list + map) ── */
+    .finder {
       margin-top: var(--space-md);
+      display: grid;
+      grid-template-columns: 380px 1fr;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
       box-shadow: var(--shadow-card);
-      background: #fff;
+      background: var(--card);
       height: 78vh;
       min-height: 560px;
     }
 
-    gmpx-store-locator {
-      width: 100%;
-      height: 100%;
-
-      /* Locator Plus appearance — see the Extended Component Library docs:
-         https://github.com/googlemaps/extended-component-library/blob/main/src/store_locator/README.md */
-      --gmpx-color-surface: #fff;
-      --gmpx-color-on-surface: #212121;
-      --gmpx-color-on-surface-variant: #757575;
-      --gmpx-color-primary: #1a9e50;          /* 24/7 Golf green */
-      --gmpx-color-outline: #e0e0e0;
-      --gmpx-fixed-panel-width-row-layout: 28.5em;
-      --gmpx-fixed-panel-height-column-layout: 65%;
-      --gmpx-font-family-base: "Barlow", "Roboto", sans-serif;
-      --gmpx-font-family-headings: "Barlow Condensed", "Roboto", sans-serif;
-      --gmpx-font-size-base: 0.875rem;
-      --gmpx-hours-color-open: #188038;
-      --gmpx-hours-color-closed: #d50000;
-      --gmpx-rating-color: #ffb300;
-      --gmpx-rating-color-empty: #e0e0e0;
+    /* Left panel: controls + scrollable list */
+    .finder-panel {
+      display: flex; flex-direction: column; min-height: 0;
+      border-right: 1px solid var(--border);
     }
+    .finder-controls {
+      display: flex; gap: 8px; padding: var(--space-sm);
+      border-bottom: 1px solid var(--border);
+    }
+    .finder-search {
+      flex: 1; padding: 10px 12px;
+      background: var(--black); color: var(--white);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .finder-search::placeholder { color: var(--muted); }
+    .finder-search:focus { outline: none; border-color: var(--border-hover); }
+    #finder-near {
+      white-space: nowrap; cursor: pointer;
+      padding: 10px 12px; font-size: 0.85rem;
+      background: var(--green-glow); color: var(--green);
+      border: 1px solid rgba(46,204,113,0.25); border-radius: var(--radius-sm);
+      font-family: var(--font-condensed); font-weight: 600; letter-spacing: 0.5px;
+    }
+    #finder-near:hover { background: rgba(46,204,113,0.28); }
+    #finder-near:disabled { opacity: 0.6; cursor: default; }
 
-    @media (max-width: 768px) {
-      .locator-shell { height: 80vh; min-height: 520px; }
+    .finder-list { overflow-y: auto; min-height: 0; }
+    .finder-empty { padding: var(--space-md); color: var(--muted); font-size: 0.9rem; }
+
+    .loc-card {
+      padding: 16px var(--space-sm);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background var(--transition-fast);
+      border-left: 3px solid transparent;
+    }
+    .loc-card:hover { background: rgba(255,255,255,0.03); }
+    .loc-card.active { background: var(--green-glow); border-left-color: var(--green); }
+    .loc-card:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+    .loc-card-head { display: flex; align-items: center; gap: 10px; justify-content: space-between; margin-bottom: 6px; }
+    .loc-card-name { font-family: var(--font-condensed); font-size: 1.15rem; font-weight: 700; letter-spacing: 0.5px; color: var(--white); margin: 0; }
+    .loc-card-addr { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .loc-card-dist { margin-top: 4px; font-family: var(--font-condensed); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+    .loc-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+    .loc-pill {
+      flex-shrink: 0; display: inline-block; padding: 3px 9px; border-radius: 20px;
+      font-family: var(--font-condensed); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .loc-pill-open { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: var(--green); }
+    .loc-pill-soon { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); }
+
+    /* Right panel: the map */
+    #finder-map { width: 100%; height: 100%; background: var(--dark); }
+    .finder-error { display: flex; align-items: center; justify-content: center; height: 100%; padding: var(--space-md); color: var(--muted); text-align: center; }
+
+    @media (max-width: 900px) {
+      .finder { grid-template-columns: 1fr; height: auto; }
+      .finder-panel { border-right: none; border-bottom: 1px solid var(--border); }
+      .finder-list { max-height: 42vh; }
+      #finder-map { height: 50vh; }
     }
   </style>
 </head>
@@ -127,25 +168,34 @@
       <div class="section-label">Michigan Locations</div>
       <h1>Find a <em>Bay Near You</em></h1>
       <p>
-        Search by city, address, or ZIP to find your nearest 24/7 Golf location.
-        Get directions, see what's open, and book a Trackman iO bay — open 24 hours.
+        Search by city or use your location to find your nearest 24/7 Golf bay.
+        Get directions and book a Trackman iO simulator — every open location runs 24 hours.
       </p>
     </div>
   </header>
 
 
   <!-- ══════════════════════════════════════
-       LOCATION FINDER (Google Maps Locator Plus)
+       LOCATION FINDER (custom — driven by js/location-finder.js)
   ══════════════════════════════════════ -->
   <section class="section section-dark">
     <div class="container">
-      <div class="locator-shell">
-        <!-- The API loader and store locator are driven by js/location-finder.js -->
-        <gmpx-api-loader
-          key="AIzaSyBlnmn-NqT_J77I1MQ_i7IuT9cDsrAQBps"
-          solution-channel="GMP_QB_locatorplus_v11_cABCDEF">
-        </gmpx-api-loader>
-        <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
+      <!-- Loads the Google Maps JS API (provides google.maps.importLibrary) -->
+      <gmpx-api-loader
+        key="AIzaSyBlnmn-NqT_J77I1MQ_i7IuT9cDsrAQBps"
+        solution-channel="GMP_QB_locatorplus_v11_cABCDEF">
+      </gmpx-api-loader>
+
+      <div class="finder">
+        <div class="finder-panel">
+          <div class="finder-controls">
+            <input id="finder-search" class="finder-search" type="search"
+                   placeholder="Filter by city or name…" aria-label="Filter locations">
+            <button id="finder-near" type="button">📍 Use my location</button>
+          </div>
+          <div id="finder-list" class="finder-list" aria-label="Location list"></div>
+        </div>
+        <div id="finder-map" role="application" aria-label="Map of 24/7 Golf locations"></div>
       </div>
 
       <p class="muted" style="margin-top:var(--space-md);font-size:0.9rem;">
