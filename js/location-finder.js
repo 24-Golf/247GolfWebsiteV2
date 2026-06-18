@@ -20,11 +20,11 @@
 
 const CONFIGURATION = {
   "locations": [
-    { "title": "24/7 Golf - Ludington", "address1": "5756 US-10", "address2": "Ludington, MI 49431, USA", "coords": { "lat": 43.957528203572636, "lng": -86.42327952209014 }, "placeId": "ChIJ6Wm_J1oRHIgRGa5HyEVqipo", "actions": [{ "label": "Book appointment", "defaultUrl": "http://24-7golf.com/booking" }] },
-    { "title": "24/7 Golf - Grand Rapids", "address1": "4255 Alpine Ave NW Ste A", "address2": "Comstock Park, MI 49321, USA", "coords": { "lat": 43.041798348646026, "lng": -85.69027300674593 }, "placeId": "ChIJ-Qj6VGepGYgRHRaYm_eISdc", "actions": [{ "label": "Book appointment", "defaultUrl": "http://24-7golf.com/booking" }] },
-    { "title": "24/7 Golf - Williamsburg", "address1": "6463 US-31", "address2": "Williamsburg, MI 49690, USA", "coords": { "lat": 44.77974381100765, "lng": -85.4969684932541 }, "placeId": "ChIJi2EQLwDRH4gRs54otsYyZhQ", "actions": [{ "label": "Book appointment", "defaultUrl": "http://24-7golf.com/booking" }] },
-    { "title": "24/7 Golf - Dewitt", "address1": "1161 E Clark Rd Ste 136", "address2": "DeWitt, MI 48820, USA", "coords": { "lat": 42.81466649356487, "lng": -84.54158496441804 }, "placeId": "ChIJm2XuCM_tIogRvBZqL_HR0y4", "actions": [{ "label": "Book appointment", "defaultUrl": "http://24-7golf.com/booking" }] },
-    { "title": "24/7 Golf - Haslett", "address1": "2121 Haslett Rd", "address2": "Haslett, MI 48840, USA", "coords": { "lat": 42.74670035597035, "lng": -84.4270352490738 }, "placeId": "ChIJRWHEm1TnIogR8gS666bcjb8", "actions": [{ "label": "Book appointment", "defaultUrl": "http://24-7golf.com/booking" }] },
+    { "title": "24/7 Golf - Ludington", "address1": "5756 US-10", "address2": "Ludington, MI 49431, USA", "coords": { "lat": 43.957528203572636, "lng": -86.42327952209014 }, "placeId": "ChIJ6Wm_J1oRHIgRGa5HyEVqipo", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/ludington" }] },
+    { "title": "24/7 Golf - Grand Rapids", "address1": "4255 Alpine Ave NW Ste A", "address2": "Comstock Park, MI 49321, USA", "coords": { "lat": 43.041798348646026, "lng": -85.69027300674593 }, "placeId": "ChIJ-Qj6VGepGYgRHRaYm_eISdc", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/grand-rapids" }] },
+    { "title": "24/7 Golf - Williamsburg", "address1": "6463 US-31", "address2": "Williamsburg, MI 49690, USA", "coords": { "lat": 44.77974381100765, "lng": -85.4969684932541 }, "placeId": "ChIJi2EQLwDRH4gRs54otsYyZhQ", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/traverse-city" }] },
+    { "title": "24/7 Golf - Dewitt", "address1": "1161 E Clark Rd Ste 136", "address2": "DeWitt, MI 48820, USA", "coords": { "lat": 42.81466649356487, "lng": -84.54158496441804 }, "placeId": "ChIJm2XuCM_tIogRvBZqL_HR0y4", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/lansing" }] },
+    { "title": "24/7 Golf - Haslett", "address1": "2121 Haslett Rd", "address2": "Haslett, MI 48840, USA", "coords": { "lat": 42.74670035597035, "lng": -84.4270352490738 }, "placeId": "ChIJRWHEm1TnIogR8gS666bcjb8", "actions": [{ "label": "Book", "defaultUrl": "https://24-7golf.com/haslett" }] },
     { "title": "24/7 Golf - Traverse City (COMING SOON)", "address1": "972 W South Airport Rd", "address2": "Traverse City, MI 49686, USA", "coords": { "lat": 44.73375354579127, "lng": -85.59453066441803 }, "placeId": "ChIJy7XQJy_NH4gRNPIsaWZcppU" },
     { "title": "24/7 Golf - Standale (COMING SOON)", "address1": "4030 Lake Michigan Dr NW suite b", "address2": "Grand Rapids, MI 49534, USA", "coords": { "lat": 42.971868303512856, "lng": -85.76721983558198 }, "placeId": "Ej00MDMwIExha2UgTWljaGlnYW4gRHIgTlcgc3VpdGUgYiwgR3JhbmQgUmFwaWRzLCBNSSA0OTUzNCwgVVNBIiMaIQoWChQKEgkjC25dfaUZiBEj-PvsHu_dZBIHc3VpdGUgYg" },
     { "title": "24/7 Golf - Kentwood (COMING SOON)", "address1": "6070 Kalamazoo Ave SE", "address2": "Grand Rapids, MI 49508, USA", "coords": { "lat": 42.853196463356284, "lng": -85.62399916441802 }, "placeId": "ChIJkbbgtpi0GYgRwOhdwIVC-pI" },
@@ -133,7 +133,7 @@ async function initLocationFinder() {
         <div style="font-size:13px;line-height:1.4;">${esc(loc.address1)}<br>${esc(loc.address2)}</div>
         <div style="margin-top:8px;display:flex;gap:8px;font-size:13px;">
           <a href="${directionsUrl(loc)}" target="_blank" rel="noopener">Directions</a>
-          ${book ? `<a href="${esc(book)}" target="_blank" rel="noopener">Book a Bay</a>` : ''}
+          ${book ? `<a href="${esc(book)}" target="_blank" rel="noopener">Book</a>` : ''}
         </div>
       </div>`;
   }
@@ -199,7 +199,7 @@ async function initLocationFinder() {
         ${loc.distance != null ? `<div class="loc-card-dist">${loc.distance.toFixed(1)} mi away</div>` : ''}
         <div class="loc-card-actions">
           <a class="btn btn-outline btn-sm" href="${directionsUrl(loc)}" target="_blank" rel="noopener">Directions</a>
-          ${book ? `<a class="btn btn-primary btn-sm" href="${esc(book)}" target="_blank" rel="noopener">Book a Bay</a>` : ''}
+          ${book ? `<a class="btn btn-primary btn-sm" href="${esc(book)}" target="_blank" rel="noopener">Book</a>` : ''}
         </div>`;
       const open = () => select(loc);
       card.addEventListener('click', (e) => { if (e.target.tagName !== 'A') open(); });
