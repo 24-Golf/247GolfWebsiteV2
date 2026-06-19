@@ -29,6 +29,7 @@ To avoid that, every snippet in this guide has been **rewritten to be portable**
 | **Class-name collisions** with the theme | Every class is namespaced (`g247-…`) so it can't clash with WordPress/Elementor classes. |
 | **Fonts** | The required Google Fonts (`Bebas Neue`, `Barlow`, `Barlow Condensed`) are loaded by a `<link>` in the snippet. |
 | **`.reveal` scroll animation needs `main.js`** | Removed — content is visible by default. |
+| **Theme shrinks text** | Font sizes are set in **absolute `px`**, not `rem`. Some themes set the root font-size to `62.5%` (10px), which would shrink any `rem`-based text; `px` is immune. |
 | **Brand colors** | Hard-coded to the design tokens (green `#2ecc71`, gold `#c9a84c`, etc.). |
 
 > **Editing rule of thumb:** treat the snippets in this file as the source of
@@ -88,6 +89,8 @@ WordPress page:
      24/7 GOLF — LUDINGTON "CHOOSE YOUR MEMBERSHIP"
      Paste into an Elementor "HTML" widget.
      Self-contained: no theme CSS or JavaScript required.
+     Font sizes are in absolute px so a theme's root font-size
+     (some themes use 62.5% = 10px) cannot shrink the text.
      Source: pages/ludington.html  (#memberships section)
      ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -100,32 +103,33 @@ WordPress page:
     --g-card:#161a20; --g-dark:#0a0a0a; --g-border:rgba(255,255,255,.07);
     --g-white:#f5f7f2;
     background:var(--g-dark); color:var(--g-white);
-    padding:64px 5vw; font-family:'Barlow',-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    padding:64px 5vw; font-size:16px;
+    font-family:'Barlow',-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   }
   .g247-mem *{ box-sizing:border-box; }
   .g247-mem__inner{ max-width:1200px; margin:0 auto; }
   .g247-mem__head{ text-align:center; margin-bottom:40px; }
   .g247-mem__eyebrow{
     display:inline-flex; align-items:center; gap:10px;
-    font-family:'Barlow Condensed',sans-serif; font-size:.8rem; font-weight:700;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
     letter-spacing:3px; text-transform:uppercase; color:var(--g-green); margin-bottom:14px;
   }
   .g247-mem__eyebrow::before{ content:''; width:28px; height:2px; background:var(--g-green); }
   .g247-mem__title{
-    font-family:'Bebas Neue',sans-serif; font-size:clamp(2.4rem,5vw,4rem);
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,5vw,64px);
     letter-spacing:2px; line-height:1; margin:0 0 16px; color:var(--g-white);
   }
   .g247-mem__lead{
-    max-width:540px; margin:0 auto; color:rgba(245,247,242,.65);
-    font-weight:300; font-size:1.05rem; line-height:1.7;
+    max-width:560px; margin:0 auto; color:rgba(245,247,242,.72);
+    font-weight:400; font-size:19px; line-height:1.7;
   }
   .g247-mem__grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:20px; align-items:stretch;
   }
   .g247-mem__card{
     display:flex; flex-direction:column; background:var(--g-card);
-    border:1px solid var(--g-border); border-radius:8px; padding:24px;
+    border:1px solid var(--g-border); border-radius:8px; padding:26px;
     transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
   }
   .g247-mem__card:hover{
@@ -134,33 +138,33 @@ WordPress page:
   }
   .g247-mem__badges{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
   .g247-mem__tag{
-    display:inline-block; padding:4px 10px; border-radius:20px;
-    font-family:'Barlow Condensed',sans-serif; font-size:.75rem; font-weight:600;
+    display:inline-block; padding:5px 12px; border-radius:20px;
+    font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:600;
     letter-spacing:1px; text-transform:uppercase;
     background:rgba(46,204,113,.10); border:1px solid rgba(46,204,113,.25); color:var(--g-green);
   }
   .g247-mem__tag--gold{ background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.30); color:var(--g-gold); }
-  .g247-mem__tag--muted{ background:rgba(138,144,128,.10); border-color:rgba(138,144,128,.20); color:#8a9080; }
+  .g247-mem__tag--muted{ background:rgba(138,144,128,.10); border-color:rgba(138,144,128,.20); color:#a8ad9e; }
   .g247-mem__name{
-    font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:700;
+    font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700;
     letter-spacing:.5px; text-transform:uppercase; margin:0 0 8px; color:var(--g-white);
   }
-  .g247-mem__desc{ font-size:.9rem; font-weight:300; color:rgba(245,247,242,.6); line-height:1.55; margin:0 0 18px; }
-  .g247-mem__features{ list-style:none; margin:0 0 22px; padding:0; flex:1 1 auto; }
+  .g247-mem__desc{ font-size:17px; font-weight:400; color:rgba(245,247,242,.7); line-height:1.55; margin:0 0 18px; }
+  .g247-mem__features{ list-style:none; margin:0 0 24px; padding:0; flex:1 1 auto; }
   .g247-mem__features li{
-    position:relative; padding-left:26px; margin-bottom:11px;
-    font-size:.9rem; color:rgba(245,247,242,.78); line-height:1.45;
+    position:relative; padding-left:28px; margin-bottom:12px;
+    font-size:17px; color:rgba(245,247,242,.85); line-height:1.5;
   }
   .g247-mem__features li::before{
-    content:''; position:absolute; left:0; top:3px; width:16px; height:16px; border-radius:50%;
+    content:''; position:absolute; left:0; top:4px; width:18px; height:18px; border-radius:50%;
     background:var(--g-green);
-    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/13px no-repeat;
-    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/13px no-repeat;
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/15px no-repeat;
+    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/15px no-repeat;
   }
   .g247-mem__btn{
     margin-top:auto; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    padding:13px 28px; border-radius:4px; font-family:'Barlow Condensed',sans-serif;
-    font-size:1rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+    padding:14px 28px; border-radius:4px; font-family:'Barlow Condensed',sans-serif;
+    font-size:17px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
     text-decoration:none; background:var(--g-green); color:#0a0a0a; border:2px solid var(--g-green);
     transition:background .25s ease, border-color .25s ease;
   }
@@ -265,6 +269,11 @@ WordPress page:
 
 ### Customizing
 
+- **Text size:** all copy is in absolute `px`, so it will not be shrunk by your
+  theme's root font-size. To scale a piece up/down, edit its `font-size` (e.g.
+  `.g247-mem__desc` and `.g247-mem__features li` are `17px`; the heading is
+  `.g247-mem__title` `clamp(40px,5vw,64px)`; the button is `.g247-mem__btn`
+  `17px`).
 - **Blend with your own background:** the snippet ships with a dark band
   (`background:var(--g-dark)` on `.g247-mem`). If your Elementor section already
   has a dark background, set it to `background:transparent;` in the `.g247-mem`
