@@ -48,7 +48,8 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 │   ├── faq.html           ← FAQ page
 │   └── <slug>.html        ← Per-location pages — GENERATED, do not hand-edit
 ├── scripts/
-│   └── build-location-pages.cjs ← Location data + page generator
+│   ├── build-location-pages.cjs ← Location data + page generator
+│   └── fetch-courtreserve-memberships.cjs ← Pull live membership data from CourtReserve
 ├── components/
 │   ├── nav.html           ← Shared navigation snippet
 │   ├── footer.html        ← Shared footer snippet

@@ -69,12 +69,14 @@ To avoid that, every snippet in this guide has been **rewritten to be portable**
 
 **Source:** `pages/ludington.html` → `#memberships` section
 **Target page:** Ludington
-**Data source:** CourtReserve org `10840` (24-7 Golf)
+**Data source:** CourtReserve org `10840` live public list — refresh with
+`node scripts/fetch-courtreserve-memberships.cjs 10840 Ludington`
 
 A responsive grid of the six Ludington memberships. Each card shows the plan
 name, a category badge (Individual / Family) plus any "effective to" date, the
-feature list, and a **Learn More & Join** button that deep-links to that exact
-membership's public signup page on CourtReserve.
+**live price** (e.g. $95 / Monthly — "Free" in green for the no-cost plans),
+the feature list, and a **Learn More & Join** button that deep-links to that
+exact membership's public signup page on CourtReserve.
 
 ### Preview
 
@@ -152,6 +154,15 @@ WordPress page:
     font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700;
     letter-spacing:.5px; text-transform:uppercase; margin:0 0 8px; color:var(--g-white);
   }
+  .g247-mem__price{
+    font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:1px;
+    line-height:1; color:var(--g-white); margin:0 0 10px;
+  }
+  .g247-mem__price span{
+    font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase; color:#a8ad9e;
+  }
+  .g247-mem__price--free{ color:var(--g-green); }
   .g247-mem__desc{ font-size:17px; font-weight:400; color:rgba(245,247,242,.7); line-height:1.55; margin:0 0 18px; }
   .g247-mem__features{ list-style:none; margin:0 0 24px; padding:0; flex:1 1 auto; }
   .g247-mem__features li{
@@ -187,6 +198,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag">Individual</span></div>
         <h3 class="g247-mem__name">Player</h3>
+        <div class="g247-mem__price g247-mem__price--free">Free</div>
         <p class="g247-mem__desc">Default account type with Ludington as your preferred location.</p>
         <ul class="g247-mem__features">
           <li>Free membership — Home Location: Ludington</li>
@@ -201,6 +213,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag g247-mem__tag--gold">Family</span></div>
         <h3 class="g247-mem__name">Family Player</h3>
+        <div class="g247-mem__price g247-mem__price--free">Free</div>
         <p class="g247-mem__desc">Default family membership.</p>
         <ul class="g247-mem__features">
           <li>Add existing family members — contact ludington@24-7golf.com</li>
@@ -213,6 +226,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag">Individual</span><span class="g247-mem__tag g247-mem__tag--muted">Effective to 9/30/2026</span></div>
         <h3 class="g247-mem__name">Summer UNLIMITED PLAY</h3>
+        <div class="g247-mem__price">$95<span> / Monthly</span></div>
         <p class="g247-mem__desc">Unlimited free play. Membership cannot be canceled.</p>
         <ul class="g247-mem__features">
           <li>Home Location: Ludington</li>
@@ -227,6 +241,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag">Individual</span><span class="g247-mem__tag g247-mem__tag--muted">Effective to 8/31/2026</span></div>
         <h3 class="g247-mem__name">Summer Membership</h3>
+        <div class="g247-mem__price">$75<span> / Monthly</span></div>
         <p class="g247-mem__desc">Summer membership for golf and pickleball.</p>
         <ul class="g247-mem__features">
           <li>Home Location: Ludington</li>
@@ -241,6 +256,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag">Individual</span></div>
         <h3 class="g247-mem__name">Pickleball Membership</h3>
+        <div class="g247-mem__price">$30<span> / Annually</span></div>
         <p class="g247-mem__desc">Deep discounts for year-round indoor pickleball play.</p>
         <ul class="g247-mem__features">
           <li>Only valid at our Ludington location</li>
@@ -255,6 +271,7 @@ WordPress page:
       <article class="g247-mem__card">
         <div class="g247-mem__badges"><span class="g247-mem__tag g247-mem__tag--gold">Family</span></div>
         <h3 class="g247-mem__name">Family Annual Membership</h3>
+        <div class="g247-mem__price">$2,100<span> / Annually</span></div>
         <p class="g247-mem__desc">Annual family membership — Ludington pickleball membership included.</p>
         <ul class="g247-mem__features">
           <li>Home Location: Ludington</li>
@@ -303,10 +320,12 @@ WordPress page:
 
 ### Notes
 
-- **Pricing:** CourtReserve's public feed does not expose a single recurring
-  price per plan, so the cards route buyers to CourtReserve for exact dues and
-  checkout (some rate details are shown inline in the feature lists). This keeps
-  prices from going stale on WordPress.
+- **Pricing:** prices shown on the cards come from CourtReserve's live public
+  membership list (fetched with
+  `node scripts/fetch-courtreserve-memberships.cjs 10840 Ludington` on
+  2026-07-15). Checkout and exact dues still happen on CourtReserve. **If a
+  price changes in CourtReserve, re-run the script and refresh this snippet**
+  (the `membership-snippet` skill does this in one step).
 - **Keep in sync:** this snippet mirrors the `#memberships` section of
   `pages/ludington.html`. If you regenerate the location pages
   (`node scripts/build-location-pages.cjs`) after editing membership data,

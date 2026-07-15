@@ -63,6 +63,15 @@
     font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700;
     letter-spacing:.5px; text-transform:uppercase; margin:0 0 8px; color:var(--g-white);
   }
+  .g247-mem__price{
+    font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:1px;
+    line-height:1; color:var(--g-white); margin:0 0 10px;
+  }
+  .g247-mem__price span{
+    font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase; color:#a8ad9e;
+  }
+  .g247-mem__price--free{ color:var(--g-green); }
   .g247-mem__desc{ font-size:17px; font-weight:400; color:rgba(245,247,242,.7); line-height:1.55; margin:0 0 18px; }
   .g247-mem__features{ list-style:none; margin:0 0 24px; padding:0; flex:1 1 auto; }
   .g247-mem__features li{
@@ -101,12 +110,18 @@
                         plus optionally
                         <span class="g247-mem__tag g247-mem__tag--muted">Effective to {{DATE}}</span>
            {{NAME}}, {{DESC}}: from the data file (HTML-escaped)
+           {{PRICE}}: from CourtReserve — paid plan:
+                        <div class="g247-mem__price">$95<span> / Monthly</span></div>
+                      free plan:
+                        <div class="g247-mem__price g247-mem__price--free">Free</div>
+                      multiple price options: join with " · " inside one <span>
            {{FEATURES}}: one <li> per bullet (HTML-escaped)
            {{MEMBERSHIP_ID}}: the plan's CourtReserve membershipId
       ─────────────────────────────────────────────────────────── -->
       <article class="g247-mem__card">
         <div class="g247-mem__badges">{{BADGES}}</div>
         <h3 class="g247-mem__name">{{NAME}}</h3>
+        {{PRICE}}
         <p class="g247-mem__desc">{{DESC}}</p>
         <ul class="g247-mem__features">
           {{FEATURES}}

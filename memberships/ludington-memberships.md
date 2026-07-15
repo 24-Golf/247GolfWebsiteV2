@@ -1,10 +1,13 @@
 # 24/7 Golf Membership Data — Ludington
 
-> Completed example of the membership data form
-> (`.claude/skills/membership-snippet/membership-data-template.md`).
-> This data drives the Ludington membership snippet in
-> `WORDPRESSDEPLOYMENT.md` and the `#memberships` section of
-> `pages/ludington.html` (via `scripts/build-location-pages.cjs`).
+> Completed example of a membership data file. This data drives the
+> Ludington membership snippet in `WORDPRESSDEPLOYMENT.md` and the
+> `#memberships` section of `pages/ludington.html` (via
+> `scripts/build-location-pages.cjs`).
+>
+> **Verified against CourtReserve's live public list on 2026-07-15** via
+> `node scripts/fetch-courtreserve-memberships.cjs 10840 Ludington`
+> (IDs, prices, badges, and effective dates all match).
 
 ## Location
 
@@ -18,6 +21,7 @@
 ## Membership: Player
 
 - **CourtReserve membership ID:** 225646
+- **Price:** Free
 - **Type:** Individual
 - **One-line description:** Default account type with Ludington as your preferred location.
 - **Features:**
@@ -32,6 +36,7 @@
 ## Membership: Family Player
 
 - **CourtReserve membership ID:** 250843
+- **Price:** Free
 - **Type:** Family
 - **One-line description:** Default family membership.
 - **Features:**
@@ -44,6 +49,7 @@
 ## Membership: Summer UNLIMITED PLAY
 
 - **CourtReserve membership ID:** 250923
+- **Price:** $95 / Monthly
 - **Type:** Individual
 - **Offer ends:** 9/30/2026
 - **One-line description:** Unlimited free play. Membership cannot be canceled.
@@ -59,6 +65,7 @@
 ## Membership: Summer Membership
 
 - **CourtReserve membership ID:** 251124
+- **Price:** $75 / Monthly
 - **Type:** Individual
 - **Offer ends:** 8/31/2026
 - **One-line description:** Summer membership for golf and pickleball.
@@ -74,6 +81,7 @@
 ## Membership: Pickleball Membership
 
 - **CourtReserve membership ID:** 212220
+- **Price:** $30 / Annually
 - **Type:** Individual
 - **One-line description:** Deep discounts for year-round indoor pickleball play.
 - **Features:**
@@ -88,6 +96,7 @@
 ## Membership: Family Annual Membership
 
 - **CourtReserve membership ID:** 223201
+- **Price:** $2,100 / Annually
 - **Type:** Family
 - **One-line description:** Annual family membership — Ludington pickleball membership included.
 - **Features:**

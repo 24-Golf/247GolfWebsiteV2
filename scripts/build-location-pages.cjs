@@ -39,20 +39,24 @@ const LOCATIONS = [
   { slug: 'grand-haven',  name: 'Grand Haven',  city: 'Grand Haven, MI', address1: '1830 172nd Ave Ste A',       address2: 'Grand Haven, MI 49417',  placeId: 'EjAxODMwIDE3Mm5kIEF2ZSBzdGUgYSwgR3JhbmQgSGF2ZW4sIE1JIDQ5NDE3LCBVU0EiIRofChYKFAoSCWNRVEoogRmIET80wZOg0ad3EgVzdGUgYQ', comingSoon: true, pickleball: false },
 ];
 
-/* ── Ludington memberships (from CourtReserve org 10840) ───────── */
+/* ── Ludington memberships (from CourtReserve org 10840) ─────────
+   Prices verified against CourtReserve's live public list 2026-07-15:
+       node scripts/fetch-courtreserve-memberships.cjs 10840 Ludington
+   price omitted = Free. Keep memberships/ludington-memberships.md and
+   the WORDPRESSDEPLOYMENT.md snippet in sync when editing.           */
 const ORG_ID = 10840;
 const LUDINGTON_MEMBERSHIPS = [
   { id: 225646, name: 'Player',                  badge: 'Individual', desc: 'Default account type with Ludington as your preferred location.',
     features: ['Free membership — Home Location: Ludington', 'Golf — pricing is per bay; bring your friends and pay one rate', 'Weekdays before 5pm — $35.00 / hour / bay', 'After 5pm & weekends — $50.00 / hour / bay', 'Additional benefits included'] },
   { id: 250843, name: 'Family Player',           badge: 'Family',     desc: 'Default family membership.',
     features: ['Add existing family members — contact ludington@24-7golf.com', 'Reserve up to 30 days in advance', 'Cancel reservations up to 4 hours in advance without penalty'] },
-  { id: 250923, name: 'Summer UNLIMITED PLAY',   badge: 'Individual', eff: 'Effective to 9/30/2026', desc: 'Unlimited free play. Membership cannot be canceled.',
+  { id: 250923, name: 'Summer UNLIMITED PLAY',   badge: 'Individual', eff: 'Effective to 9/30/2026', price: '$95', per: 'Monthly', desc: 'Unlimited free play. Membership cannot be canceled.',
     features: ['Home Location: Ludington', '2025 price lock — lock in 2025 winter pricing', 'Contract runs April 1 – September 30', 'UNLIMITED FREE PLAY (home location), limit 1 open booking, no guest fee', 'Additional benefits included'] },
-  { id: 251124, name: 'Summer Membership',       badge: 'Individual', eff: 'Effective to 8/31/2026', desc: 'Summer membership for golf and pickleball.',
+  { id: 251124, name: 'Summer Membership',       badge: 'Individual', eff: 'Effective to 8/31/2026', price: '$75', per: 'Monthly', desc: 'Summer membership for golf and pickleball.',
     features: ['Home Location: Ludington', '60 minutes per day FREE play (golf or pickleball), limit 2 open bookings', '$5.00 off standard golf & pickleball rates', '$20.00 guest fee — golf', 'Additional benefits included'] },
-  { id: 212220, name: 'Pickleball Membership',   badge: 'Individual', desc: 'Deep discounts for year-round indoor pickleball play.',
+  { id: 212220, name: 'Pickleball Membership',   badge: 'Individual', price: '$30', per: 'Annually', desc: 'Deep discounts for year-round indoor pickleball play.',
     features: ['Only valid at our Ludington location', '$20.00 per hour for the court — no charge for additional players', '$10.00 per hour summer rate (Apr 1 – Sep 30)', 'Reserve up to 30 days in advance', 'Cancel up to 4 hours in advance without penalty'] },
-  { id: 223201, name: 'Family Annual Membership',badge: 'Family',     desc: 'Annual family membership — Ludington pickleball membership included.',
+  { id: 223201, name: 'Family Annual Membership',badge: 'Family',     price: '$2,100', per: 'Annually', desc: 'Annual family membership — Ludington pickleball membership included.',
     features: ['Home Location: Ludington', 'Max 3 members per family', '90 minutes per day FREE play (home location)', '90 minutes per day $25.00 per session at all other locations', 'Additional benefits included'] },
 ];
 
@@ -224,11 +228,15 @@ function membershipsSection() {
   const cards = LUDINGTON_MEMBERSHIPS.map((m) => {
     const badge = `<span class="tag ${m.badge === 'Family' ? 'tag-gold' : ''}">${esc(m.badge)}</span>`;
     const eff = m.eff ? `<span class="tag tag-muted">${esc(m.eff)}</span>` : '';
+    const price = m.price
+      ? `<div class="mem-card-price">${esc(m.price)}<span> / ${esc(m.per)}</span></div>`
+      : '<div class="mem-card-price mem-card-price-free">Free</div>';
     const feats = m.features.map((f) => `              <li>${esc(f)}</li>`).join('\n');
     return `
         <article class="mem-card reveal">
           <div class="mem-card-badges">${badge}${eff}</div>
           <h3 class="mem-card-title">${esc(m.name)}</h3>
+          ${price}
           <p class="mem-card-desc">${esc(m.desc)}</p>
           <ul class="mem-card-features">
 ${feats}
@@ -569,6 +577,9 @@ function pageStyles(loc) {
     .mem-card:hover { border-color:var(--border-hover); transform:translateY(-4px); box-shadow:var(--shadow-card); }
     .mem-card-badges { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
     .mem-card-title { font-family:var(--font-condensed); font-size:1.3rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:8px; }
+    .mem-card-price { font-family:var(--font-display); font-size:2rem; letter-spacing:1px; line-height:1; margin-bottom:10px; }
+    .mem-card-price span { font-family:var(--font-condensed); font-size:0.9rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
+    .mem-card-price-free { color:var(--green); }
     .mem-card-desc { font-size:0.9rem; font-weight:300; color:rgba(255,255,255,0.6); line-height:1.55; margin-bottom:18px; }
     .mem-card-features { list-style:none; padding:0; margin:0 0 22px; flex:1 1 auto; }
     .mem-card-features li { position:relative; padding:0 0 0 26px; margin-bottom:11px; font-size:0.9rem; color:rgba(255,255,255,0.78); line-height:1.45; }
