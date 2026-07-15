@@ -16,8 +16,10 @@ distance sort. Locations are **hard-coded** in the JavaScript for now.
 > ([ROADMAP.md §3–4](../ROADMAP.md)) replaces the hard-coded list with a
 > data-driven store-locator that reads from a Locations custom post type.
 
-**What to paste:** the single ready-made file
-[`/LocationFinder/wordpress-embed.html`](../LocationFinder/wordpress-embed.html).
+**What to paste:** the snippet in
+[`/LOCATIONFINDERDEPLOYMENT.md`](../LOCATIONFINDERDEPLOYMENT.md) — the paste
+source of truth (also kept as the raw file
+[`/LocationFinder/wordpress-embed.html`](../LocationFinder/wordpress-embed.html)).
 It contains everything — the Google library loader, the styles (namespaced under
 `#tfgolf-finder` so they can't clash with your theme), the markup, and the
 locations + logic. No other files from this repo are needed.

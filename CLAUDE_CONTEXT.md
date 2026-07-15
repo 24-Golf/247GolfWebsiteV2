@@ -84,9 +84,12 @@ js/main.js                ← Scroll reveal, mobile nav
 js/location-finder.js     ← Hard-coded locations + finder logic
 components/nav.html       ← Shared nav snippet
 components/footer.html    ← Shared footer snippet
-LocationFinder/wordpress-embed.html ← Paste-ready finder for WordPress
+LOCATIONFINDERDEPLOYMENT.md ← Location Finder paste source of truth (WordPress)
+LocationFinder/wordpress-embed.html ← Same snippet as a raw file (kept identical)
 LocationFinder/           ← (rest is the superseded Quick Builder export)
 WORDPRESSDEPLOYMENT.md    ← Paste-ready Elementor section snippets
+memberships/<slug>-memberships.md ← Per-location membership data (owner-editable)
+.claude/skills/membership-snippet/ ← Skill: membership data → brand-styled snippet
 docs/location-finder-wordpress.md ← Put the finder on the WP page
 docs/elementor-playbook.md ← How we build: Claude Code + Elementor One/AI/Angie
 ```

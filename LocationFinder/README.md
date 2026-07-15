@@ -1,5 +1,10 @@
 # LocationFinder
 
+> **Deploying or changing the finder on WordPress? Use
+> [`/LOCATIONFINDERDEPLOYMENT.md`](../LOCATIONFINDERDEPLOYMENT.md)** — the
+> paste source of truth with the change workflow. `wordpress-embed.html` here
+> is kept identical to that snippet.
+
 ## Deploy to WordPress → use `wordpress-embed.html`
 
 **[`wordpress-embed.html`](wordpress-embed.html)** is the ready-to-paste,

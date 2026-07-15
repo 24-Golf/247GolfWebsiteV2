@@ -19,6 +19,8 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 | **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** | Colors, fonts, spacing, components. Read before building anything visual. |
 | **[CLAUDE_CONTEXT.md](CLAUDE_CONTEXT.md)** | Paste into Claude at the start of a session for instant project context. |
 | **[WORDPRESSDEPLOYMENT.md](WORDPRESSDEPLOYMENT.md)** | **The snippet library** — paste-ready, self-contained Elementor sections + step-by-step instructions. |
+| **[LOCATIONFINDERDEPLOYMENT.md](LOCATIONFINDERDEPLOYMENT.md)** | **The Location Finder's paste source of truth** — the full WordPress snippet + change workflow for the /locations page. |
+| **[memberships/](memberships/README.md)** | Per-location membership data files (owner-editable) + the `membership-snippet` skill that turns them into brand-styled snippets. |
 | **[docs/elementor-playbook.md](docs/elementor-playbook.md)** | How we build: this repo + Elementor One / Elementor AI / Angie — who does what. |
 | **[docs/location-finder-wordpress.md](docs/location-finder-wordpress.md)** | How to put the Google Maps location finder on the WordPress page (interim, hard-coded). |
 | **[docs/claude-code-wordpress-setup.md](docs/claude-code-wordpress-setup.md)** | Connecting Claude Code to the WordPress site via MCP (optional; staging only). |

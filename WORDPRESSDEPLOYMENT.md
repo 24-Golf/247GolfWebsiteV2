@@ -61,6 +61,7 @@ To avoid that, every snippet in this guide has been **rewritten to be portable**
 - [Ludington → "Choose Your Membership"](#ludington--choose-your-membership)
 - [Ludington → "Gift Cards" (GiftUp)](#ludington--gift-cards-giftup)
 - [Any page → "FAQ Accordion"](#any-page--faq-accordion)
+- [Coming-soon locations → full page content](#coming-soon-locations--full-page-content)
 
 ---
 
@@ -576,3 +577,244 @@ open items get a green border and the plus icon rotates to an ×.
   `<!-- CONFIRM -->` notes (max players per bay, loaner clubs, gift cards at
   other locations) — those questions are omitted here until confirmed. Add
   them once you've verified the facts.
+
+---
+
+## Coming-soon locations → full page content
+
+**Source:** `pages/<slug>.html` coming-soon pages (from `scripts/build-location-pages.cjs`)
+**Target pages:** Traverse City, Standale, Kentwood, Rockford, Grand Haven
+
+One snippet covers **all five** coming-soon locations: it's the entire content
+of a coming-soon page (hero with gold "Coming Soon" badge, address, "What to
+Expect" cards, and a closing CTA pointing players at the open locations).
+Create the WordPress page (e.g. `/traverse-city`), paste the snippet into a
+single Elementor HTML widget, and replace **four values**.
+
+### Step 1 — Copy the snippet, then replace these four values
+
+Search the pasted snippet for each `%%TOKEN%%` and replace it (each appears
+once or twice):
+
+| Token | Meaning | Example |
+|---|---|---|
+| `%%NAME%%` | Location name | `Traverse City` |
+| `%%CITY%%` | City, state | `Traverse City, MI` |
+| `%%ADDRESS%%` | Street address | `972 W South Airport Rd` |
+| `%%DIRECTIONS_URL%%` | Google Maps directions link | see table in Step 2 |
+
+### Step 2 — Values for each location
+
+| Location | `%%NAME%%` | `%%CITY%%` | `%%ADDRESS%%` |
+|---|---|---|---|
+| Traverse City | `Traverse City` | `Traverse City, MI` | `972 W South Airport Rd` |
+| Standale | `Standale` | `Grand Rapids, MI` | `4030 Lake Michigan Dr NW Ste B` |
+| Kentwood | `Kentwood` | `Grand Rapids, MI` | `6070 Kalamazoo Ave SE` |
+| Rockford | `Rockford` | `Rockford, MI` | `515 E Division St NE` |
+| Grand Haven | `Grand Haven` | `Grand Haven, MI` | `1830 172nd Ave Ste A` |
+
+`%%DIRECTIONS_URL%%` per location (copy the whole line):
+
+- **Traverse City:**
+  `https://www.google.com/maps/dir/?api=1&destination=972%20W%20South%20Airport%20Rd%2C%20Traverse%20City%2C%20MI%2049686&destination_place_id=ChIJy7XQJy_NH4gRNPIsaWZcppU`
+- **Standale:**
+  `https://www.google.com/maps/dir/?api=1&destination=4030%20Lake%20Michigan%20Dr%20NW%20Ste%20B%2C%20Grand%20Rapids%2C%20MI%2049534&destination_place_id=Ej00MDMwIExha2UgTWljaGlnYW4gRHIgTlcgc3VpdGUgYiwgR3JhbmQgUmFwaWRzLCBNSSA0OTUzNCwgVVNBIiMaIQoWChQKEgkjC25dfaUZiBEj-PvsHu_dZBIHc3VpdGUgYg`
+- **Kentwood:**
+  `https://www.google.com/maps/dir/?api=1&destination=6070%20Kalamazoo%20Ave%20SE%2C%20Grand%20Rapids%2C%20MI%2049508&destination_place_id=ChIJkbbgtpi0GYgRwOhdwIVC-pI`
+- **Rockford:**
+  `https://www.google.com/maps/dir/?api=1&destination=515%20E%20Division%20St%20NE%2C%20Rockford%2C%20MI%2049341&destination_place_id=ChIJgXcLMBr_GIgRlVdml3F5rcc`
+- **Grand Haven:**
+  `https://www.google.com/maps/dir/?api=1&destination=1830%20172nd%20Ave%20Ste%20A%2C%20Grand%20Haven%2C%20MI%2049417&destination_place_id=EjAxODMwIDE3Mm5kIEF2ZSBzdGUgYSwgR3JhbmQgSGF2ZW4sIE1JIDQ5NDE3LCBVU0EiIRofChYKFAoSCWNRVEoogRmIET80wZOg0ad3EgVzdGUgYQ`
+
+### Step 3 — Paste this into an Elementor HTML widget
+
+```html
+<!-- ============================================================
+     24/7 GOLF — COMING SOON LOCATION PAGE
+     Paste into an Elementor "HTML" widget, then replace the four
+     placeholders (NAME, CITY, ADDRESS, DIRECTIONS_URL — each wrapped
+     in double percent signs) using the tables in WORDPRESSDEPLOYMENT.md.
+     When a search for percent-percent finds nothing, you're done.
+     Self-contained: no theme CSS or JavaScript required.
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  .g247-soon{
+    --g-green:#2ecc71; --g-green-dim:#1a9e50; --g-gold:#c9a84c;
+    --g-card:#161a20; --g-dark:#0a0a0a; --g-border:rgba(255,255,255,.07);
+    --g-white:#f5f7f2;
+    background:var(--g-dark); color:var(--g-white); font-size:16px;
+    font-family:'Barlow',-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  .g247-soon *{ box-sizing:border-box; }
+
+  /* Hero */
+  .g247-soon__hero{
+    position:relative; text-align:center; padding:110px 5vw 80px; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% -20%, rgba(201,168,76,.10) 0%, transparent 55%),
+      linear-gradient(rgba(46,204,113,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,204,113,.04) 1px, transparent 1px),
+      var(--g-dark);
+    background-size:auto, 60px 60px, 60px 60px, auto;
+  }
+  .g247-soon__eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:3px; text-transform:uppercase; color:var(--g-gold); margin-bottom:20px;
+  }
+  .g247-soon__eyebrow::before, .g247-soon__eyebrow::after{
+    content:''; width:32px; height:2px; background:currentColor;
+  }
+  .g247-soon__title{
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,8vw,104px);
+    letter-spacing:2px; line-height:.95; margin:0 0 8px; color:var(--g-white);
+  }
+  .g247-soon__title em{ font-style:normal; color:var(--g-green); display:block; }
+  .g247-soon__sub{
+    max-width:560px; margin:18px auto 32px; color:rgba(245,247,242,.75);
+    font-weight:300; font-size:19px; line-height:1.65;
+  }
+  .g247-soon__actions{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .g247-soon__btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:14px 32px; border-radius:4px; font-family:'Barlow Condensed',sans-serif;
+    font-size:17px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+    text-decoration:none; transition:all .25s ease;
+  }
+  .g247-soon__btn--primary{ background:var(--g-green); color:#0a0a0a; border:2px solid var(--g-green); }
+  .g247-soon__btn--primary:hover{ background:var(--g-green-dim); border-color:var(--g-green-dim); color:#0a0a0a; }
+  .g247-soon__btn--outline{ background:transparent; color:var(--g-white); border:2px solid rgba(255,255,255,.3); }
+  .g247-soon__btn--outline:hover{ border-color:var(--g-green); color:var(--g-green); }
+
+  /* What to expect */
+  .g247-soon__section{ padding:64px 5vw; }
+  .g247-soon__inner{ max-width:1200px; margin:0 auto; }
+  .g247-soon__head{ text-align:center; margin-bottom:40px; }
+  .g247-soon__label{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:3px; text-transform:uppercase; color:var(--g-green); margin-bottom:14px;
+  }
+  .g247-soon__label::before{ content:''; width:28px; height:2px; background:var(--g-green); }
+  .g247-soon__h2{
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(38px,5vw,60px);
+    letter-spacing:2px; line-height:1; margin:0; color:var(--g-white);
+  }
+  .g247-soon__grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;
+  }
+  .g247-soon__card{
+    background:var(--g-card); border:1px solid var(--g-border); border-radius:8px;
+    padding:26px; transition:border-color .25s ease, transform .25s ease;
+  }
+  .g247-soon__card:hover{ border-color:rgba(46,204,113,.3); transform:translateY(-3px); }
+  .g247-soon__icon{ font-size:26px; margin-bottom:10px; }
+  .g247-soon__card h3{
+    font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700;
+    letter-spacing:1px; text-transform:uppercase; margin:0 0 6px; color:var(--g-white);
+  }
+  .g247-soon__card p{ font-size:16px; font-weight:400; color:rgba(245,247,242,.6); line-height:1.6; margin:0; }
+
+  /* Closing CTA */
+  .g247-soon__cta{
+    text-align:center; padding:72px 5vw;
+    background:linear-gradient(135deg,#0d200f 0%, #0a0a0a 100%);
+  }
+  .g247-soon__cta .g247-soon__h2 em{ font-style:normal; color:var(--g-green); }
+  .g247-soon__cta p{
+    font-size:17px; font-weight:300; color:rgba(245,247,242,.6);
+    max-width:480px; margin:14px auto 30px; line-height:1.7;
+  }
+  @media (max-width:768px){
+    .g247-soon__hero{ padding:80px 6vw 56px; }
+    .g247-soon__section, .g247-soon__cta{ padding:48px 6vw; }
+  }
+</style>
+
+<div class="g247-soon">
+
+  <!-- HERO -->
+  <header class="g247-soon__hero">
+    <div class="g247-soon__eyebrow">Coming Soon &middot; %%CITY%%</div>
+    <h1 class="g247-soon__title">24/7 Golf<em>%%NAME%%</em></h1>
+    <p class="g247-soon__sub">
+      We're bringing Trackman iO indoor golf to %%CITY%%. A brand-new 24/7 Golf
+      is on the way at %%ADDRESS%% — open 24 hours, no tee times, year-round play.
+    </p>
+    <div class="g247-soon__actions">
+      <a class="g247-soon__btn g247-soon__btn--primary" href="https://www.24-7golf.com/locations">Find an Open Location</a>
+      <a class="g247-soon__btn g247-soon__btn--outline" href="%%DIRECTIONS_URL%%" target="_blank" rel="noopener">View on Map</a>
+    </div>
+  </header>
+
+  <!-- WHAT TO EXPECT -->
+  <section class="g247-soon__section">
+    <div class="g247-soon__inner">
+      <div class="g247-soon__head">
+        <div class="g247-soon__label">What to Expect</div>
+        <h2 class="g247-soon__h2">Indoor Golf, Coming to %%NAME%%</h2>
+      </div>
+      <div class="g247-soon__grid">
+        <div class="g247-soon__card">
+          <div class="g247-soon__icon">🎯</div>
+          <h3>Trackman iO Bays</h3>
+          <p>Tour-grade launch monitors — accurate data on every swing.</p>
+        </div>
+        <div class="g247-soon__card">
+          <div class="g247-soon__icon">🕐</div>
+          <h3>Open 24 Hours</h3>
+          <p>App-unlocked bays, available any time of day or night.</p>
+        </div>
+        <div class="g247-soon__card">
+          <div class="g247-soon__icon">⛳</div>
+          <h3>250+ Courses</h3>
+          <p>Play world-famous courses, practice ranges, games and more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section class="g247-soon__cta">
+    <h2 class="g247-soon__h2">Can't Wait? Play at a Nearby <em>24/7 Golf</em></h2>
+    <p>Our other Michigan locations are open right now. Create a free account and book today.</p>
+    <div class="g247-soon__actions">
+      <a class="g247-soon__btn g247-soon__btn--primary" href="https://www.24-7golf.com/locations">Find a Location</a>
+    </div>
+  </section>
+
+</div>
+```
+
+### Customizing
+
+- **When the location opens:** delete this widget's content and replace it
+  with the full location page content (hero + booking + memberships — ask
+  Claude to generate it), update the finder
+  (`LOCATIONFINDERDEPLOYMENT.md` — remove `(COMING SOON)` from the title and
+  add the Book action), and regenerate the repo prototype.
+- **Add a "Get the App" button:** duplicate one of the `g247-soon__btn`
+  anchors in the hero and point it at your app page or app-store links.
+- **Notify-me capture:** an Elementor Pro **Form** widget dropped directly
+  below this HTML widget works well ("Be first in — get notified when
+  %%NAME%% opens"); no changes to the snippet needed.
+- **Nav/footer:** this snippet is only the page *content* — your site's
+  normal header and footer templates wrap it automatically.
+
+### Notes
+
+- **Zero JavaScript** — nothing can be stripped by the HTML widget.
+- The gold badge/accent marks "coming soon" status (matches the finder's
+  gold pills); everything else stays in the standard dark/green brand style.
+- **SEO:** set the WordPress page title to
+  `%%NAME%% (Coming Soon) — 24/7 Golf` and the meta description to
+  `24/7 Golf is coming soon to %%CITY%%. Trackman iO indoor golf bays, open
+  24 hours. Find another location or get the app.` (matches the repo
+  prototype's meta).
+- Mirrors the coming-soon pages generated by
+  `scripts/build-location-pages.cjs` — if that template changes, refresh this
+  snippet.
