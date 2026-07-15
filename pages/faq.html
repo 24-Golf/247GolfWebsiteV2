@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — 24/7 Golf | Indoor Golf Questions Answered</title>
+  <meta name="description" content="Answers to common questions about 24/7 Golf — booking a Trackman iO bay, 24-hour app access, pricing, memberships, gift cards and pickleball.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    /* FAQ page styles */
+    .faq-hero {
+      padding: 180px 5vw 64px;
+      text-align: center;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 50% -20%, rgba(46,204,113,0.10) 0%, transparent 60%),
+        var(--black);
+    }
+    .faq-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-condensed); font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--green);
+      margin-bottom: 18px;
+    }
+    .faq-eyebrow::before, .faq-eyebrow::after {
+      content: ''; display: block; width: 32px; height: 2px; background: currentColor;
+    }
+    .faq-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      letter-spacing: 2px; line-height: 1; margin-bottom: 16px;
+    }
+    .faq-hero h1 em { font-style: normal; color: var(--green); }
+    .faq-hero p {
+      font-size: 1.05rem; font-weight: 300; color: rgba(255,255,255,0.65);
+      max-width: 520px; margin: 0 auto; line-height: 1.7;
+    }
+
+    .faq-wrap { max-width: 860px; margin: 0 auto; }
+    .faq-group { margin-bottom: var(--space-xl); }
+    .faq-group-title {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-condensed); font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--green);
+      margin-bottom: var(--space-sm);
+    }
+    .faq-group-title::before { content: ''; display: block; width: 28px; height: 2px; background: currentColor; }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color var(--transition-base);
+    }
+    .faq-item[open] { border-color: rgba(46,204,113,0.3); }
+    .faq-item summary {
+      list-style: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 18px 22px;
+      font-family: var(--font-condensed); font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase; color: var(--white);
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+'; flex: 0 0 auto;
+      font-family: var(--font-display); font-size: 1.5rem; line-height: 1;
+      color: var(--green); transition: transform var(--transition-base);
+    }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item summary:hover { color: var(--green); }
+    .faq-a {
+      padding: 0 22px 20px;
+      font-size: 0.95rem; font-weight: 300; color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+    }
+    .faq-a a { color: var(--green); }
+    .faq-a p + p { margin-top: 10px; }
+
+    .faq-cta {
+      text-align: center; padding: var(--space-xl) 5vw var(--space-2xl);
+    }
+    .faq-cta h2 {
+      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 2px; margin-bottom: 12px;
+    }
+    .faq-cta p {
+      font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.6);
+      max-width: 460px; margin: 0 auto var(--space-md); line-height: 1.7;
+    }
+    .faq-cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="../assets/images/web/logo.webp" alt="24/7 Golf Logo">
+      <span class="nav-logo-text"><span class="nav-logo-accent">24/7</span> GOLF</span>
+    </a>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="locations.html">Locations</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#app">Get the App</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="index.html#create-account" class="nav-cta">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="faq-hero">
+    <div class="faq-eyebrow">Good to Know</div>
+    <h1>Frequently Asked <em>Questions</em></h1>
+    <p>Everything you need to know about booking a bay, getting in the door at any hour, and playing your best golf indoors.</p>
+  </header>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="faq-wrap">
+
+      <div class="faq-group reveal">
+        <div class="faq-group-title">Getting Started</div>
+
+        <details class="faq-item">
+          <summary>What is 24/7 Golf?</summary>
+          <div class="faq-a">
+            <p>24/7 Golf is Michigan's premier indoor golf experience. Every location features
+            private simulator bays powered by <strong>Trackman iO</strong> — the same
+            launch-monitor technology trusted by Tour professionals — and every location is
+            open <strong>24 hours a day, 7 days a week</strong>. No tee times, no weather,
+            no waiting for daylight.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do I need to be a good golfer to play?</summary>
+          <div class="faq-a">
+            <p>Not at all. Trackman iO works for every skill level — first-timers can play
+            fun games and challenges (like Bullseye) while experienced players drill down
+            into ball speed, spin, carry and shot shape on every swing. It's a great outing
+            for families, friends and leagues alike.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How much does it cost?</summary>
+          <div class="faq-a">
+            <p>Pricing is <strong>per bay, per hour — not per person</strong>. Bring your
+            friends and split one rate. Rates vary by location and time of day; as an
+            example, Ludington is $35/hour per bay on weekdays before 5pm and $50/hour
+            after 5pm and on weekends. See your <a href="locations.html">location's page</a>
+            for exact rates and membership discounts.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Does it cost anything to join?</summary>
+          <div class="faq-a">
+            <p>No — creating a 24/7 Golf account is <strong>free</strong> and takes about a
+            minute. You only pay for the bay time you book. Paid memberships are optional
+            and add discounts or free daily play. <a href="index.html#create-account">Create
+            your free account here</a>.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-group reveal">
+        <div class="faq-group-title">Booking &amp; Access</div>
+
+        <details class="faq-item">
+          <summary>How do I book a bay?</summary>
+          <div class="faq-a">
+            <p>Create a free account, then book through the <strong>24/7 Golf app</strong>
+            (App Store and Google Play) or online. Booking and payment are handled securely
+            through CourtReserve. Pick your location, pick your bay, pick your time — done.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I get in at 2am if nobody works there?</summary>
+          <div class="faq-a">
+            <p>The <strong>24/7 Golf app unlocks the door and your bay</strong> during your
+            reservation — no staff visit required. Book any time, day or night, and the app
+            is your key.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How far in advance can I book, and can I cancel?</summary>
+          <div class="faq-a">
+            <p>Members can typically reserve up to <strong>30 days in advance</strong> and
+            cancel up to <strong>4 hours before</strong> a reservation without penalty.
+            Exact booking windows depend on your membership — details are shown in
+            CourtReserve when you book.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How many people can share a bay?</summary>
+          <div class="faq-a">
+            <p>Bays comfortably fit a small group, and since pricing is per bay you can
+            bring friends at no extra cost for golf.
+            <!-- CONFIRM: max players per bay / any location-specific group limits --></p>
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-group reveal">
+        <div class="faq-group-title">In the Bay</div>
+
+        <details class="faq-item">
+          <summary>What is Trackman iO?</summary>
+          <div class="faq-a">
+            <p>Trackman iO is a tour-grade, ceiling-mounted launch monitor that tracks every
+            shot with radar-and-camera precision — ball speed, launch, spin, carry and shot
+            shape. It powers full simulated rounds on <strong>250+ world-famous courses</strong>
+            (Augusta to St. Andrews), practice ranges, skills tests, and party games.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do I need my own clubs?</summary>
+          <div class="faq-a">
+            <p>Bring your own clubs if you have them — you'll hit real balls with your real
+            equipment.
+            <!-- CONFIRM: are loaner clubs available at each location? --></p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do you have pickleball?</summary>
+          <div class="faq-a">
+            <p>Yes — our <a href="ludington.html">Ludington location</a> has indoor
+            pickleball courts you can reserve by the hour, year-round. Pickleball
+            memberships with deep hourly discounts are available.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-group reveal">
+        <div class="faq-group-title">Memberships &amp; Gift Cards</div>
+
+        <details class="faq-item">
+          <summary>Do I need a membership to play?</summary>
+          <div class="faq-a">
+            <p>No. The free <strong>Player</strong> account lets you book and play at standard
+            hourly rates. Paid memberships add perks like free daily play, discounted rates
+            and multi-location benefits — see your location's page for what's offered there.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I buy a gift card?</summary>
+          <div class="faq-a">
+            <p>Yes — 24/7 Golf Ludington gift cards are available on the
+            <a href="ludington.html#gift-cards">Ludington page</a>, delivered instantly by
+            email and redeemable for bay time.
+            <!-- CONFIRM: gift card availability at other locations --></p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>I have another question — how do I reach you?</summary>
+          <div class="faq-a">
+            <p>Call us at <a href="tel:6163509482">616.350.9482</a> or email
+            <a href="mailto:info@24-7golf.com">info@24-7golf.com</a> and we'll get you
+            sorted out.</p>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="faq-cta section-dark">
+    <div class="reveal">
+      <h2>Ready to Play?</h2>
+      <p>Create your free account in 60 seconds and book a Trackman iO bay at a 24/7 Golf near you.</p>
+      <div class="faq-cta-buttons">
+        <a href="index.html#create-account" class="btn btn-primary">Create Free Account</a>
+        <a href="locations.html" class="btn btn-outline">Find a Location</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="footer-brand-logo">
+          <img src="../assets/images/web/logo.webp" alt="24/7 Golf">
+          <span>24/7 GOLF</span>
+        </a>
+        <p class="footer-tagline">
+          Michigan's premier indoor golf experience — powered by Trackman iO technology.
+          Open 24 hours. No tee times required.
+        </p>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <div class="footer-links">
+          <a href="index.html#how-it-works">How It Works</a>
+          <a href="index.html#app">Get the App</a>
+          <a href="locations.html">Find a Location</a>
+          <a href="index.html#create-account">Create Account</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <a href="tel:6163509482">616.350.9482</a>
+          <a href="mailto:info@24-7golf.com">info@24-7golf.com</a>
+          <a href="index.html#create-account">Book a Bay</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 24/7 Golf. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/247GolfGR" class="social-icon" title="Facebook" aria-label="Facebook">f</a>
+        <a href="#" class="social-icon" title="Instagram" aria-label="Instagram">in</a>
+        <a href="#" class="social-icon" title="TikTok" aria-label="TikTok">tt</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -18,8 +18,10 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 | **[ROADMAP.md](ROADMAP.md)** | The plan for the new site: platform/tooling decisions, the location-finder, multi-location architecture, and per-location owner editing. **Read this first.** |
 | **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** | Colors, fonts, spacing, components. Read before building anything visual. |
 | **[CLAUDE_CONTEXT.md](CLAUDE_CONTEXT.md)** | Paste into Claude at the start of a session for instant project context. |
+| **[WORDPRESSDEPLOYMENT.md](WORDPRESSDEPLOYMENT.md)** | **The snippet library** — paste-ready, self-contained Elementor sections + step-by-step instructions. |
+| **[docs/elementor-playbook.md](docs/elementor-playbook.md)** | How we build: this repo + Elementor One / Elementor AI / Angie — who does what. |
 | **[docs/location-finder-wordpress.md](docs/location-finder-wordpress.md)** | How to put the Google Maps location finder on the WordPress page (interim, hard-coded). |
-| **[docs/claude-code-wordpress-setup.md](docs/claude-code-wordpress-setup.md)** | Connecting Claude Code to the WordPress site via MCP. |
+| **[docs/claude-code-wordpress-setup.md](docs/claude-code-wordpress-setup.md)** | Connecting Claude Code to the WordPress site via MCP (optional; staging only). |
 
 ---
 
@@ -40,15 +42,21 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
 │   └── location-finder.js ← Hard-coded locations + Google Maps locator init
 ├── pages/
 │   ├── index.html         ← Landing page prototype
-│   └── locations.html     ← Location finder (Google Maps Locator Plus)
+│   ├── locations.html     ← Location finder (custom map + list widget)
+│   ├── faq.html           ← FAQ page
+│   └── <slug>.html        ← Per-location pages — GENERATED, do not hand-edit
+├── scripts/
+│   └── build-location-pages.cjs ← Location data + page generator
 ├── components/
 │   ├── nav.html           ← Shared navigation snippet
 │   ├── footer.html        ← Shared footer snippet
 │   └── location-card.html ← Location card template
-├── LocationFinder/        ← Raw Google Maps Quick Builder export (source mockup)
+├── LocationFinder/        ← wordpress-embed.html (paste-ready) + superseded QB export
+├── WORDPRESSDEPLOYMENT.md ← Paste-ready Elementor section snippets
 ├── docs/
+│   ├── elementor-playbook.md ← How we build with Elementor One / AI / Angie
 │   ├── location-finder-wordpress.md  ← Put the finder on the WP page
-│   └── claude-code-wordpress-setup.md ← Connect Claude Code to WordPress
+│   └── claude-code-wordpress-setup.md ← Connect Claude Code to WordPress (optional)
 ├── reference/
 │   └── 247golf-DOWNLOAD.html  ← Reference export from the current site
 └── assets/
@@ -56,11 +64,12 @@ static HTML/CSS/JS prototype, and planning docs for the **24-7golf.com** redesig
     └── _source/           ← High-res masters (in git, excluded from deploy)
 ```
 
-> **Status note:** The static prototype currently contains the landing page
-> (`pages/index.html`), the location finder (`pages/locations.html`), and the
-> shared component snippets. Individual location pages are being moved to a
-> data-driven WordPress model — see **[ROADMAP.md](ROADMAP.md)** rather than
-> hand-building one HTML file per location.
+> **Status note:** The prototype contains the landing page, the location
+> finder, the FAQ, and one generated page per location (run
+> `node scripts/build-location-pages.cjs` after editing location data —
+> never hand-edit `pages/<slug>.html`). On WordPress, the long-term plan is
+> still a data-driven Locations model — see **[ROADMAP.md](ROADMAP.md)**;
+> content ships today as snippets via **[WORDPRESSDEPLOYMENT.md](WORDPRESSDEPLOYMENT.md)**.
 
 ---
 

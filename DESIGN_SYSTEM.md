@@ -210,7 +210,7 @@ Mobile nav: hamburger menu toggles `.nav-open` class on `<body>`.
 ## Navigation Structure
 
 ```
-Logo | Locations | How It Works | Trackman iO | Get the App | [Book Now] CTA
+Logo | Locations | How It Works | Get the App | FAQ | [Book Now] CTA
 ```
 
 - **Logo:** two-tone — `24/7` in `--green` (`.nav-logo-accent`), `GOLF` in `--white`.

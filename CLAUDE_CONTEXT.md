@@ -13,21 +13,28 @@ We are redesigning the website for **24/7 Golf** — Michigan's premier indoor g
 - **Business:** Indoor golf simulator bays, powered by Trackman iO technology
 - **Booking platform:** CourtReserve (embed widgets for booking and account creation)
 - **Mobile app:** 24/7 Golf app available on Apple App Store and Google Play
-- **Expanding:** Currently 5 Michigan locations, growing to 10–12
+- **Expanding:** Currently 5 Michigan locations, scaling toward 20+
 
 ---
 
 ## Current Locations
 
+Live (open 24 hours):
+
 | Location | Notes |
 |----------|-------|
+| Ludington, MI | Pickleball · Memberships · Gift cards (GiftUp) |
+| Grand Rapids (Comstock Park), MI | |
+| Williamsburg, MI | |
 | Dewitt, MI | Original location |
-| Grand Rapids, MI | |
 | Haslett, MI | |
-| Ludington, MI | |
-| Traverse City, MI | |
 
-Some locations also offer **pickleball**.
+Coming soon: **Traverse City, Standale, Kentwood, Rockford, Grand Haven.**
+
+The authoritative location data (addresses, place IDs, live/coming-soon status,
+pickleball) lives in `scripts/build-location-pages.cjs` and
+`js/location-finder.js` — keep those two in sync and treat them as the source
+of truth, not this summary.
 
 ---
 
@@ -64,30 +71,32 @@ Some locations also offer **pickleball**.
 ## File Structure
 
 ```
-pages/index.html          ← Landing page (Eric)
-pages/locations.html      ← Location finder (Google Maps Locator Plus)
-pages/faq.html            ← FAQ page (Eric)
-pages/dewitt.html         ← Dewitt location (Colleague)
-pages/grand-rapids.html   ← Grand Rapids location (Colleague)
-pages/haslett.html        ← Haslett location (Colleague)
-pages/ludington.html      ← Ludington location (Colleague)
-pages/traverse-city.html  ← Traverse City location (Colleague)
+pages/index.html          ← Landing page
+pages/locations.html      ← Location finder (custom map + list widget)
+pages/faq.html            ← FAQ page
+pages/<slug>.html         ← One page per location — GENERATED, do not hand-edit
+scripts/build-location-pages.cjs ← Location data + page generator
+                            (edit data here, then: node scripts/build-location-pages.cjs)
 css/variables.css         ← CSS custom properties
 css/base.css              ← Reset + typography
 css/components.css        ← Reusable components
 js/main.js                ← Scroll reveal, mobile nav
-js/location-finder.js     ← Hard-coded locations + map locator init
+js/location-finder.js     ← Hard-coded locations + finder logic
 components/nav.html       ← Shared nav snippet
 components/footer.html    ← Shared footer snippet
-LocationFinder/           ← Raw Google Maps Quick Builder export
+LocationFinder/wordpress-embed.html ← Paste-ready finder for WordPress
+LocationFinder/           ← (rest is the superseded Quick Builder export)
+WORDPRESSDEPLOYMENT.md    ← Paste-ready Elementor section snippets
 docs/location-finder-wordpress.md ← Put the finder on the WP page
+docs/elementor-playbook.md ← How we build: Claude Code + Elementor One/AI/Angie
 ```
 
-> **Location finder:** `pages/locations.html` embeds Google's
-> `<gmpx-store-locator>` (Quick Builder / Locator Plus); locations are
-> hard-coded in `js/location-finder.js`. See `docs/location-finder-wordpress.md`
-> to put it on WordPress. Before launch, swap the demo API key for a restricted
-> production key and replace `DEMO_MAP_ID` with a real Map ID.
+> **Location finder:** the finder is **custom-built** (list + Google map,
+> markers, filter, distance sort) — the old Google Quick Builder
+> `<gmpx-store-locator>` was superseded (it labels 24/7 places "Closed") and
+> must not be deployed. `LocationFinder/wordpress-embed.html` is the paste-ready
+> WordPress version; see `docs/location-finder-wordpress.md`. It needs a
+> restricted production API key and a real Map ID before going live.
 
 ---
 
@@ -169,7 +178,7 @@ Each location page should follow this structure:
 ## Navigation Links
 
 ```
-Logo | Locations | How It Works | Trackman iO | Get the App | [Book Now]
+Logo | Locations | How It Works | Get the App | FAQ | [Book Now]
 ```
 
 ---

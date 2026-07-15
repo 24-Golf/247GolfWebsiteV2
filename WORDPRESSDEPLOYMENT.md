@@ -59,6 +59,8 @@ To avoid that, every snippet in this guide has been **rewritten to be portable**
 ## Sections
 
 - [Ludington → "Choose Your Membership"](#ludington--choose-your-membership)
+- [Ludington → "Gift Cards" (GiftUp)](#ludington--gift-cards-giftup)
+- [Any page → "FAQ Accordion"](#any-page--faq-accordion)
 
 ---
 
@@ -308,3 +310,269 @@ WordPress page:
   `pages/ludington.html`. If you regenerate the location pages
   (`node scripts/build-location-pages.cjs`) after editing membership data,
   refresh this snippet to match.
+
+---
+
+## Ludington → "Gift Cards" (GiftUp)
+
+**Source:** `pages/ludington.html` → `#gift-cards` section
+**Target page:** Ludington
+**Data source:** GiftUp site `4faecf6d-3505-4dad-9044-482645b4f63e`
+
+A dark section header ("The Perfect Gift / 24/7 Golf Ludington Gift Cards")
+above the GiftUp checkout widget in a white rounded panel. Gift cards are
+delivered by email and redeemable for bay time.
+
+### Paste this into an Elementor HTML widget
+
+```html
+<!-- ============================================================
+     24/7 GOLF — LUDINGTON GIFT CARDS (GiftUp checkout)
+     Paste into an Elementor "HTML" widget.
+     Self-contained styles; the GiftUp <script> loads the widget.
+     If your setup strips <script> tags, see the Notes below.
+     Source: pages/ludington.html  (#gift-cards section)
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  .g247-gift{
+    --g-green:#2ecc71; --g-dark:#0a0a0a; --g-white:#f5f7f2;
+    background:var(--g-dark); color:var(--g-white);
+    padding:64px 5vw; font-size:16px;
+    font-family:'Barlow',-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  .g247-gift *{ box-sizing:border-box; }
+  .g247-gift__inner{ max-width:1100px; margin:0 auto; }
+  .g247-gift__head{ text-align:center; margin-bottom:36px; }
+  .g247-gift__eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:3px; text-transform:uppercase; color:var(--g-green); margin-bottom:14px;
+  }
+  .g247-gift__eyebrow::before{ content:''; width:28px; height:2px; background:var(--g-green); }
+  .g247-gift__title{
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(38px,5vw,60px);
+    letter-spacing:2px; line-height:1; margin:0 0 16px; color:var(--g-white);
+  }
+  .g247-gift__lead{
+    max-width:560px; margin:0 auto; color:rgba(245,247,242,.72);
+    font-weight:400; font-size:19px; line-height:1.7;
+  }
+  .g247-gift__panel{
+    background:rgba(255,255,255,.97); border-radius:12px;
+    padding:clamp(18px,3vw,32px); box-shadow:0 24px 60px rgba(0,0,0,.5);
+    min-height:320px;
+  }
+  @media (max-width:768px){ .g247-gift{ padding:48px 6vw; } }
+</style>
+
+<section class="g247-gift">
+  <div class="g247-gift__inner">
+    <div class="g247-gift__head">
+      <div class="g247-gift__eyebrow">The Perfect Gift</div>
+      <h2 class="g247-gift__title">24/7 Golf Ludington Gift Cards</h2>
+      <p class="g247-gift__lead">Give the gift of indoor golf. Buy a gift card for 24/7 Golf Ludington below — delivered instantly by email and redeemable for bay time.</p>
+    </div>
+    <div class="g247-gift__panel">
+      <div class="gift-up-target" data-site-id="4faecf6d-3505-4dad-9044-482645b4f63e" data-platform="Other"></div>
+      <script type="text/javascript">
+      (function (g, i, f, t, u, p, s) {
+          g[u] = g[u] || function() { (g[u].q = g[u].q || []).push(arguments) };
+          p = i.createElement(f);
+          p.async = 1;
+          p.src = t;
+          s = i.getElementsByTagName(f)[0];
+          s.parentNode.insertBefore(p, s);
+      })(window, document, "script", "https://cdn.giftup.app/dist/gift-up.js", "giftup");
+      </script>
+    </div>
+  </div>
+</section>
+```
+
+### Customizing
+
+- **Blend with your background:** change `background:var(--g-dark)` on
+  `.g247-gift` to `background:transparent;` if the Elementor section behind it
+  is already dark.
+- **Different location / GiftUp site:** replace the `data-site-id` value with
+  that location's GiftUp site ID and update the heading text.
+
+### Notes
+
+- **The widget needs its `<script>`.** If the gift card checkout doesn't appear
+  on the published page, your setup is stripping script tags from HTML widgets:
+  move the `<script>…</script>` block into **WPCode / Code Snippets** (set to
+  load in the footer of that page) and keep the rest of the snippet in the HTML
+  widget.
+- The white panel is intentional — GiftUp's checkout is designed for a light
+  background.
+
+---
+
+## Any page → "FAQ Accordion"
+
+**Source:** `pages/faq.html`
+**Target page:** FAQ (or any page that needs a Q&A section)
+
+A grouped FAQ accordion (Getting Started / Booking & Access / In the Bay /
+Memberships & Gift Cards) using native `<details>` elements — no JavaScript at
+all, so nothing can be stripped. Cards match the membership snippet's styling;
+open items get a green border and the plus icon rotates to an ×.
+
+### Paste this into an Elementor HTML widget
+
+```html
+<!-- ============================================================
+     24/7 GOLF — FAQ ACCORDION
+     Paste into an Elementor "HTML" widget.
+     Self-contained: no theme CSS and NO JavaScript (native <details>).
+     Font sizes in absolute px so theme root font-size can't shrink them.
+     Source: pages/faq.html
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  .g247-faq{
+    --g-green:#2ecc71; --g-card:#161a20; --g-dark:#0a0a0a;
+    --g-border:rgba(255,255,255,.07); --g-white:#f5f7f2;
+    background:var(--g-dark); color:var(--g-white);
+    padding:64px 5vw; font-size:16px;
+    font-family:'Barlow',-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  .g247-faq *{ box-sizing:border-box; }
+  .g247-faq__inner{ max-width:860px; margin:0 auto; }
+  .g247-faq__group{ margin-bottom:40px; }
+  .g247-faq__group:last-child{ margin-bottom:0; }
+  .g247-faq__group-title{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:3px; text-transform:uppercase; color:var(--g-green); margin-bottom:16px;
+  }
+  .g247-faq__group-title::before{ content:''; width:28px; height:2px; background:var(--g-green); }
+  .g247-faq__item{
+    background:var(--g-card); border:1px solid var(--g-border);
+    border-radius:8px; margin-bottom:12px; overflow:hidden;
+    transition:border-color .25s ease;
+  }
+  .g247-faq__item[open]{ border-color:rgba(46,204,113,.3); }
+  .g247-faq__item summary{
+    list-style:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:18px 22px; margin:0;
+    font-family:'Barlow Condensed',sans-serif; font-size:19px; font-weight:700;
+    letter-spacing:.5px; text-transform:uppercase; color:var(--g-white);
+  }
+  .g247-faq__item summary::-webkit-details-marker{ display:none; }
+  .g247-faq__item summary::after{
+    content:'+'; flex:0 0 auto; font-family:'Bebas Neue',sans-serif;
+    font-size:26px; line-height:1; color:var(--g-green); transition:transform .25s ease;
+  }
+  .g247-faq__item[open] summary::after{ transform:rotate(45deg); }
+  .g247-faq__item summary:hover{ color:var(--g-green); }
+  .g247-faq__a{
+    padding:0 22px 20px; font-size:17px; font-weight:400;
+    color:rgba(245,247,242,.72); line-height:1.7;
+  }
+  .g247-faq__a a{ color:var(--g-green); }
+  @media (max-width:768px){ .g247-faq{ padding:48px 6vw; } }
+</style>
+
+<section class="g247-faq">
+  <div class="g247-faq__inner">
+
+    <div class="g247-faq__group">
+      <div class="g247-faq__group-title">Getting Started</div>
+      <details class="g247-faq__item">
+        <summary>What is 24/7 Golf?</summary>
+        <div class="g247-faq__a">24/7 Golf is Michigan's premier indoor golf experience. Every location features private simulator bays powered by <strong>Trackman iO</strong> — the same launch-monitor technology trusted by Tour professionals — and every location is open <strong>24 hours a day, 7 days a week</strong>. No tee times, no weather, no waiting for daylight.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>Do I need to be a good golfer to play?</summary>
+        <div class="g247-faq__a">Not at all. Trackman iO works for every skill level — first-timers can play fun games and challenges while experienced players drill down into ball speed, spin, carry and shot shape on every swing. It's a great outing for families, friends and leagues alike.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>How much does it cost?</summary>
+        <div class="g247-faq__a">Pricing is <strong>per bay, per hour — not per person</strong>. Bring your friends and split one rate. Rates vary by location and time of day; as an example, Ludington is $35/hour per bay on weekdays before 5pm and $50/hour after 5pm and on weekends. See your location's page for exact rates and membership discounts.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>Does it cost anything to join?</summary>
+        <div class="g247-faq__a">No — creating a 24/7 Golf account is <strong>free</strong> and takes about a minute. You only pay for the bay time you book. Paid memberships are optional and add discounts or free daily play.</div>
+      </details>
+    </div>
+
+    <div class="g247-faq__group">
+      <div class="g247-faq__group-title">Booking &amp; Access</div>
+      <details class="g247-faq__item">
+        <summary>How do I book a bay?</summary>
+        <div class="g247-faq__a">Create a free account, then book through the <strong>24/7 Golf app</strong> (App Store and Google Play) or online. Booking and payment are handled securely through CourtReserve. Pick your location, pick your bay, pick your time — done.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>How do I get in at 2am if nobody works there?</summary>
+        <div class="g247-faq__a">The <strong>24/7 Golf app unlocks the door and your bay</strong> during your reservation — no staff visit required. Book any time, day or night, and the app is your key.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>How far in advance can I book, and can I cancel?</summary>
+        <div class="g247-faq__a">Members can typically reserve up to <strong>30 days in advance</strong> and cancel up to <strong>4 hours before</strong> a reservation without penalty. Exact booking windows depend on your membership — details are shown in CourtReserve when you book.</div>
+      </details>
+    </div>
+
+    <div class="g247-faq__group">
+      <div class="g247-faq__group-title">In the Bay</div>
+      <details class="g247-faq__item">
+        <summary>What is Trackman iO?</summary>
+        <div class="g247-faq__a">Trackman iO is a tour-grade, ceiling-mounted launch monitor that tracks every shot with radar-and-camera precision — ball speed, launch, spin, carry and shot shape. It powers full simulated rounds on <strong>250+ world-famous courses</strong>, practice ranges, skills tests, and party games.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>Do you have pickleball?</summary>
+        <div class="g247-faq__a">Yes — our Ludington location has indoor pickleball courts you can reserve by the hour, year-round. Pickleball memberships with deep hourly discounts are available.</div>
+      </details>
+    </div>
+
+    <div class="g247-faq__group">
+      <div class="g247-faq__group-title">Memberships &amp; Gift Cards</div>
+      <details class="g247-faq__item">
+        <summary>Do I need a membership to play?</summary>
+        <div class="g247-faq__a">No. The free <strong>Player</strong> account lets you book and play at standard hourly rates. Paid memberships add perks like free daily play, discounted rates and multi-location benefits — see your location's page for what's offered there.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>Can I buy a gift card?</summary>
+        <div class="g247-faq__a">Yes — 24/7 Golf Ludington gift cards are available on the Ludington page, delivered instantly by email and redeemable for bay time.</div>
+      </details>
+      <details class="g247-faq__item">
+        <summary>I have another question — how do I reach you?</summary>
+        <div class="g247-faq__a">Call us at <a href="tel:6163509482">616.350.9482</a> or email <a href="mailto:info@24-7golf.com">info@24-7golf.com</a> and we'll get you sorted out.</div>
+      </details>
+    </div>
+
+  </div>
+</section>
+```
+
+### Customizing
+
+- **Add / edit a question:** copy any `<details class="g247-faq__item">…</details>`
+  block. The question goes in `<summary>`, the answer in the
+  `g247-faq__a` div. Groups are the `g247-faq__group` blocks — add or remove
+  whole groups the same way.
+- **Blend with your background:** change `background:var(--g-dark)` on
+  `.g247-faq` to `background:transparent;` if the section behind it is already
+  dark.
+- **Links inside answers:** the snippet keeps only site-relative-safe links
+  (tel/mailto). If you reference other pages (Ludington, locations), use full
+  URLs like `https://www.24-7golf.com/ludington`.
+
+### Notes
+
+- **Zero JavaScript** — the open/close behavior is the browser-native
+  `<details>` element, so this snippet can never be broken by script
+  stripping, and it's keyboard-accessible out of the box.
+- **Keep in sync:** mirrors `pages/faq.html`. Two answers there carry
+  `<!-- CONFIRM -->` notes (max players per bay, loaner clubs, gift cards at
+  other locations) — those questions are omitted here until confirmed. Add
+  them once you've verified the facts.
