@@ -1,0 +1,23 @@
+{
+  "name": "Grand Rapids",
+  "slug": "grand-rapids",
+  "address": "Address coming soon",
+  "city": "Grand Rapids",
+  "state": "MI",
+  "zip": "49503",
+  "lat": 42.9634,
+  "lng": -85.6681,
+  "phone": "616.350.9482",
+  "courtReserveOrgId": "00000",
+  "courtReserveUrl": "https://app.courtreserve.com/Online/Portal/Index/00000",
+  "bays": 8,
+  "hours": [
+    { "days": "Monday – Sunday", "time": "Open 24 hours (member access)" }
+  ],
+  "ownerName": "24/7 Golf Grand Rapids",
+  "ownerBio": "Sample location file — demonstrates that adding one JSON file generates a complete page and a finder map pin with zero page-building. Replace with real details and run the membership skill to pull live CourtReserve plans.",
+  "photos": [],
+  "memberships": [],
+  "secondaryMenu": [],
+  "events": []
+}
