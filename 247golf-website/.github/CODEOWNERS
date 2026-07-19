@@ -1,0 +1,23 @@
+# CODEOWNERS — routes required review to HQ for shared/global files.
+# With "Require review from Code Owners" enabled in branch protection,
+# any PR touching these paths needs @lud247golf's approval.
+#
+# Location owners edit only their own src/data/locations/<slug>.json and
+# public/locations/<slug>/ assets — those are intentionally NOT owned here,
+# so owner edits route to HQ via the normal 1-approval rule, not as blocking
+# code-owner files. Everything global below is explicitly HQ-owned.
+
+# Default owner for everything
+*                               @lud247golf
+
+# Global, HQ-controlled surfaces (explicit)
+/src/layouts/                   @lud247golf
+/src/components/Header.astro    @lud247golf
+/src/components/Footer.astro    @lud247golf
+/src/content.config.ts          @lud247golf
+/src/styles/                    @lud247golf
+/.github/                       @lud247golf
+/astro.config.mjs               @lud247golf
+/package.json                   @lud247golf
+/CLAUDE.md                      @lud247golf
+/DESIGN_SYSTEM.md               @lud247golf

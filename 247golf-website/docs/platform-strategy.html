@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<meta name="theme-color" content="#0a0a0a">
+<title>24/7 Golf — Website Platform Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0a0a0a; --bg2:#111317; --bg3:#161a20; --card:#1b2027; --line:#272e37;
+    --text:#e8eaed; --muted:#9aa3ad; --faint:#5a626b;
+    --green:#2ecc71; --green-dim:#18352a; --gold:#c9a84c; --gold-dim:#1f1b12;
+    --red:#e8836f; --red-dim:#271a18; --red-line:#6b3129;
+    --disp:'Bebas Neue', 'Arial Narrow', sans-serif;
+    --label:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --body:'Barlow', Arial, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:#111317;color-scheme:dark}
+  body{background:#111317;background:var(--bg2);color:#e8eaed;color:var(--text);font-family:var(--body);line-height:1.55;font-size:clamp(15px,1.05vw + 10px,17px);-webkit-text-size-adjust:100%}
+  @media (prefers-color-scheme: light){
+    html,body{background:#111317;color:#e8eaed}
+  }
+  ::selection{background:var(--green);color:#0a0a0a}
+
+  /* Sticky header + scroll progress */
+  header.top{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  .top-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.65rem 1.25rem}
+  .brand{font-family:var(--label);font-weight:700;letter-spacing:.22em;font-size:.95rem;color:#fff;white-space:nowrap}
+  .brand b{color:var(--green)}
+  .doc-title{font-family:var(--label);font-weight:600;letter-spacing:.08em;font-size:.85rem;color:var(--muted);text-transform:uppercase;text-align:right}
+  #progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--green)}
+
+  main{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+  section.slide{padding:clamp(3rem,7vw,5.5rem) 0;border-bottom:1px solid var(--line)}
+  section.slide:last-of-type{border-bottom:none}
+
+  .eyebrow{font-family:var(--label);font-weight:700;letter-spacing:.3em;text-transform:uppercase;font-size:clamp(.72rem,.6rem + .4vw,.85rem);color:var(--green);display:flex;align-items:baseline;gap:.8rem}
+  .eyebrow .no{color:var(--faint);letter-spacing:.1em}
+  h1,h2{font-family:var(--disp);font-weight:400;letter-spacing:.01em;color:#fff;line-height:1.02;margin:.5rem 0 0}
+  h1{font-size:clamp(3rem,9vw,6.2rem)}
+  h2{font-size:clamp(2.1rem,5.2vw,3.4rem)}
+  .lede{color:var(--muted);font-style:italic;margin-top:.9rem;max-width:62ch}
+  .body-copy{margin-top:1.4rem;max-width:70ch}
+  .body-copy p{margin-bottom:1rem}
+  .body-copy p b{color:#fff}
+  .g{color:var(--green)} .au{color:var(--gold)} .wh{color:#fff;font-weight:600}
+
+  /* Cover */
+  .cover{min-height:min(86vh,780px);display:flex;flex-direction:column;justify-content:center;padding:clamp(3rem,8vw,6rem) 0;border-bottom:1px solid var(--line)}
+  .cover .brandline{display:flex;align-items:center;gap:.7rem;font-family:var(--label);font-weight:700;letter-spacing:.28em;font-size:1.05rem;color:#fff}
+  .tee{width:14px;height:14px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(46,204,113,.18)}
+  .cover .sub{font-size:clamp(1.05rem,1rem + 1vw,1.5rem);margin-top:1.2rem;color:var(--text)}
+  .cover .meta{margin-top:2.6rem;color:var(--faint);font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.85rem}
+
+  /* Grids collapse on mobile */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1.8rem}
+  .grid-goals{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.8rem}
+  .split{display:grid;grid-template-columns:1.15fr .85fr;gap:1.8rem;margin-top:1.8rem;align-items:start}
+  @media (max-width:820px){
+    .grid-2,.grid-goals,.split{grid-template-columns:1fr}
+    .doc-title{display:none}
+  }
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.15rem 1.25rem}
+  .card h3{font-family:var(--label);font-weight:700;letter-spacing:.04em;font-size:1.15rem;color:#fff}
+  .card p{color:var(--muted);font-size:.95em;margin-top:.25rem}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.8rem}
+  @media (max-width:700px){.stats{grid-template-columns:1fr}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem}
+  .stat .n{font-family:var(--disp);font-size:clamp(3rem,3.4vw + 1.6rem,4.2rem);line-height:1;color:var(--green)}
+  .stat.gold .n{color:var(--gold)}
+  .stat .l{font-family:var(--label);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;color:var(--text)}
+
+  /* Labeled lists */
+  .col-label{font-family:var(--label);font-weight:700;letter-spacing:.24em;text-transform:uppercase;font-size:.8rem;color:var(--muted);margin-bottom:.9rem}
+  .col-label.warn{color:var(--gold)}
+  .stack-list{display:flex;flex-direction:column;gap:.8rem}
+  .warn-list{display:flex;flex-direction:column;gap:1rem}
+  .warn-item{display:grid;grid-template-columns:1.4rem 1fr;gap:.7rem}
+  .warn-item .dot{width:.85rem;height:.85rem;margin-top:.35rem;border-radius:2px;background:var(--gold)}
+  .warn-item b{color:#fff}
+  .warn-item p{color:var(--text);font-size:.95em}
+
+  .check-list{display:flex;flex-direction:column;gap:1.05rem;margin-top:1.6rem}
+  .check-item{display:grid;grid-template-columns:1.6rem 1fr;gap:.75rem}
+  .check-item .ck{width:1.05rem;height:1.05rem;margin-top:.3rem;border-radius:50%;background:var(--green);position:relative;flex:none}
+  .check-item .ck::after{content:"";position:absolute;left:.28rem;top:.13rem;width:.28rem;height:.52rem;border:solid #0a0a0a;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .check-item b{color:#fff}
+
+  .takeaway{background:var(--gold-dim);border:1px solid var(--gold);border-radius:12px;padding:1.3rem 1.4rem}
+  .takeaway .t{font-family:var(--label);font-weight:700;letter-spacing:.24em;font-size:.8rem;color:var(--gold);text-transform:uppercase}
+  .takeaway p{margin-top:.7rem}
+
+  /* Definition rows (Back Nine tech) */
+  .def{margin-top:1.8rem;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .def-row{display:grid;grid-template-columns:220px 1fr;gap:1rem;padding:.9rem 1.15rem}
+  .def-row:nth-child(odd){background:var(--card)}
+  .def-row:nth-child(even){background:var(--bg3)}
+  .def-row dt{font-family:var(--label);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;color:var(--green);padding-top:.15rem}
+  .def-row dd{color:var(--text);font-size:.95em}
+  @media (max-width:640px){.def-row{grid-template-columns:1fr;gap:.25rem}}
+
+  /* Options comparison — cards that reflow */
+  .opt-compare{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.8rem}
+  @media (max-width:1000px){.opt-compare{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.opt-compare{grid-template-columns:1fr}}
+  .opt-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.15rem;display:flex;flex-direction:column;gap:.75rem}
+  .opt-card.rec{border-color:var(--green);background:linear-gradient(180deg,var(--green-dim),var(--card) 55%)}
+  .opt-card h3{font-family:var(--label);font-weight:700;font-size:1.15rem;letter-spacing:.03em;color:#fff;min-height:2.5em}
+  .opt-card.rec h3{color:var(--green)}
+  .opt-card .crit{border-top:1px solid var(--line);padding-top:.55rem}
+  .opt-card .crit .k{font-family:var(--label);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:var(--faint)}
+  .opt-card .crit .v{font-size:.92em;color:var(--text)}
+  .opt-card.rec .crit .v{color:#d9f7e6}
+  .pill{align-self:flex-start;font-family:var(--label);font-weight:700;letter-spacing:.18em;font-size:.72rem;background:var(--green);color:#0a0a0a;border-radius:999px;padding:.28em .9em;text-transform:uppercase}
+
+  /* Option detail blocks */
+  .badge{display:inline-block;font-family:var(--label);font-weight:700;letter-spacing:.18em;font-size:.8rem;background:var(--green);color:#0a0a0a;border-radius:999px;padding:.35em 1em;text-transform:uppercase;vertical-align:middle;margin-left:.6rem;transform:translateY(-.35em)}
+  ul.hiw{list-style:none;display:flex;flex-direction:column;gap:.8rem;margin-top:1rem}
+  ul.hiw li{padding-left:1.2rem;position:relative;color:var(--text)}
+  ul.hiw li::before{content:"";position:absolute;left:0;top:.55em;width:.45rem;height:.45rem;border-radius:50%;background:var(--green)}
+  .pro,.con{border-radius:12px;padding:1.1rem 1.2rem}
+  .pro{background:var(--green-dim);border:1px solid #235c3d}
+  .con{background:var(--red-dim);border:1px solid var(--red-line);margin-top:1.2rem}
+  .pro .t,.con .t{font-family:var(--label);font-weight:700;letter-spacing:.22em;font-size:.78rem;text-transform:uppercase}
+  .pro .t{color:var(--green)} .con .t{color:var(--red)}
+  .pro ul,.con ul{list-style:none;margin-top:.7rem;display:flex;flex-direction:column;gap:.5rem}
+  .pro li,.con li{padding-left:1.1rem;position:relative;font-size:.95em}
+  .pro li::before{content:"+";position:absolute;left:0;color:var(--green);font-weight:700}
+  .con li::before{content:"–";position:absolute;left:0;color:var(--red);font-weight:700}
+  .verdict{margin-top:1.6rem;border-left:3px solid var(--gold);padding:.35rem 0 .35rem 1rem}
+  .verdict .t{font-family:var(--label);font-weight:700;letter-spacing:.24em;font-size:.78rem;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:.2rem}
+
+  /* Roadmap */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-top:2rem}
+  @media (max-width:1000px){.phases{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.phases{grid-template-columns:1fr}}
+  .phase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.15rem 1.2rem}
+  .phase.key{border-color:var(--green)}
+  .phase .when{font-family:var(--label);font-weight:700;letter-spacing:.2em;font-size:.78rem;color:var(--green);text-transform:uppercase}
+  .phase h3{font-family:var(--label);font-weight:700;font-size:1.25rem;color:#fff;margin:.3rem 0 .45rem}
+  .phase p{color:var(--text);font-size:.93em}
+  .decision{margin-top:2rem;color:var(--gold);font-weight:600;font-style:italic}
+
+  footer{padding:2.2rem 1.25rem 3rem;text-align:center;color:var(--faint);font-family:var(--label);letter-spacing:.18em;text-transform:uppercase;font-size:.78rem}
+
+  /* Reveal on scroll (respects reduced motion) */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    header.top{display:none}
+    section.slide{page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">24/7 <b>GOLF</b></div>
+    <div class="doc-title">Website Platform Strategy · July 2026</div>
+  </div>
+  <div id="progress"></div>
+</header>
+
+<main>
+
+<!-- 01 COVER -->
+<section class="cover" id="cover">
+  <div class="brandline reveal"><span class="tee"></span>24/7 GOLF</div>
+  <h1 class="reveal">Website Platform Strategy</h1>
+  <p class="sub reveal">Scaling our digital presence from <span class="g wh">5 locations today</span> to <span class="au wh">50+ nationwide by 2030</span></p>
+  <p class="lede reveal">Platform evaluation, competitor analysis, and recommendations</p>
+  <p class="meta reveal">Prepared for the President, 24/7 Golf Global &nbsp;·&nbsp; Confidential</p>
+</section>
+
+<!-- 02 EXEC SUMMARY -->
+<section class="slide" id="summary">
+  <p class="eyebrow reveal"><span class="no">01</span> Executive Summary</p>
+  <h2 class="reveal">Our website must scale as fast as our business</h2>
+  <div class="body-copy reveal">
+    <p><b>Growth is outpacing our platform.</b> We open 5 new locations before October 1 and target 50+ by 2030 — but every new location page is hand-built in WordPress + Elementor.</p>
+    <p><b>Editing is the bottleneck.</b> Location owners can't safely update their own pages, and the AI tooling in the WordPress/Elementor ecosystem falls far short of what we can do with Claude Code.</p>
+    <p><b>Our top competitor proves the model.</b> The Back Nine runs a fully custom, component-based site — fast, premium, and consistent — the experience we want at scale.</p>
+    <p><b class="g">Recommendation:</b> move to a Git-based, structured-data website (Astro + GitHub + Cloudflare Pages) run Claude Code-first: a new location is one data file, the location finder updates itself, and owners edit with their own Claude Code — or a friendly CMS.</p>
+  </div>
+  <div class="stats">
+    <div class="stat reveal"><span class="n">5</span><span class="l">Locations open today</span></div>
+    <div class="stat reveal"><span class="n">10</span><span class="l">Locations by Oct 1, 2026</span></div>
+    <div class="stat gold reveal"><span class="n">50+</span><span class="l">Locations targeted by 2030</span></div>
+  </div>
+</section>
+
+<!-- 03 CURRENT -->
+<section class="slide" id="current">
+  <p class="eyebrow reveal"><span class="no">02</span> Where We Are Today</p>
+  <h2 class="reveal">Current architecture: WordPress + Elementor</h2>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label">The Stack</p>
+      <div class="stack-list">
+        <div class="card"><h3>WordPress core</h3><p>www.24-7golf.com — traditional WordPress install</p></div>
+        <div class="card"><h3>Elementor page builder</h3><p>Heavy use for all page layouts; not on Elementor Hosting</p></div>
+        <div class="card"><h3>Hand-built location pages</h3><p>Each of our 5 owner locations gets a manually created page</p></div>
+        <div class="card"><h3>Custom location finder</h3><p>Map page updated by hand each time a location is added</p></div>
+        <div class="card"><h3>CourtReserve booking</h3><p>Booking handled by CourtReserve; the site links out to it</p></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="col-label warn">The Challenges</p>
+      <div class="warn-list">
+        <div class="warn-item"><span class="dot"></span><div><b>Weak AI tooling</b><p>WordPress/Elementor AI can't match what we produce with Claude Code — editing feels slow and dated</p></div></div>
+        <div class="warn-item"><span class="dot"></span><div><b>Onboarding friction</b><p>Every new location means manual page building, menu edits, and finder updates by one person</p></div></div>
+        <div class="warn-item"><span class="dot"></span><div><b>No safe owner access</b><p>Location owners can't update their own pages without risking the rest of the site</p></div></div>
+        <div class="warn-item"><span class="dot"></span><div><b>Design drift &amp; lock-in</b><p>Page-builder markup makes consistency hard to enforce and the site hard to move</p></div></div>
+        <div class="warn-item"><span class="dot"></span><div><b>Doesn't scale to 50+</b><p>A hand-built process that strains at 5 locations will break at 10, let alone 50</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOALS -->
+<section class="slide" id="goals">
+  <p class="eyebrow reveal"><span class="no">03</span> Where We Want To Go</p>
+  <h2 class="reveal">What the next platform must deliver</h2>
+  <div class="grid-goals">
+    <div class="card reveal"><h3>Onboard a location in hours, not weeks</h3><p>A new location page — on-brand and complete — should be generated from a simple set of facts: name, address, bays, owner bio, photos, CourtReserve link.</p></div>
+    <div class="card reveal"><h3>Owner self-service, safely</h3><p>Every location owner edits their own page — hours, events, photos, memberships — without touching anyone else's page or the global design. HQ reviews before anything goes live.</p></div>
+    <div class="card reveal"><h3>A location finder that updates itself</h3><p>Adding a location to the finder map and list should happen automatically when the location is added — never a separate manual step.</p></div>
+    <div class="card reveal"><h3>AI-native editing with Claude Code</h3><p>Our best editing experiences today come from Claude Code. The platform should treat AI-assisted, code-and-content workflows as the primary path, not a workaround.</p></div>
+  </div>
+</section>
+
+<!-- 05 BACK NINE EXPERIENCE -->
+<section class="slide" id="backnine">
+  <p class="eyebrow reveal"><span class="no">04</span> Competitor Benchmark</p>
+  <h2 class="reveal">The Back Nine: the experience bar we're chasing</h2>
+  <p class="lede reveal">thebackninegolf.com — our primary competitor and the site we admire most in the category</p>
+  <div class="split">
+    <div class="check-list reveal">
+      <div class="check-item"><span class="ck"></span><p><b>Premium, cohesive design</b> — one tightly art-directed system. Typography, motion, and imagery feel like a national brand, not a template.</p></div>
+      <div class="check-item"><span class="ck"></span><p><b>Fast and lightweight</b> — purpose-built pages with only the code each page needs, served through Cloudflare's global CDN.</p></div>
+      <div class="check-item"><span class="ck"></span><p><b>Booking woven into the site</b> — booking is a first-class part of the experience (their own "b9-golf-book" application), not a link out to a third-party portal.</p></div>
+      <div class="check-item"><span class="ck"></span><p><b>A real location finder</b> — interactive Google Map with marker clustering plus a live-filtered list, built to handle many locations gracefully.</p></div>
+      <div class="check-item"><span class="ck"></span><p><b>Built to iterate</b> — versioned releases and error monitoring show a team shipping continuously. Their site is a product, not a brochure.</p></div>
+    </div>
+    <div class="takeaway reveal" style="margin-top:1.6rem">
+      <span class="t">The takeaway</span>
+      <p>Back Nine's advantage isn't a better page builder — it's that they left page builders behind. Their site is generated from structured components and data. That's the architecture we should adopt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 BACK NINE TECH -->
+<section class="slide" id="backnine-tech">
+  <p class="eyebrow reveal"><span class="no">05</span> Competitor Benchmark</p>
+  <h2 class="reveal">Under the hood: how Back Nine is built</h2>
+  <p class="lede reveal">Findings from direct inspection of their live site (page source, HTTP headers, and asset structure)</p>
+  <dl class="def reveal">
+    <div class="def-row"><dt>Platform</dt><dd>Fully custom-built website — no WordPress, Wix, Squarespace, or any detectable CMS. Server-rendered pages with a hand-rolled component architecture.</dd></div>
+    <div class="def-row"><dt>Component architecture</dt><dd>Every section is its own CSS/JS module (hero, header, membership, testimonials, footer…) — exactly how a design system scales across many pages.</dd></div>
+    <div class="def-row"><dt>Frontend libraries</dt><dd>Bootstrap 5, Swiper (carousels), Font Awesome (icon kit), Adobe Fonts (Typekit) for premium typography, Klaro for cookie consent.</dd></div>
+    <div class="def-row"><dt>Booking application</dt><dd>A custom in-house booking app — Sentry release tags name it "b9-golf-book" v1.0.37 — with its own session and order handling on the same domain.</dd></div>
+    <div class="def-row"><dt>Infrastructure</dt><dd>Hosted on Google Cloud, fronted by the Cloudflare CDN for global speed, caching, and security.</dd></div>
+    <div class="def-row"><dt>Engineering practice</dt><dd>Sentry error monitoring with versioned, tagged production releases — evidence of a professional CI/CD pipeline and an ongoing dev team.</dd></div>
+    <div class="def-row"><dt>Location finder</dt><dd>Google Maps JavaScript API with advanced markers and clustering, paired with List.js for instant list filtering.</dd></div>
+  </dl>
+</section>
+
+<!-- 07 OPTIONS -->
+<section class="slide" id="options">
+  <p class="eyebrow reveal"><span class="no">06</span> Platform Options</p>
+  <h2 class="reveal">Four paths forward, at a glance</h2>
+  <div class="opt-compare">
+    <div class="opt-card reveal">
+      <h3>1 · WordPress, re-architected</h3>
+      <div class="crit"><div class="k">New-location onboarding</div><div class="v">Days</div></div>
+      <div class="crit"><div class="k">Owner self-editing</div><div class="v">Good — restricted roles</div></div>
+      <div class="crit"><div class="k">Claude Code / AI fit</div><div class="v">Weak</div></div>
+      <div class="crit"><div class="k">Performance at 50+</div><div class="v">Moderate</div></div>
+      <div class="crit"><div class="k">Ongoing cost</div><div class="v">$ hosting + plugins</div></div>
+      <div class="crit"><div class="k">Migration effort</div><div class="v">Low–medium</div></div>
+    </div>
+    <div class="opt-card rec reveal">
+      <span class="pill">Recommended</span>
+      <h3>2 · Astro + GitHub + Cloudflare</h3>
+      <div class="crit"><div class="k">New-location onboarding</div><div class="v">Hours — one data file</div></div>
+      <div class="crit"><div class="k">Owner self-editing</div><div class="v">Good — Claude Code or CMS forms</div></div>
+      <div class="crit"><div class="k">Claude Code / AI fit</div><div class="v">Excellent — built for it</div></div>
+      <div class="crit"><div class="k">Performance at 50+</div><div class="v">Excellent — static + CDN</div></div>
+      <div class="crit"><div class="k">Ongoing cost</div><div class="v">$ near-zero hosting</div></div>
+      <div class="crit"><div class="k">Migration effort</div><div class="v">Medium — repo already started</div></div>
+    </div>
+    <div class="opt-card reveal">
+      <h3>3 · Next.js + headless CMS</h3>
+      <div class="crit"><div class="k">New-location onboarding</div><div class="v">Hours</div></div>
+      <div class="crit"><div class="k">Owner self-editing</div><div class="v">Good — CMS studio</div></div>
+      <div class="crit"><div class="k">Claude Code / AI fit</div><div class="v">Excellent</div></div>
+      <div class="crit"><div class="k">Performance at 50+</div><div class="v">Excellent</div></div>
+      <div class="crit"><div class="k">Ongoing cost</div><div class="v">$$$ dev + CMS fees</div></div>
+      <div class="crit"><div class="k">Migration effort</div><div class="v">High</div></div>
+    </div>
+    <div class="opt-card reveal">
+      <h3>4 · Webflow (managed builder)</h3>
+      <div class="crit"><div class="k">New-location onboarding</div><div class="v">Days</div></div>
+      <div class="crit"><div class="k">Owner self-editing</div><div class="v">Good — Editor mode</div></div>
+      <div class="crit"><div class="k">Claude Code / AI fit</div><div class="v">Poor — closed platform</div></div>
+      <div class="crit"><div class="k">Performance at 50+</div><div class="v">Good</div></div>
+      <div class="crit"><div class="k">Ongoing cost</div><div class="v">$$ seats + hosting</div></div>
+      <div class="crit"><div class="k">Migration effort</div><div class="v">Medium</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 OPTION 1 -->
+<section class="slide" id="option1">
+  <p class="eyebrow reveal"><span class="no">07</span> Option 1</p>
+  <h2 class="reveal">Stay on WordPress — but re-architect it</h2>
+  <p class="lede reveal">If we keep WordPress, we must stop hand-building pages and make locations structured data.</p>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label" style="margin-top:1.2rem">How it works</p>
+      <ul class="hiw">
+        <li>Create a "Location" custom post type: every location page is generated from structured fields (address, bays, owner, hours, photos, CourtReserve link) instead of being built by hand</li>
+        <li>The location finder reads from the same data — adding a location automatically adds it to the map and list</li>
+        <li>Replace or reduce Elementor with a lightweight block theme for speed and consistency; optionally move to Elementor Hosting to unlock their AI tools</li>
+        <li>Give each owner a restricted editor role scoped to only their location</li>
+        <li>Keep our existing Zapier + CourtReserve automations untouched</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="pro"><span class="t">Strengths</span><ul>
+        <li>No platform migration — lowest disruption</li>
+        <li>Familiar admin for owners and staff</li>
+        <li>Large plugin ecosystem</li>
+      </ul></div>
+      <div class="con"><span class="t">Trade-offs</span><ul>
+        <li>AI-assisted editing remains far behind Claude Code</li>
+        <li>Plugin and security maintenance burden continues</li>
+        <li>Page-builder lock-in and performance overhead persist</li>
+        <li>We'd be investing further in the platform we've outgrown</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="verdict reveal"><span class="t">Verdict</span>Viable and cheapest short-term — but it modernizes the process without fixing the platform. A fallback, not a destination.</div>
+</section>
+
+<!-- 09 OPTION 2 -->
+<section class="slide" id="option2">
+  <p class="eyebrow reveal"><span class="no">08</span> Option 2</p>
+  <h2 class="reveal">Astro + GitHub + Cloudflare Pages<span class="badge">Recommended</span></h2>
+  <p class="lede reveal">A modern static-first site where every location is one data file — and Claude Code is a first-class editor.</p>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label" style="margin-top:1.2rem">How it works</p>
+      <ul class="hiw">
+        <li>Site lives in a new private GitHub repo under the lud247golf account, seeded from the 247GolfWebsiteV2 scaffold (design system and Claude Code context files already built)</li>
+        <li>Each location = one structured data file. The build generates the location page and its finder map/list entry automatically — onboarding a location takes minutes</li>
+        <li>Owners edit with their own Claude Code subscription connected to the repo — or through a free Git-based CMS (simple forms) for those who prefer no code</li>
+        <li>Every change gets a private preview link; HQ approves before it merges and goes live. Instant one-click rollback</li>
+        <li>Cloudflare Pages publishes globally on the same CDN Back Nine uses — hosting cost is effectively zero</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="pro"><span class="t">Strengths</span><ul>
+        <li>Best-in-class Claude Code / AI workflow</li>
+        <li>Fastest possible pages; scales to 500 locations as easily as 5</li>
+        <li>Built-in review, previews, and version history</li>
+        <li>Near-zero hosting cost; no plugins to patch</li>
+      </ul></div>
+      <div class="con"><span class="t">Trade-offs</span><ul>
+        <li>Upfront build effort (mitigated: repo and design system already started)</li>
+        <li>Owners must learn a new — simpler — editing interface</li>
+        <li>Custom features require development rather than plugins</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="verdict reveal"><span class="t">Verdict</span>The same architecture that makes Back Nine's site excellent — achievable for us because Claude Code does the heavy lifting. The next section shows how we'd run it day-to-day.</div>
+</section>
+
+<!-- 10 OPERATING MODEL -->
+<section class="slide" id="model">
+  <p class="eyebrow reveal"><span class="no">09</span> Option 2 · The Operating Model</p>
+  <h2 class="reveal">Claude Code-first, with HQ guardrails</h2>
+  <p class="lede reveal">One repo, one AI workflow: HQ owns the frame, each owner owns their page, and Claude Skills keep everyone on-brand.</p>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label" style="margin-top:1.2rem">How it runs</p>
+      <ul class="hiw">
+        <li>Initial build by Eric with Claude Code: the full site plus all 10 location pages, in the new private lud247golf repo</li>
+        <li>Each owner connects their own Claude Code subscription to the repo. Branch protection means owners propose changes; HQ reviews the preview and merges — nobody can break the live site</li>
+        <li>Clear boundaries: the global header menu and footer are HQ-controlled; each location page — memberships, events, photos, and an optional secondary menu — belongs to its owner</li>
+        <li>Shared Claude Skills in the repo (.claude/skills) teach every owner's Claude Code the site's components, rules, and boundaries automatically</li>
+        <li>CourtReserve membership skill — working today: one command pulls a location's live plans, prices, and signup links from CourtReserve and rebuilds the on-brand "Choose Your Membership" section, never inventing a price. On the new platform it publishes as a reviewed page update</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="pro"><span class="t">Why it's strong</span><ul>
+        <li>One AI-native workflow for HQ and owners — no second toolset to build or maintain</li>
+        <li>Skills encode the guardrails, so owner edits stay on-brand by default</li>
+        <li>Owners' own Claude subscriptions are the only per-location software cost</li>
+        <li>Every change is reviewed, previewed, and instantly reversible</li>
+      </ul></div>
+      <div class="con"><span class="t">Risks to manage</span><ul>
+        <li>Owners must buy and learn Claude Code — adoption will vary by owner</li>
+        <li>Repo permissions and branch protection must be airtight from day one</li>
+        <li>Eric is the early bottleneck for reviews and owner support</li>
+        <li>Mitigation: Git-based CMS forms remain the no-code fallback for any owner</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="verdict reveal"><span class="t">Verdict</span>Make Claude Code the primary owner editing path, with the CMS as the safety net — the model that best fits our team, our tooling, and our growth rate.</div>
+</section>
+
+<!-- 11 OPTION 3 -->
+<section class="slide" id="option3">
+  <p class="eyebrow reveal"><span class="no">10</span> Option 3</p>
+  <h2 class="reveal">Next.js + headless CMS (Sanity or Payload)</h2>
+  <p class="lede reveal">A full web application platform — the choice if the website itself becomes a product.</p>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label" style="margin-top:1.2rem">How it works</p>
+      <ul class="hiw">
+        <li>React-based application framework with a hosted visual editing studio for content</li>
+        <li>Locations are structured content in the CMS; pages and the finder render from live data</li>
+        <li>Strongest foundation for future interactive features: member portals, live bay availability, deep CourtReserve API integration rendered natively on our site</li>
+        <li>Deploys to Vercel or Cloudflare with preview environments, like Option 2</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="pro"><span class="t">Strengths</span><ul>
+        <li>Most powerful and future-proof option</li>
+        <li>Excellent live-preview editing experience</li>
+        <li>Great Claude Code compatibility</li>
+      </ul></div>
+      <div class="con"><span class="t">Trade-offs</span><ul>
+        <li>Highest cost: CMS fees plus ongoing developer involvement</li>
+        <li>More moving parts than a content site needs today</li>
+        <li>Longer initial build</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="verdict reveal"><span class="t">Verdict</span>The right platform if and when booking and member experiences move onto our site — likely a Phase 2, not the place to start.</div>
+</section>
+
+<!-- 12 OPTION 4 -->
+<section class="slide" id="option4">
+  <p class="eyebrow reveal"><span class="no">11</span> Option 4</p>
+  <h2 class="reveal">Webflow — a managed visual builder</h2>
+  <p class="lede reveal">The polished, hosted successor to the Elementor model.</p>
+  <div class="split">
+    <div class="reveal">
+      <p class="col-label" style="margin-top:1.2rem">How it works</p>
+      <ul class="hiw">
+        <li>Modern hosted platform with a professional visual designer and clean output</li>
+        <li>Locations become items in a Webflow CMS Collection; pages and finder entries generate from a template</li>
+        <li>Location owners get "Editor mode" — they can change text and images on their page without design access</li>
+        <li>Webflow handles hosting, CDN, and security entirely</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="pro"><span class="t">Strengths</span><ul>
+        <li>Beautiful results without code</li>
+        <li>Structured location data with templated pages</li>
+        <li>Zero infrastructure to maintain</li>
+      </ul></div>
+      <div class="con"><span class="t">Trade-offs</span><ul>
+        <li>Closed platform: no Git, no Claude Code workflow — the exact gap we're trying to close</li>
+        <li>Per-seat and hosting costs grow with 50+ owners</li>
+        <li>Proprietary lock-in; hard to leave later</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="verdict reveal"><span class="t">Verdict</span>A real upgrade over Elementor for a design-led team — but it walks away from our biggest advantage: AI-native editing with Claude Code.</div>
+</section>
+
+<!-- 13 RECOMMENDATION -->
+<section class="slide" id="recommendation">
+  <p class="eyebrow reveal"><span class="no">12</span> Recommendation</p>
+  <h2 class="reveal">Build the platform Back Nine has — the AI-native way</h2>
+  <div class="body-copy reveal">
+    <p><b class="g">Adopt Option 2 with the Claude Code-first operating model.</b> It is the only option that wins on every criterion that matters: it matches Back Nine's proven architecture, makes onboarding a location a one-file task, turns owner edits into reviewed and reversible changes, and builds on strengths we already have — deep Claude Code expertise, our CourtReserve API stack, and a design system that's already scaffolded. Options 1 and 4 keep us tied to weaker tooling; Option 3 is the right Phase 2 once booking experiences move onto our own site.</p>
+  </div>
+  <div class="phases">
+    <div class="phase reveal"><span class="when">Aug 2026</span><h3>Pilot</h3><p>Eric builds the site shell with Claude Code in the new lud247golf repo: homepage, design system, location finder, one pilot location page. One owner pilots the Claude Code workflow.</p></div>
+    <div class="phase reveal"><span class="when">Sep 2026</span><h3>Migrate + launch</h3><p>Migrate the 5 existing locations to data files; onboard the 5 new locations on the new platform. Ship the CourtReserve membership skill. Run old and new sites in parallel.</p></div>
+    <div class="phase key reveal"><span class="when">Oct 1, 2026</span><h3>Cut over at 10 locations</h3><p>Point 24-7golf.com at Cloudflare Pages. All 10 locations live, every owner trained on their editing path (Claude Code or CMS).</p></div>
+    <div class="phase reveal"><span class="when">2027 → 2030</span><h3>Scale to 50+</h3><p>New locations onboard via a one-file playbook. Layer in deeper CourtReserve API features as we grow — availability, membership, promos.</p></div>
+  </div>
+  <p class="decision reveal">Decision needed: approve the pilot so the new platform is proven before the October 1 openings.</p>
+</section>
+
+</main>
+
+<footer>24/7 Golf · Confidential · July 2026</footer>
+
+<script>
+  // Scroll progress bar
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }, { passive: true });
+
+  // Reveal on scroll
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    items.forEach(el => io.observe(el));
+  } else {
+    items.forEach(el => el.classList.add('in'));
+  }
+</script>
+</body>
+</html>

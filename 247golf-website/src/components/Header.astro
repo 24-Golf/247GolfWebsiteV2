@@ -1,0 +1,51 @@
+---
+// HQ-CONTROLLED. Location owners must not edit this file — it is enforced
+// by .github/CODEOWNERS. The global navigation is consistent across every page.
+const nav = [
+  { label: 'Locations', href: '/locations' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Get the App', href: '/#app' },
+  { label: 'FAQ', href: '/#faq' },
+];
+---
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="24/7 Golf home">
+      <span class="logo-accent">24/7</span> <span class="logo-word">GOLF</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <a href="/locations" class="btn btn-primary book-cta">Book Now</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: var(--max-width); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-md); padding: 14px 5vw;
+  }
+  .logo {
+    font-family: var(--font-label); font-weight: 700;
+    font-size: 1.35rem; letter-spacing: 1px; color: var(--white);
+  }
+  .logo-accent { color: var(--green); }
+  .nav { display: flex; gap: var(--space-md); }
+  .nav a {
+    font-family: var(--font-label); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.95rem;
+    color: var(--white);
+  }
+  .nav a:hover { color: var(--green); }
+  .book-cta { padding: 10px 22px; }
+  @media (max-width: 820px) {
+    .nav { display: none; }
+  }
+</style>

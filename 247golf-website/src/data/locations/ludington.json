@@ -1,0 +1,112 @@
+{
+  "name": "Ludington",
+  "slug": "ludington",
+  "address": "Address coming soon",
+  "city": "Ludington",
+  "state": "MI",
+  "zip": "49431",
+  "lat": 43.9553,
+  "lng": -86.4526,
+  "phone": "616.350.9482",
+  "courtReserveOrgId": "10840",
+  "courtReserveUrl": "https://app.courtreserve.com/Online/Portal/Index/10840",
+  "bays": 6,
+  "hours": [
+    { "days": "Monday – Sunday", "time": "Open 24 hours (member access)" }
+  ],
+  "ownerName": "24/7 Golf Ludington",
+  "ownerBio": "Our flagship Ludington location — indoor golf and pickleball, open around the clock for members.",
+  "photos": [],
+  "memberships": [
+    {
+      "id": "225646",
+      "plan": "Player",
+      "type": "Individual",
+      "price": "Free",
+      "description": "Default account type with Ludington as your preferred location.",
+      "features": [
+        "Free membership — Home Location: Ludington",
+        "Golf — pricing is per bay; bring your friends and pay one rate",
+        "Weekdays before 5pm — $35.00 / hour / bay",
+        "After 5pm & weekends — $50.00 / hour / bay"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=225646"
+    },
+    {
+      "id": "250843",
+      "plan": "Family Player",
+      "type": "Family",
+      "price": "Free",
+      "description": "Default family membership.",
+      "features": [
+        "Add existing family members — contact ludington@24-7golf.com",
+        "Reserve up to 30 days in advance",
+        "Cancel reservations up to 4 hours in advance without penalty"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=250843"
+    },
+    {
+      "id": "250923",
+      "plan": "Summer UNLIMITED PLAY",
+      "type": "Individual",
+      "price": "$95 / Monthly",
+      "offerEnds": "9/30/2026",
+      "description": "Unlimited free play. Membership cannot be canceled.",
+      "features": [
+        "Home Location: Ludington",
+        "2025 price lock — lock in 2025 winter pricing",
+        "Contract runs April 1 – September 30",
+        "UNLIMITED FREE PLAY (home location), limit 1 open booking, no guest fee"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=250923"
+    },
+    {
+      "id": "251124",
+      "plan": "Summer Membership",
+      "type": "Individual",
+      "price": "$75 / Monthly",
+      "offerEnds": "8/31/2026",
+      "description": "Summer membership for golf and pickleball.",
+      "features": [
+        "Home Location: Ludington",
+        "60 minutes per day FREE play (golf or pickleball), limit 2 open bookings",
+        "$5.00 off standard golf & pickleball rates",
+        "$20.00 guest fee — golf"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=251124"
+    },
+    {
+      "id": "212220",
+      "plan": "Pickleball Membership",
+      "type": "Individual",
+      "price": "$30 / Annually",
+      "description": "Deep discounts for year-round indoor pickleball play.",
+      "features": [
+        "Only valid at our Ludington location",
+        "$20.00 per hour for the court — no charge for additional players",
+        "$10.00 per hour summer rate (Apr 1 – Sep 30)",
+        "Reserve up to 30 days in advance"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=212220"
+    },
+    {
+      "id": "223201",
+      "plan": "Family Annual Membership",
+      "type": "Family",
+      "price": "$2,100 / Annually",
+      "description": "Annual family membership — Ludington pickleball membership included.",
+      "features": [
+        "Home Location: Ludington",
+        "Max 3 members per family",
+        "90 minutes per day FREE play (home location)",
+        "90 minutes per day $25.00 per session at all other locations"
+      ],
+      "signupUrl": "https://app.courtreserve.com/Online/Memberships/ViewPublicMembership/10840?membershipId=223201"
+    }
+  ],
+  "secondaryMenu": [
+    { "label": "Memberships", "href": "#memberships" },
+    { "label": "Hours", "href": "#hours" }
+  ],
+  "events": []
+}

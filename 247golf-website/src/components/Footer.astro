@@ -1,0 +1,64 @@
+---
+// HQ-CONTROLLED. Enforced by .github/CODEOWNERS.
+import { getCollection } from 'astro:content';
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+);
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="logo"><span class="logo-accent">24/7</span> GOLF</div>
+      <p class="muted tagline">Michigan's premier indoor golf experience — open 24/7.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="/locations">Locations</a>
+      <a href="/#how-it-works">How It Works</a>
+      <a href="/#faq">FAQ</a>
+    </div>
+    <div>
+      <h4>Locations</h4>
+      {locations.map((loc) => <a href={`/locations/${loc.data.slug}`}>{loc.data.name}</a>)}
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="tel:6163509482">616.350.9482</a>
+      <div class="social">
+        <a href="#">Facebook</a><a href="#">Instagram</a><a href="#">TikTok</a>
+      </div>
+    </div>
+  </div>
+  <div class="copyright muted">© {year} 24/7 Golf. All rights reserved.</div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: var(--space-xl) 5vw var(--space-lg);
+  }
+  .footer-grid {
+    max-width: var(--max-width); margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-lg);
+  }
+  .logo { font-family: var(--font-label); font-weight: 700; font-size: 1.5rem; letter-spacing: 1px; }
+  .logo-accent { color: var(--green); }
+  .tagline { margin-top: var(--space-sm); max-width: 32ch; }
+  h4 {
+    font-family: var(--font-label); text-transform: uppercase;
+    letter-spacing: 1.5px; font-size: 0.9rem; color: var(--white);
+    margin-bottom: var(--space-sm);
+  }
+  .footer-grid a { display: block; color: var(--muted); padding: 3px 0; font-size: 0.95rem; }
+  .footer-grid a:hover { color: var(--green); }
+  .social { display: flex; gap: 12px; margin-top: var(--space-sm); }
+  .social a { display: inline; }
+  .copyright {
+    max-width: var(--max-width); margin: var(--space-lg) auto 0;
+    padding-top: var(--space-md); border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+</style>

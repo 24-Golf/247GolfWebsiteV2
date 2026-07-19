@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// The finder is generated from the SAME data files as the location pages.
+// Add a location file -> it appears here (list + map pin) automatically.
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+);
+
+// Compact, serializable shape for the client-side filter + map.
+const points = locations.map((l) => ({
+  name: l.data.name,
+  slug: l.data.slug,
+  city: l.data.city,
+  state: l.data.state,
+  bays: l.data.bays,
+  lat: l.data.lat,
+  lng: l.data.lng,
+}));
+
+// Optional: when a Google Maps key is provided at build time, the map renders
+// live markers. Without it, the finder still works as a filterable list.
+const mapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+---
+<BaseLayout title="Locations — 24/7 Golf" description="Find a 24/7 Golf location near you across Michigan.">
+  <section class="finder-hero">
+    <div class="section-inner">
+      <p class="eyebrow">Locations</p>
+      <h1>Find Your Bay</h1>
+      <p class="muted">{locations.length} locations and growing — indoor golf & pickleball, open 24/7.</p>
+      <input
+        id="loc-search"
+        class="loc-search"
+        type="search"
+        placeholder="Filter by name or city…"
+        aria-label="Filter locations"
+      />
+    </div>
+  </section>
+
+  <section class="finder-body">
+    <div class="section-inner finder-grid">
+      <div id="loc-map" class="loc-map" data-has-key={mapsKey ? 'true' : 'false'}>
+        {!mapsKey && (
+          <div class="map-placeholder">
+            <p class="eyebrow">Map</p>
+            <p class="muted">The interactive Google Map renders here once a Maps API key is set (<code>PUBLIC_GOOGLE_MAPS_API_KEY</code>). The list below is fully functional today.</p>
+            <ul class="pin-list">
+              {points.map((p) => <li>📍 {p.name} — {p.city}, {p.state}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <ul id="loc-list" class="loc-list" role="list">
+        {locations.map((l) => (
+          <li class="loc-item" data-name={l.data.name.toLowerCase()} data-city={l.data.city.toLowerCase()}>
+            <a href={`/locations/${l.data.slug}`} class="loc-card card">
+              <div>
+                <h3>{l.data.name}</h3>
+                <p class="muted">{l.data.city}, {l.data.state}</p>
+              </div>
+              <div class="loc-meta">
+                <span class="tag tag-green">{l.data.bays} Bays</span>
+                <span class="loc-arrow">→</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ points, mapsKey }}>
+    // --- Live list filter -------------------------------------------------
+    const search = document.getElementById('loc-search');
+    const items = Array.from(document.querySelectorAll('.loc-item'));
+    search?.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      items.forEach((el) => {
+        const hit = el.dataset.name.includes(q) || el.dataset.city.includes(q);
+        el.style.display = hit ? '' : 'none';
+      });
+    });
+
+    // --- Optional Google Map ---------------------------------------------
+    // Only loads if a key was provided at build time. Marker clustering can
+    // be layered in later; this keeps the POC dependency-free by default.
+    if (mapsKey) {
+      const el = document.getElementById('loc-map');
+      window.__initLocMap = function () {
+        const bounds = new google.maps.LatLngBounds();
+        const map = new google.maps.Map(el, { mapTypeControl: false, streetViewControl: false });
+        points.forEach((p) => {
+          const pos = { lat: p.lat, lng: p.lng };
+          new google.maps.Marker({ position: pos, map, title: p.name });
+          bounds.extend(pos);
+        });
+        if (points.length) map.fitBounds(bounds);
+      };
+      const s = document.createElement('script');
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${mapsKey}&callback=__initLocMap`;
+      s.async = true;
+      document.head.appendChild(s);
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .finder-hero { padding-top: var(--space-2xl); }
+  .loc-search {
+    margin-top: var(--space-lg); width: 100%; max-width: 480px;
+    padding: 14px 18px; border-radius: 6px;
+    background: var(--card); border: 1px solid var(--border); color: var(--white);
+    font-family: var(--font-body); font-size: 1rem;
+  }
+  .loc-search:focus { outline: none; border-color: var(--green); }
+
+  .finder-body { padding-top: 0; }
+  .finder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: start; }
+  @media (max-width: 900px) { .finder-grid { grid-template-columns: 1fr; } }
+
+  .loc-map { min-height: 420px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--card); position: sticky; top: 90px; }
+  .map-placeholder { padding: var(--space-md); }
+  .pin-list { list-style: none; margin-top: var(--space-md); display: flex; flex-direction: column; gap: 8px; }
+  .pin-list li { color: var(--muted); }
+
+  .loc-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-sm); }
+  .loc-card { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+  .loc-card:hover h3 { color: var(--green); }
+  .loc-meta { display: flex; align-items: center; gap: var(--space-sm); }
+  .loc-arrow { color: var(--green); font-size: 1.3rem; }
+</style>

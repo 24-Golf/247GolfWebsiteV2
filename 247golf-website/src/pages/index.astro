@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+);
+---
+<BaseLayout title="24/7 Golf — Michigan's Premier Indoor Golf" description="Indoor golf and pickleball across Michigan, open 24/7. Book a bay at a location near you.">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="section-inner">
+      <p class="eyebrow">Michigan · Open 24/7</p>
+      <h1>Golf On Your Schedule</h1>
+      <p class="hero-sub muted">Premium indoor golf and pickleball, open around the clock.
+        {locations.length} locations across Michigan — and growing.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/locations">Find a Location</a>
+        <a class="btn btn-outline" href="/#how-it-works">How It Works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations preview -->
+  <section id="locations-preview" class="black">
+    <div class="section-inner">
+      <p class="eyebrow">Locations</p>
+      <h2>Play Near You</h2>
+      <div class="grid-3">
+        {locations.map((l) => (
+          <a href={`/locations/${l.data.slug}`} class="card loc-preview">
+            <h3>{l.data.name}</h3>
+            <p class="muted">{l.data.city}, {l.data.state}</p>
+            <span class="tag tag-green">{l.data.bays} Bays</span>
+          </a>
+        ))}
+      </div>
+      <p class="see-all"><a href="/locations">See all locations →</a></p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works">
+    <div class="section-inner">
+      <p class="eyebrow">How It Works</p>
+      <h2>Book. Play. Anytime.</h2>
+      <div class="grid-3">
+        <div class="card"><h3>1 · Become a Member</h3><p class="muted">Pick a plan at your home location and get 24/7 access.</p></div>
+        <div class="card"><h3>2 · Reserve a Bay</h3><p class="muted">Book online through CourtReserve in seconds, day or night.</p></div>
+        <div class="card"><h3>3 · Play</h3><p class="muted">Golf or pickleball on premium indoor simulators, on your schedule.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App -->
+  <section id="app" class="black">
+    <div class="section-inner app-cta">
+      <div>
+        <p class="eyebrow">Get the App</p>
+        <h2>Your Bay, In Your Pocket</h2>
+        <p class="muted">Reserve, unlock, and manage your membership from your phone.</p>
+      </div>
+      <a class="btn btn-primary" href="/locations">Find a Location</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-inner">
+      <p class="eyebrow">FAQ</p>
+      <h2>Good To Know</h2>
+      <div class="grid-2">
+        <div class="card"><h3>Do I need a membership?</h3><p class="muted">A free Player account gets you booking access; paid plans unlock discounts and free play.</p></div>
+        <div class="card"><h3>Is it really open 24/7?</h3><p class="muted">Yes — members have secure access around the clock at their home location.</p></div>
+        <div class="card"><h3>Can I bring friends?</h3><p class="muted">Golf is priced per bay, so bring your group and split one rate.</p></div>
+        <div class="card"><h3>Do you have pickleball?</h3><p class="muted">Select locations offer indoor pickleball with member pricing.</p></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .black { background: var(--black); }
+  .hero {
+    padding: var(--space-2xl) 5vw;
+    background: radial-gradient(circle at 15% 10%, rgba(46,204,113,0.12), transparent 55%);
+  }
+  .hero-sub { margin-top: var(--space-md); max-width: 52ch; font-size: 1.2rem; }
+  .hero-cta { display: flex; gap: var(--space-sm); margin-top: var(--space-lg); flex-wrap: wrap; }
+
+  .loc-preview { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .loc-preview:hover h3 { color: var(--green); }
+  .see-all { margin-top: var(--space-lg); font-family: var(--font-label); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .app-cta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); flex-wrap: wrap; }
+</style>

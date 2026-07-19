@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Generate one page per location data file. This is the whole point of the
+// platform: HQ never hand-builds a location page.
+export async function getStaticPaths() {
+  const locations = await getCollection('locations');
+  return locations.map((loc) => ({
+    params: { slug: loc.data.slug },
+    props: { loc },
+  }));
+}
+
+const { loc } = Astro.props;
+const d = loc.data;
+const mapsQuery = encodeURIComponent(`${d.name} 24/7 Golf, ${d.city}, ${d.state}`);
+---
+<BaseLayout title={`${d.name} — 24/7 Golf`} description={`24/7 Golf ${d.name}: ${d.bays} bays, indoor golf and pickleball in ${d.city}, ${d.state}.`}>
+  <!-- Hero -->
+  <section class="loc-hero">
+    <div class="section-inner">
+      <p class="eyebrow">{d.city}, {d.state}</p>
+      <h1>{d.name}</h1>
+      {d.ownerBio && <p class="loc-bio muted">{d.ownerBio}</p>}
+      <div class="loc-facts">
+        <span class="tag tag-green">{d.bays} Bays</span>
+        <span class="tag">{d.city}, {d.state}</span>
+      </div>
+      <div class="loc-cta">
+        <a class="btn btn-primary" href={d.courtReserveUrl} target="_blank" rel="noopener">Book a Bay</a>
+        <a class="btn btn-outline" href={`#memberships`}>View Memberships</a>
+      </div>
+    </div>
+  </section>
+
+  {/* Owner-defined optional secondary menu */}
+  {d.secondaryMenu.length > 0 && (
+    <nav class="secondary-nav" aria-label={`${d.name} sections`}>
+      <div class="section-inner secondary-inner">
+        {d.secondaryMenu.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </nav>
+  )}
+
+  <!-- Details -->
+  <section id="hours">
+    <div class="section-inner grid-2">
+      <div class="card">
+        <h3>Hours</h3>
+        <ul class="plain">
+          {d.hours.map((h) => (
+            <li><strong>{h.days}</strong> — {h.time}</li>
+          ))}
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Find Us</h3>
+        <p class="muted">{d.address}</p>
+        <p class="muted">{d.city}, {d.state} {d.zip}</p>
+        <p><a href={`tel:${d.phone.replace(/[^0-9]/g, '')}`}>{d.phone}</a></p>
+        <p><a href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">Open in Google Maps →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memberships (owner-controlled; refreshed from CourtReserve via the membership skill) -->
+  <section id="memberships" class="memberships">
+    <div class="section-inner">
+      <p class="eyebrow">Choose Your Membership</p>
+      <h2>{d.name} Memberships</h2>
+      {d.memberships.length === 0 ? (
+        <p class="muted coming-soon">Memberships coming soon. Run the membership skill to pull live plans from CourtReserve.</p>
+      ) : (
+        <div class="mem-grid">
+          {d.memberships.map((m) => (
+            <article class="card mem-card">
+              <div class="mem-head">
+                <h3>{m.plan}</h3>
+                <span class="tag">{m.type}</span>
+              </div>
+              <div class="mem-price">{m.price}</div>
+              {m.offerEnds && <div class="mem-offer">Offer ends {m.offerEnds}</div>}
+              {m.description && <p class="muted mem-desc">{m.description}</p>}
+              <ul class="mem-features">
+                {m.features.map((f) => <li>{f}</li>)}
+              </ul>
+              <a class="btn btn-primary mem-btn" href={m.signupUrl} target="_blank" rel="noopener">Learn More &amp; Join</a>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  {/* Optional events */}
+  {d.events.length > 0 && (
+    <section id="events">
+      <div class="section-inner">
+        <p class="eyebrow">What's On</p>
+        <h2>Events</h2>
+        <div class="grid-3">
+          {d.events.map((e) => (
+            <article class="card">
+              <h3>{e.title}</h3>
+              <p class="eyebrow">{e.date}</p>
+              {e.description && <p class="muted">{e.description}</p>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .loc-hero { padding-top: var(--space-2xl); background: radial-gradient(circle at 20% 0%, rgba(46,204,113,0.08), transparent 55%); }
+  .loc-bio { margin-top: var(--space-md); max-width: 60ch; font-size: 1.1rem; }
+  .loc-facts { display: flex; gap: 10px; margin-top: var(--space-md); }
+  .loc-cta { display: flex; gap: var(--space-sm); margin-top: var(--space-lg); flex-wrap: wrap; }
+
+  .secondary-nav { background: var(--black); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .secondary-inner { display: flex; gap: var(--space-md); padding: 12px 0; }
+  .secondary-nav a { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.9rem; color: var(--white); }
+  .secondary-nav a:hover { color: var(--green); }
+
+  ul.plain { list-style: none; margin-top: var(--space-sm); }
+  ul.plain li { padding: 4px 0; color: var(--muted); }
+  ul.plain strong { color: var(--white); }
+
+  .memberships { background: var(--black); }
+  .coming-soon { margin-top: var(--space-md); font-size: 1.1rem; }
+  .mem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-top: var(--space-lg); }
+  @media (max-width: 900px) { .mem-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .mem-grid { grid-template-columns: 1fr; } }
+  .mem-card { display: flex; flex-direction: column; }
+  .mem-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .mem-price { font-family: var(--font-display); font-size: 2.4rem; color: var(--green); margin-top: 8px; }
+  .mem-offer { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 1px; font-size: 0.78rem; color: var(--gold); }
+  .mem-desc { margin-top: 8px; }
+  .mem-features { list-style: none; margin: var(--space-sm) 0; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .mem-features li { padding-left: 18px; position: relative; font-size: 0.95rem; }
+  .mem-features li::before { content: "+"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .mem-btn { justify-content: center; margin-top: auto; }
+</style>
